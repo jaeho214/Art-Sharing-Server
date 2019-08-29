@@ -1,6 +1,7 @@
 package kr.ac.skuniv.security;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //swagger 페이지로 진입하기 위한 ignoring
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers(AUTH_ARR);
+                .antMatchers(AUTH_ARR)
+                .antMatchers("/artSharing/sign/client")
+                .antMatchers("/artSharing/sign/artist")
+                .antMatchers("/artSharing/sign/admin")
+                .antMatchers(HttpMethod.POST,"/artSharing/sign");
     }
 }
