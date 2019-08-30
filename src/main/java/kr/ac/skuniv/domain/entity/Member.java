@@ -9,44 +9,42 @@ import javax.persistence.Id;
 import kr.ac.skuniv.domain.dto.MemberRequest;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor
 public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long mno;
 	
 	//사용자 아이디
 	@Column(unique = true)
-	private String identity;
+	private String id;
 	
 	//이름  비밀번호 성별 나이 소속 번호 종류
 	private String name;
 	private String password;
 	private String sex;
 	private String age;
-	private String group;
+	private String affiliation; // 소속
 	private String phone;
-	private String type;
-	
-	public Member() {
-		
-	}
+	private String role; // 역할(작가 or 고객)
+
 	
 	@Builder
-	public Member(String name, String identity, String password, String sex, String age, String group, String phone, String type) {
+	public Member(String name, String id, String password, String sex, String age, String affiliation, String phone, String role) {
 		this.name = name;
-		this.identity = identity;
+		this.id = id;
 		this.password = password;
 		this.sex = sex;
 		this.age = age;
-		this.group = group;
+		this.affiliation = affiliation;
 		this.phone = phone;
-		this.type = type;
+		this.role = role;
 	}
 	
 	public void updateMember(MemberRequest request) {
@@ -54,9 +52,9 @@ public class Member {
 		this.password = request.getPassword();
 		this.sex = request.getSex();
 		this.age = request.getAge();
-		this.group = request.getGroup();
+		this.affiliation = request.getAffiliation();
 		this.phone = request.getPhone();
-		this.type = request.getType();
+		this.role = request.getRole();
 	}
 	
 }
