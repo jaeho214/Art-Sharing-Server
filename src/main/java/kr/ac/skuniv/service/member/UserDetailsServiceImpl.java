@@ -4,13 +4,17 @@ import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
@@ -18,16 +22,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByIdentity(username);
+        Member member = memberRepository.findById(username);
 
         if(member == null) {
             throw new UsernameNotFoundException(username);
         }
 
-        return new User(member.getIdentity(), member.getPassword(), makeGrantedAuthority(member.getType()));
+        return new User(member.getId(), member.getPassword(), makeGrantedAuthority(member.getRole()));
     }
 
-    private Collection<? extends GrantedAuthority> makeGrantedAuthority(String type) {
-        return null;
+    private List<? extends GrantedAuthority> makeGrantedAuthority(String role) {
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return list;
     }
+
+
 }

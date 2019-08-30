@@ -6,6 +6,5 @@ import kr.ac.skuniv.domain.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
 
-	Member findByIdentity(String identity);
-	
+	Member findById(String userId);
 }

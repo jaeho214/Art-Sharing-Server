@@ -2,8 +2,8 @@ package kr.ac.skuniv.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.ac.skuniv.domain.dto.MemberRequest;
-import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.domain.dto.SignUpDto;
+import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +28,6 @@ public class MemberController {
         memberService.signUpMember(memberRequest, MemberRole.ARTIST);
     }
 
-    @ApiOperation("예술가 회원가입")
-    @PostMapping("/admin")
-    public void admin_signUp(@RequestBody MemberRequest memberRequest){
-        memberService.signUpMember(memberRequest, MemberRole.ADMIN);
-    }
-
     @ApiOperation("로그인")
     @PostMapping
     public String login(@RequestBody SignUpDto signUpDto){
@@ -42,8 +36,8 @@ public class MemberController {
 
     @ApiOperation("회원 정보 열람")
     @GetMapping
-    public MemberRequest memberInfo(String id){
-        return memberService.memberInfo(id);
+    public MemberRequest memberInfo(@RequestHeader(name = "Authorization") String token){
+        return memberService.memberInfo(token);
     }
 
     @ApiOperation("회원 정보 수정")

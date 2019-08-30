@@ -1,14 +1,32 @@
 package kr.ac.skuniv.security;
 
+import kr.ac.skuniv.service.member.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsServiceImpl userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private AuthenticationTokenFilter authenticationTokenFilter;
+
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder, AuthenticationTokenFilter authenticationTokenFilter) {
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationTokenFilter = authenticationTokenFilter;
+    }
+
     private static final String[] AUTH_ARR = {
             "/v2/api-docs",
             "/configuration/ui",
@@ -28,5 +46,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/artSharing/sign/artist")
                 .antMatchers("/artSharing/sign/admin")
                 .antMatchers(HttpMethod.POST,"/artSharing/sign");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    .authorizeRequests()
+                        .antMatchers(HttpMethod.GET, "/artSharing/sign").authenticated()
+                        .antMatchers("/artSharing/sign/memberInfo").permitAll()
+                .and()
+                    .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 }
