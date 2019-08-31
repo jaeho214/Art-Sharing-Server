@@ -1,18 +1,14 @@
 package kr.ac.skuniv.service.member;
 
+import kr.ac.skuniv.domain.dto.MemberRequest;
 import kr.ac.skuniv.domain.dto.SignUpDto;
+import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.domain.roles.MemberRole;
+import kr.ac.skuniv.exception.MemberException;
+import kr.ac.skuniv.repository.MemberRepository;
 import kr.ac.skuniv.security.JwtProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import kr.ac.skuniv.domain.dto.MemberRequest;
-import kr.ac.skuniv.domain.entity.Member;
-import kr.ac.skuniv.exception.MemberException;
-import kr.ac.skuniv.repository.MemberRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class MemberService {
@@ -28,7 +24,6 @@ public class MemberService {
 	}
 
 	//회원가입
-	// roles은 security 관련인데 고객이냐 작가냐에 따라 다르게 가입시키려고 한거야 시큐리티 적용하면서 할게
 	public void signUpMember(MemberRequest request, MemberRole roles) {
 			Member existMember = memberRepository.findById(request.getId());
 
@@ -36,12 +31,6 @@ public class MemberService {
 			if(existMember != null)
 				throw new MemberException("이미 존재하는 아이디입니다.");
 
-			/*
-			type 이 작가냐 고객이냐를 나누는거라는 전제하에
-			작가냐 고객이냐를 체크박스로 해서 서버에서 받는게 아니라 url로 설정해주자 /client /artist 이렇게
-			그래서 그 url에 따라 다르게 회원가입을 할 수 있게끔 어때?
-			아니면 체크박스말고 그냥 작가 회원가입, 고객 회원가입을 따로 둘 수도 있고
-			*/
 			Member member = request.toEntity();
 			member.setPassword(passwordEncoder.encode(member.getPassword()));
 
@@ -59,7 +48,12 @@ public class MemberService {
 	public void updateMember(MemberRequest request) {
 		
 		Member member = memberRepository.findById(request.getId());
-		
+
+		if(member == null)
+			throw new MemberException("존재하지 않는 회원입니다");
+
+		request.setPassword(passwordEncoder.encode(request.getPassword()));
+
 		member.updateMember(request);
 		
 		memberRepository.save(member);
@@ -85,7 +79,7 @@ public class MemberService {
 			throw new MemberException("존재하지 않는 아이디입니다.");
 		}
 
-		if(!(login.getPassword().equals(signUpDto.getPw()))) {
+		if(!passwordEncoder.matches(signUpDto.getPw(), login.getPassword())) {
 			throw new MemberException("비밀번호가 틀렸습니다.");
 		}
 
@@ -96,6 +90,9 @@ public class MemberService {
 	public MemberRequest memberInfo(String token){
 		String userId = jwtProvider.getUserIdByToken(token);
 		Member member = memberRepository.findById(userId);
+
+		if(member == null)
+			throw new MemberException("존재하지 않는 회원입니다");
 
 		return MemberRequest.builder()
 				.id(member.getId())
