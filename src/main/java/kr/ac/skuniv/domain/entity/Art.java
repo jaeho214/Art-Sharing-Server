@@ -1,16 +1,12 @@
 package kr.ac.skuniv.domain.entity;
 
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
+import kr.ac.skuniv.domain.dto.ArtRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -30,4 +26,20 @@ public class Art {
 	@ManyToOne
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	@Builder
+	public Art(Date date, String artName, String price, String explanation, Member member) {
+		this.date = date;
+		this.artName = artName;
+		this.price = price;
+		this.explanation = explanation;
+		this.member = member;
+	}
+
+	public void updateArt(ArtRequestDto artUpdateDto) {
+		this.date = artUpdateDto.getDate();
+		this.artName = artUpdateDto.getArtName();
+		this.price = artUpdateDto.getPrice();
+		this.explanation = artUpdateDto.getExplanation();
+	}
 }
