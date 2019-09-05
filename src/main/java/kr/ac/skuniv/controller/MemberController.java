@@ -15,7 +15,6 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-
     @ApiOperation("고객 회원가입")
     @PostMapping("/client")
     public void client_signUp(@RequestBody MemberRequest memberRequest){
