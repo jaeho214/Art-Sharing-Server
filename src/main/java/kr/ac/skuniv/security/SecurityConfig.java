@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -19,11 +20,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private AuthenticationTokenFilter authenticationTokenFilter;
+    private AccessDeniedHandlerCustom accessDeniedHandler;
+    private AuthenticationEntryPointCustom authenticationEntryPoint;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder, AuthenticationTokenFilter authenticationTokenFilter) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder,
+                          AuthenticationTokenFilter authenticationTokenFilter, AccessDeniedHandlerCustom accessDeniedHandler,
+                          AuthenticationEntryPointCustom authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationTokenFilter = authenticationTokenFilter;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     private static final String[] AUTH_ARR = {
@@ -44,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/artSharing/sign/client")
                 .antMatchers("/artSharing/sign/artist")
                 .antMatchers("/artSharing/sign/admin")
-                .antMatchers(HttpMethod.POST,"/artSharing/sign");
+                .antMatchers(HttpMethod.POST,"/artSharing/sign")
+        ;
     }
 
     @Override
@@ -56,7 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers(HttpMethod.GET, "/artSharing/sign").authenticated()
                         .antMatchers("/artSharing/sign/memberInfo").permitAll()
                 .and()
-                    .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                    .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
+        ;
     }
 
     @Override
