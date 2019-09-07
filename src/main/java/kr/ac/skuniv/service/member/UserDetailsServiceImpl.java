@@ -28,7 +28,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        return new User(member.getId(), member.getPassword(), makeGrantedAuthority(member.getRole()));
+//        return User.builder()
+//                .username(member.getId())
+//                .password(member.getPassword())
+//                .roles(member.getRole())
+//                .build();
+        return new User(member.getId(),member.getPassword(),makeGrantedAuthority(member.getRole()));
     }
 
     private List<? extends GrantedAuthority> makeGrantedAuthority(String role) {

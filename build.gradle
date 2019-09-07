@@ -22,6 +22,9 @@ repositories {
 	mavenCentral()
 }
 
+def queryDSLVersion = '4.2.1'
+def generated = "src/main/generated"
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -35,4 +38,26 @@ dependencies {
 	compile 'io.springfox:springfox-swagger-ui:2.6.1'
 	compile 'org.springframework.boot:spring-boot-starter-security'
 	compile 'io.jsonwebtoken:jjwt:0.9.0' //jwtProvider 사용하기 위해
+	compile 'org.springframework.boot:spring-boot-starter-aop' //spring AOP 사용하기 위해
+	compile("com.querydsl:querydsl-core:${queryDSLVersion}")
+	compile("com.querydsl:querydsl-jpa:${queryDSLVersion}")
+	compile("com.querydsl:querydsl-apt:${queryDSLVersion}")
+	annotationProcessor(
+			"com.querydsl:querydsl-apt:${queryDSLVersion}:jpa",
+			"org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final",
+			"javax.annotation:javax.annotation-api:1.3.2",
+			"org.projectlombok:lombok"
+	)
+}
+
+sourceSets {
+	main.java.srcDirs += [generated]
+}
+
+tasks.withType(JavaCompile){
+	options.annotationProcessorGeneratedSourcesDirectory = file(generated)
+}
+
+clean.doLast {
+	file(generated).deleteDir()
 }

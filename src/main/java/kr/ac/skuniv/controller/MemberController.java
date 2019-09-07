@@ -41,14 +41,14 @@ public class MemberController {
 
     @ApiOperation("회원 정보 수정")
     @PutMapping
-    public void updateInfo(@RequestBody MemberRequest memberRequest){
-        memberService.updateMember(memberRequest);
+    public void updateInfo(@RequestHeader(name = "Authorization") String token, @RequestBody MemberRequest memberRequest){
+        memberService.updateMember(token, memberRequest);
     }
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping
-    public void removeMember(String id){
-        memberService.deleteMember(id);
+    public void removeMember(@RequestHeader(name = "Authorization") String token){
+        memberService.deleteMember(token);
     }
 
 }

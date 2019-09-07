@@ -21,13 +21,13 @@ public class JwtProvider {
     private String secretKey = "ARTSHARINGDEVELOP";
 
     @PostConstruct
-    protected void init(){
+    protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username, String role){
+    public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles",role);
+        claims.put("roles", role);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityMilliseconds);
@@ -45,22 +45,22 @@ public class JwtProvider {
         return claims.getBody().getExpiration().after(new Date());
     }
 
-    public String resolveToken(HttpServletRequest request){
+    public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return bearerToken;
     }
 
-    public String resolveToken(String bearerToken){
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
+    public String resolveToken(String bearerToken) {
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return bearerToken;
     }
 
-    public Authentication getAuthenticationByToken(String token){
+    public Authentication getAuthenticationByToken(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserIdByToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -69,4 +69,8 @@ public class JwtProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(resolveToken(token)).getBody().getSubject();
     }
 
+    public String getUserRoleByToken(String token) {
+        String roles = (String) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(resolveToken(token)).getBody().get("roles");
+        return roles;
+    }
 }
