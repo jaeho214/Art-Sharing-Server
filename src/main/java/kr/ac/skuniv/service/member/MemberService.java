@@ -4,7 +4,7 @@ import kr.ac.skuniv.domain.dto.MemberRequest;
 import kr.ac.skuniv.domain.dto.SignUpDto;
 import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.domain.roles.MemberRole;
-import kr.ac.skuniv.exception.MemberException;
+import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.MemberRepository;
 import kr.ac.skuniv.security.JwtProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +29,7 @@ public class MemberService {
 
 			//아아디 존재하면 에러 출력
 			if(existMember != null)
-				throw new MemberException("이미 존재하는 아이디입니다.");
+				throw new UserDefineException("이미 존재하는 아이디입니다.");
 
 			Member member = request.toEntity();
 			member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -45,24 +45,26 @@ public class MemberService {
 	}
 
 	//내정보 수정
-	public void updateMember(MemberRequest request) {
-		
-		Member member = memberRepository.findById(request.getId());
+	public void updateMember(String token, MemberRequest request) {
+		String userId = jwtProvider.getUserIdByToken(token);
+
+		Member member = memberRepository.findById(userId);
 
 		if(member == null)
-			throw new MemberException("존재하지 않는 회원입니다");
+			throw new UserDefineException("존재하지 않는 회원입니다");
 
 		request.setPassword(passwordEncoder.encode(request.getPassword()));
 
 		member.updateMember(request);
-		
+
 		memberRepository.save(member);
 
 	}
 
 	//정보 삭제 -> 회원 탈퇴
-	public void deleteMember(String userId) {
-		
+	public void deleteMember(String token) {
+		String userId = jwtProvider.getUserIdByToken(token);
+
 		Member member = memberRepository.findById(userId);
 		
 		memberRepository.delete(member);
@@ -76,11 +78,11 @@ public class MemberService {
 
 		//등록되어있지않으면 에러
 		if(login.getId() == null) {
-			throw new MemberException("존재하지 않는 아이디입니다.");
+			throw new UserDefineException("존재하지 않는 아이디입니다.");
 		}
 
 		if(!passwordEncoder.matches(signUpDto.getPw(), login.getPassword())) {
-			throw new MemberException("비밀번호가 틀렸습니다.");
+			throw new UserDefineException("비밀번호가 틀렸습니다.");
 		}
 
 		return jwtProvider.createToken(login.getId(), login.getRole());
@@ -92,7 +94,7 @@ public class MemberService {
 		Member member = memberRepository.findById(userId);
 
 		if(member == null)
-			throw new MemberException("존재하지 않는 회원입니다");
+			throw new UserDefineException("존재하지 않는 회원입니다");
 
 		return MemberRequest.builder()
 				.id(member.getId())
