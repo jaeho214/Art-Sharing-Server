@@ -32,7 +32,7 @@ public class ArtService {
         //권한 찾기
         String userRole = jwtProvider.getUserRoleByToken(token);
 
-        if(userRole.equals(MemberRole.ARTIST)){
+        if(!userRole.equals(MemberRole.ARTIST)){
             request.setUserId(userId);
             Art art = request.toEntity();
             artRepository.save(art);
@@ -47,7 +47,7 @@ public class ArtService {
         //권한 찾기
         String userRole = jwtProvider.getUserRoleByToken(token);
 
-        if(userRole.equals(MemberRole.ARTIST)){
+        if(!userRole.equals(MemberRole.ARTIST)){
             Art art = artRepository.findByMemberIdAndId(userId, request.getId());
             art.updateArt(request);
             artRepository.save(art);
@@ -64,7 +64,7 @@ public class ArtService {
         //권한 찾기
         String userRole = jwtProvider.getUserRoleByToken(token);
 
-        if(userRole.equals(MemberRole.ARTIST)){
+        if(!userRole.equals(MemberRole.ARTIST)){
             Art art = artRepository.findByMemberIdAndId(userId, id);
             artRepository.delete(art);
 

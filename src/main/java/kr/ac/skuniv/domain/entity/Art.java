@@ -7,25 +7,29 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 public class Art {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;   // 작품 등록 번호
 	
 	private Date date; //대여 날짜
 	private String artName; //작품 이름
 	private String price; //가격
 	private String explanation; //설명
+	private String title;
 
 	//단방향으로 작가당 작품 여러개
 	@ManyToOne
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY)
+    private List<Reply> replies;
 
 	@Builder
 	public Art(Date date, String artName, String price, String explanation, Member member) {

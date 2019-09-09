@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("arㄴtSharing/art")
+@RequestMapping("artSharing/art")
 public class ArtController {
 
     @Autowired
