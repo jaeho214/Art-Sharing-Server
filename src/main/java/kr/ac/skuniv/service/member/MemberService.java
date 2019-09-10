@@ -7,8 +7,13 @@ import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.MemberRepository;
 import kr.ac.skuniv.security.JwtProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class MemberService {
@@ -16,6 +21,8 @@ public class MemberService {
 	final private MemberRepository memberRepository;
 	final private JwtProvider jwtProvider;
 	final private PasswordEncoder passwordEncoder;
+
+	private static final Logger logger = LoggerFactory.getLogger(MemberService.class);
 	
 	public MemberService(MemberRepository memberRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
 		this.memberRepository = memberRepository;
@@ -28,8 +35,9 @@ public class MemberService {
 			Member existMember = memberRepository.findById(request.getId());
 
 			//아아디 존재하면 에러 출력
-			if(existMember != null)
-				throw new UserDefineException("이미 존재하는 아이디입니다.");
+//			if(existMember != null) {
+//				throw new UserDefineException("이미 존재하는 아이디입니다.");
+//			}
 
 			Member member = request.toEntity();
 			member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -105,5 +113,18 @@ public class MemberService {
 				.age(member.getAge())
 				.build();
 	}
-	
+
+    public Boolean checkUserID(String userId) {
+		Member member = memberRepository.findById(userId);
+
+		//아아디 존재하면 에러 출력
+		if (member != null) {
+			logger.error("이미 존재하는 아이디입니다!!");
+			return false;
+		} else {
+			logger.info("아이디 중복 체크 완료");
+			return true;
+		}
+	}
+
 }
