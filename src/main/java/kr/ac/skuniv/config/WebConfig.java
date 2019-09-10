@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @Import(SwaggerConfig.class)
 public class WebConfig implements WebMvcConfigurer {
+    //FIXME : CORS 관련 이슈를 위해 만들어주었는데 과연 필요한가?
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**/**")
