@@ -5,9 +5,9 @@ spring:
     url: jdbc:mysql://jaehodb.cmokv5cfhdtd.us-east-2.rds.amazonaws.com:3306/art-sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 
 #    username: hongyj
-    username: artsharing
+    username: jaeho
 #    password: sec031031!
-    password: 1q2w3e
+    password: 1q2w3e4r!
   jpa:
     hibernate:
       ddl-auto: update
