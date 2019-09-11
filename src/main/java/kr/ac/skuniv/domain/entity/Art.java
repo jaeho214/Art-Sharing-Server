@@ -4,8 +4,10 @@ import kr.ac.skuniv.domain.dto.ArtRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,10 @@ public class Art {
 	private String price; //가격
 	private String explanation; //설명
 	private String title;
+	private boolean rentCheck; //대여 여부 체크
+
+	@CreationTimestamp
+    private Timestamp regDate; //등록일
 
 	//단방향으로 작가당 작품 여러개
 	@ManyToOne
@@ -30,6 +36,9 @@ public class Art {
 
 	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY)
     private List<Reply> replies;
+
+//	@OneToMany
+//    private List<Rent> rents;
 
 	@Builder
 	public Art(Date date, String artName, String price, String explanation, Member member) {

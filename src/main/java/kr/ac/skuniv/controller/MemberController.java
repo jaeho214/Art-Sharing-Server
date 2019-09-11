@@ -8,6 +8,9 @@ import kr.ac.skuniv.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/artSharing/sign")
 public class MemberController {
@@ -29,14 +32,20 @@ public class MemberController {
 
     @ApiOperation("로그인")
     @PostMapping
-    public String login(@RequestBody SignUpDto signUpDto) {
-        return memberService.loginMember(signUpDto);
+    public String login(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
+        return memberService.loginMember(signUpDto, response);
     }
+
+//    @ApiOperation("회원 정보 열람")
+//    @GetMapping
+//    public MemberRequest memberInfo(@RequestHeader(name = "Authorization") String token) {
+//        return memberService.memberInfo(token);
+//    }
 
     @ApiOperation("회원 정보 열람")
     @GetMapping
-    public MemberRequest memberInfo(@RequestHeader(name = "Authorization") String token) {
-        return memberService.memberInfo(token);
+    public MemberRequest memberInfo(HttpServletRequest request) {
+        return memberService.getMemberInfo(request);
     }
 
     @ApiOperation("회원 정보 수정")
