@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Service
@@ -80,7 +82,7 @@ public class MemberService {
 	}
 
 	//로그인
-	public String loginMember(SignUpDto signUpDto) {
+	public String loginMember(SignUpDto signUpDto, HttpServletResponse response) {
 		
 		Member login = memberRepository.findById(signUpDto.getId());
 
@@ -93,7 +95,12 @@ public class MemberService {
 			throw new UserDefineException("비밀번호가 틀렸습니다.");
 		}
 
-		return jwtProvider.createToken(login.getId(), login.getRole());
+        Cookie cookie = new Cookie("userId", login.getId());
+		cookie.setMaxAge(60*60*24);
+		response.addCookie(cookie);
+
+		return "login success";
+		//return jwtProvider.createToken(login.getId(), login.getRole());
 	}
 
 	//회원 정보 열람
@@ -127,4 +134,27 @@ public class MemberService {
 		}
 	}
 
+    public MemberRequest getMemberInfo(HttpServletRequest request) {
+
+	    Cookie[] cookies = request.getCookies();
+	    String userId = "";
+	    if(cookies != null){
+	        for (Cookie i : cookies){
+	            userId = i.getValue();
+            }
+        }
+        Member member = memberRepository.findById(userId);
+
+        if(member == null)
+            throw new UserDefineException("존재하지 않는 회원입니다");
+
+        return MemberRequest.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .affiliation(member.getAffiliation())
+                .phone(member.getPhone())
+                .sex(member.getSex())
+                .age(member.getAge())
+                .build();
+    }
 }

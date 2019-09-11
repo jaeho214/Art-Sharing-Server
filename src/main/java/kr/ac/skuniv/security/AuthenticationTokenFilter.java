@@ -12,6 +12,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class AuthenticationTokenFilter extends GenericFilterBean {
         log.info("=================Token을 확인하는 Filter 실행================");
 
         try{
+            //Cookie[] cookie = getAsHttpRequest(request).getCookies();
             String token = jwtProvider.resolveToken(getAsHttpRequest(request));
             log.info(getAsHttpRequest(request).getRequestURL().toString());
             if(token != null && jwtProvider.validateToken(token)){
