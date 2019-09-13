@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -95,7 +94,8 @@ public class MemberService {
 			throw new UserDefineException("비밀번호가 틀렸습니다.");
 		}
 
-        Cookie cookie = new Cookie("userId", login.getId());
+
+        Cookie cookie = new Cookie("userId", jwtProvider.createToken(login.getId(), login.getRole()));
 		cookie.setMaxAge(60*60*24);
 		response.addCookie(cookie);
 

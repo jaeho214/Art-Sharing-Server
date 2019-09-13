@@ -23,7 +23,6 @@ public class Art {
 	private String artName; //작품 이름
 	private String price; //가격
 	private String explanation; //설명
-	private String title;
 	private boolean rentCheck; //대여 여부 체크
 
 	@CreationTimestamp
