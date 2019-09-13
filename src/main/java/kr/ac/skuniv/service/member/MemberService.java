@@ -95,7 +95,7 @@ public class MemberService {
 			throw new UserDefineException("비밀번호가 틀렸습니다.");
 		}
 
-        Cookie cookie = new Cookie("userId", login.getId());
+        Cookie cookie = new Cookie("userId", jwtProvider.createToken(login.getId(), login.getRole()));
 		cookie.setMaxAge(60*60*24);
 		response.addCookie(cookie);
 
@@ -137,12 +137,15 @@ public class MemberService {
     public MemberRequest getMemberInfo(HttpServletRequest request) {
 
 	    Cookie[] cookies = request.getCookies();
-	    String userId = "";
+	    String token = "";
 	    if(cookies != null){
 	        for (Cookie i : cookies){
-	            userId = i.getValue();
+	            token = i.getValue();
             }
         }
+
+	    String userId = jwtProvider.getUserIdByToken(token);
+
         Member member = memberRepository.findById(userId);
 
         if(member == null)
