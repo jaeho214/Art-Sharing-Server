@@ -38,4 +38,9 @@ public class ArtController {
     public List<ArtRequestDto> artList(@RequestHeader(name = "Authorization") String token, @PathVariable int pageNum){
         return artService.artList(token);
     }
+
+    @GetMapping("/search/{keyword}")
+    public List<ArtRequestDto> searchArt(@PathVariable String keyword){
+        return artService.searchArt(keyword);
+    }
 }

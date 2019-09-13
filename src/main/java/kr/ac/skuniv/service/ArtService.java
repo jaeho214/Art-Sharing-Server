@@ -108,4 +108,7 @@ public class ArtService {
 //        return artRequest;
     }
 
+    public List<ArtRequestDto> searchArt(String keyword) {
+        return artRepository.searchArt(keyword);
+    }
 }
