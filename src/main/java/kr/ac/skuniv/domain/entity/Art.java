@@ -1,32 +1,32 @@
 package kr.ac.skuniv.domain.entity;
 
-import kr.ac.skuniv.domain.dto.ArtRequestDto;
+import kr.ac.skuniv.domain.dto.ArtDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor
 public class Art {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;   // 작품 등록 번호
 	
-	private Date date; //대여 날짜
+	//private Date date; //대여 날짜
 	private String artName; //작품 이름
-	private String price; //가격
+	private String price; //하루당 가격
 	private String explanation; //설명
 	private boolean rentCheck; //대여 여부 체크
 
 	@CreationTimestamp
-    private Timestamp regDate; //등록일
+    private LocalDate regDate; //등록일
 
 	//단방향으로 작가당 작품 여러개
 	@ManyToOne
@@ -40,16 +40,16 @@ public class Art {
 //    private List<Rent> rents;
 
 	@Builder
-	public Art(Date date, String artName, String price, String explanation, Member member) {
-		this.date = date;
+	public Art(LocalDate date, String artName, String price, String explanation, Member member) {
+		//this.date = date;
 		this.artName = artName;
 		this.price = price;
 		this.explanation = explanation;
 		this.member = member;
 	}
 
-	public void updateArt(ArtRequestDto artUpdateDto) {
-		this.date = artUpdateDto.getDate();
+	public void updateArt(ArtDto artUpdateDto) {
+		//this.date = artUpdateDto.getDate();
 		this.artName = artUpdateDto.getArtName();
 		this.price = artUpdateDto.getPrice();
 		this.explanation = artUpdateDto.getExplanation();

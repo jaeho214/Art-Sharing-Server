@@ -4,8 +4,6 @@ import kr.ac.skuniv.domain.dto.ErrorDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 // 에러코드 400번으로 response되면 exception발생
@@ -34,7 +31,7 @@ public class GlobalExceptionHandler {
          */
         String requestUrl = urlPathHelper.getRequestUri(request);
 
-        logger.info("======================================");
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         logger.info("예외 발생 시간 : " + LocalDateTime.now());
         logger.info("요청 HTTP 메소드 : " + request.getMethod());
         logger.info("요청 URL : " + requestUrl);
@@ -43,7 +40,7 @@ public class GlobalExceptionHandler {
         logger.info("사용자 정의 에러 메세지 : " + e.getMessage());
         logger.info("예외발생 메소드 : " + e.getErrorMethod());
         logger.info("Cause : " + e.getCause());
-        logger.info("======================================");
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
         return new ResponseEntity(ErrorDto.builder()
                                 .originalErrorMessage(e.getOriginalErrorMessage())
@@ -59,14 +56,14 @@ public class GlobalExceptionHandler {
 
         String requestUrl = urlPathHelper.getRequestUri(request);
 
-        logger.info("======================================");
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         logger.info("예외 발생 시간 : " + LocalDateTime.now());
         logger.info("요청 HTTP 메소드 : " + request.getMethod());
         logger.info("요청 URL : " + requestUrl);
         logger.info("클라이언트 : " + request.getRemoteHost());
         logger.info("에러 메세지 : " + e.getMessage());
         logger.info("Cause : " + e.getCause());
-        logger.info("======================================");
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
         return new ResponseEntity(ErrorDto.builder()
                 .originalErrorMessage(e.toString())
