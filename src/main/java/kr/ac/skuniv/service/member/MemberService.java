@@ -1,6 +1,6 @@
 package kr.ac.skuniv.service.member;
 
-import kr.ac.skuniv.domain.dto.MemberRequest;
+import kr.ac.skuniv.domain.dto.MemberDto;
 import kr.ac.skuniv.domain.dto.SignUpDto;
 import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.domain.roles.MemberRole;
@@ -30,9 +30,9 @@ public class MemberService {
 		this.jwtProvider = jwtProvider;
 		this.passwordEncoder = passwordEncoder;
 	}
-
+	private String token = "";
 	//회원가입
-	public void signUpMember(MemberRequest request, MemberRole roles) {
+	public void signUp(MemberDto request, MemberRole roles) {
 			Member existMember = memberRepository.findById(request.getId());
 
 			//아아디 존재하면 에러 출력
@@ -53,36 +53,9 @@ public class MemberService {
 			memberRepository.save(member);
 	}
 
-	//내정보 수정
-	public void updateMember(String token, MemberRequest request) {
-		String userId = jwtProvider.getUserIdByToken(token);
-
-		Member member = memberRepository.findById(userId);
-
-		if(member == null)
-			throw new UserDefineException("존재하지 않는 회원입니다");
-
-		request.setPassword(passwordEncoder.encode(request.getPassword()));
-
-		member.updateMember(request);
-
-		memberRepository.save(member);
-
-	}
-
-	//정보 삭제 -> 회원 탈퇴
-	public void deleteMember(String token) {
-		String userId = jwtProvider.getUserIdByToken(token);
-
-		Member member = memberRepository.findById(userId);
-		
-		memberRepository.delete(member);
-		
-	}
-
 	//로그인
-	public String loginMember(SignUpDto signUpDto, HttpServletResponse response) {
-		
+	public String signIn(SignUpDto signUpDto, HttpServletResponse response) {
+
 		Member login = memberRepository.findById(signUpDto.getId());
 
 		//등록되어있지않으면 에러
@@ -95,7 +68,7 @@ public class MemberService {
 		}
 
 
-        Cookie cookie = new Cookie("userId", jwtProvider.createToken(login.getId(), login.getRole()));
+		Cookie cookie = new Cookie("user", jwtProvider.createToken(login.getId(), login.getRole()));
 		cookie.setMaxAge(60*60*24);
 		response.addCookie(cookie);
 
@@ -103,15 +76,60 @@ public class MemberService {
 		//return jwtProvider.createToken(login.getId(), login.getRole());
 	}
 
+	//내정보 수정
+	public void updateMember(HttpServletRequest request, MemberDto memberDto) {
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies){
+			if(cookie.getName().equals("user")){
+				token = cookie.getValue();
+			}
+		}
+		String userId = jwtProvider.getUserIdByToken(token); //아이디로 변환
+
+		Member member = memberRepository.findById(userId);
+
+		if(member == null)
+			throw new UserDefineException("존재하지 않는 회원입니다");
+
+		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+
+		member.updateMember(memberDto);
+
+		memberRepository.save(member);
+
+	}
+
+	//정보 삭제 -> 회원 탈퇴
+	public void deleteMember(HttpServletRequest request) {
+
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies){
+			if(cookie.getName().equals("user")){
+				token = cookie.getValue();
+			}
+		}
+		String userId = jwtProvider.getUserIdByToken(token);
+
+		Member member = memberRepository.findById(userId);
+		
+		memberRepository.delete(member);
+		
+	}
+
+
+/*
+
 	//회원 정보 열람
-	public MemberRequest memberInfo(String token){
+	public MemberDto memberInfo(HttpServletRequest request){
+		Cookie[] cookies = request.getCookies();
+		String token = cookies[0].getValue(); //user라는 쿠키의 값을 꺼내서
 		String userId = jwtProvider.getUserIdByToken(token);
 		Member member = memberRepository.findById(userId);
 
 		if(member == null)
 			throw new UserDefineException("존재하지 않는 회원입니다");
 
-		return MemberRequest.builder()
+		return MemberDto.builder()
 				.id(member.getId())
 				.name(member.getName())
 				.affiliation(member.getAffiliation())
@@ -120,6 +138,7 @@ public class MemberService {
 				.age(member.getAge())
 				.build();
 	}
+*/
 
     public Boolean checkUserID(String userId) {
 		Member member = memberRepository.findById(userId);
@@ -134,21 +153,23 @@ public class MemberService {
 		}
 	}
 
-    public MemberRequest getMemberInfo(HttpServletRequest request) {
+    public MemberDto getMemberInfo(HttpServletRequest request) {
 
-	    Cookie[] cookies = request.getCookies();
-	    String userId = "";
-	    if(cookies != null){
-	        for (Cookie i : cookies){
-	            userId = i.getValue();
-            }
-        }
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies){
+			if(cookie.getName().equals("user")){
+				token = cookie.getValue();
+			}
+		}
+
+	    String userId = jwtProvider.getUserIdByToken(token); //아이디로 변환
+
         Member member = memberRepository.findById(userId);
 
         if(member == null)
             throw new UserDefineException("존재하지 않는 회원입니다");
 
-        return MemberRequest.builder()
+        return MemberDto.builder()
                 .id(member.getId())
                 .name(member.getName())
                 .affiliation(member.getAffiliation())
@@ -157,4 +178,5 @@ public class MemberService {
                 .age(member.getAge())
                 .build();
     }
+
 }

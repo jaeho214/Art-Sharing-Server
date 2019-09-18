@@ -6,23 +6,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ArtRequestDto {
+public class ArtDto {
 
     private Long id; //작품 등록 번호
-    private Date date; //대여 날짜
+
+
+    //private LocalDate date; //대여 날짜
     private String artName; //작품 이름
     private String price; //가격
     private String explanation; //설명
 
     @Builder
-    public ArtRequestDto(Long id, Date date, String artName, String price, String explanation) {
+    public ArtDto(Long id, LocalDateTime date, String artName, String price, String explanation) {
         this.id = id;
-        this.date = date;
+        //this.date = date;
         this.artName = artName;
         this.price = price;
         this.explanation = explanation;
@@ -31,7 +34,7 @@ public class ArtRequestDto {
     public void addArt(Art art) {
 
         this.id = art.getId();
-        this.date = art.getDate();
+        //this.date = art.getRegDate();
         this.artName = art.getArtName();
         this.price = art.getPrice();
         this.explanation = art.getExplanation();
@@ -40,7 +43,7 @@ public class ArtRequestDto {
 
     public Art toEntity() {
         return Art.builder()
-                .date(date)
+                //.regdate(date)
                 .artName(artName)
                 .price(price)
                 .explanation(explanation)

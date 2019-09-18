@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ArtRepository extends JpaRepository<Art, Long>, ArtRepositoryCustom {
 
-	List<Art> findAllByMemberId(String memberId);
-	Art findByMemberIdAndId(String memberId, Long id);
+	List<Art> findAllByMemberId(String userId);
+	Art findByMemberIdAndId(String userId, Long artNo);
 
 }

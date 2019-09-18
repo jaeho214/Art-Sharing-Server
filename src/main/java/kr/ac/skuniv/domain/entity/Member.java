@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import kr.ac.skuniv.domain.dto.MemberRequest;
+import kr.ac.skuniv.domain.dto.MemberDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,7 +47,7 @@ public class Member {
 		this.role = role;
 	}
 	
-	public void updateMember(MemberRequest request) {
+	public void updateMember(MemberDto request) {
 		this.name = request.getName();
 		this.password = request.getPassword();
 		this.sex = request.getSex();

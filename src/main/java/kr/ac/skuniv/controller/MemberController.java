@@ -1,7 +1,7 @@
 package kr.ac.skuniv.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.ac.skuniv.domain.dto.MemberRequest;
+import kr.ac.skuniv.domain.dto.MemberDto;
 import kr.ac.skuniv.domain.dto.SignUpDto;
 import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.service.member.MemberService;
@@ -20,20 +20,20 @@ public class MemberController {
 
     @ApiOperation("고객 회원가입")
     @PostMapping("/client")
-    public void client_signUp(@RequestBody MemberRequest memberRequest) {
-        memberService.signUpMember(memberRequest, MemberRole.CLIENT);
+    public void client_signUp(@RequestBody MemberDto memberDto) {
+        memberService.signUp(memberDto, MemberRole.CLIENT);
     }
 
     @ApiOperation("예술가 회원가입")
     @PostMapping("/artist")
-    public void artist_signUp(@RequestBody MemberRequest memberRequest) {
-        memberService.signUpMember(memberRequest, MemberRole.ARTIST);
+    public void artist_signUp(@RequestBody MemberDto memberDto) {
+        memberService.signUp(memberDto, MemberRole.ARTIST);
     }
 
     @ApiOperation("로그인")
     @PostMapping
     public String login(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
-        return memberService.loginMember(signUpDto, response);
+        return memberService.signIn(signUpDto, response);
     }
 
 //    @ApiOperation("회원 정보 열람")
@@ -44,20 +44,20 @@ public class MemberController {
 
     @ApiOperation("회원 정보 열람")
     @GetMapping
-    public MemberRequest memberInfo(HttpServletRequest request) {
+    public MemberDto getMemberInfo(HttpServletRequest request) {
         return memberService.getMemberInfo(request);
     }
 
     @ApiOperation("회원 정보 수정")
     @PutMapping
-    public void updateInfo(@RequestHeader(name = "Authorization") String token, @RequestBody MemberRequest memberRequest) {
-        memberService.updateMember(token, memberRequest);
+    public void updateMember(HttpServletRequest request, @RequestBody MemberDto memberDto) {
+        memberService.updateMember(request, memberDto);
     }
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping
-    public void removeMember(@RequestHeader(name = "Authorization") String token) {
-        memberService.deleteMember(token);
+    public void removeMember(HttpServletRequest request) {
+        memberService.deleteMember(request);
     }
 
 

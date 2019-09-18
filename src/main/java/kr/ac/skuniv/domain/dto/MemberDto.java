@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberRequest {
+public class MemberDto {
 
 	//이름 / 아이디 / 비밀번호 / 성별 / 나이 / 소속 / 번호 / 개인,작가,기업 구분하는 타입
 	private String name;
@@ -22,7 +22,7 @@ public class MemberRequest {
 	private String role;
 
 	@Builder
-	public MemberRequest(String name, String id, String password, String sex, String age, String affiliation, String phone, String role) {
+	public MemberDto(String name, String id, String password, String sex, String age, String affiliation, String phone, String role) {
 		this.name = name;
 		this.id = id;
 		this.password = password;

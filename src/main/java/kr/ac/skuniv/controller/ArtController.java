@@ -1,11 +1,11 @@
 package kr.ac.skuniv.controller;
 
-import kr.ac.skuniv.domain.dto.ArtRequestDto;
+import kr.ac.skuniv.domain.dto.ArtDto;
 import kr.ac.skuniv.service.ArtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -17,30 +17,30 @@ public class ArtController {
 
     //작품 등록
     @PostMapping("/register")
-    public void artist_register(@RequestHeader(name = "Authorization") String token, @RequestBody ArtRequestDto artRequestDto) {
-        artService.registerArt(token, artRequestDto);
+    public void artist_register(HttpServletRequest request, @RequestBody ArtDto artRequestDto) {
+        artService.registerArt(request, artRequestDto);
     }
 
     //작품 수정
     @PutMapping
-    public void updateInfo(@RequestHeader(name = "Authorization") String token, @RequestBody ArtRequestDto artRequestDto) {
-        artService.updateArt(token, artRequestDto);
+    public void updateInfo(HttpServletRequest request, @RequestBody ArtDto artRequestDto) {
+        artService.updateArt(request, artRequestDto);
     }
 
     //작품 삭제
     @DeleteMapping
-    public void removeMember(@RequestHeader(name = "Authorization") String token, Long id){
-        artService.deleteArt(token, id);
+    public void removeMember(HttpServletRequest request, Long id){
+        artService.deleteArt(request, id);
     }
 
     //작품 리스트 가져오기
-    @GetMapping("/page/{num}")
-    public List<ArtRequestDto> artList(@RequestHeader(name = "Authorization") String token, @PathVariable int pageNum){
-        return artService.artList(token);
+    @GetMapping("/page/{pageNum}")
+    public List<ArtDto> artList(HttpServletRequest request, @PathVariable int pageNum){
+        return artService.artList(request);
     }
 
     @GetMapping("/search/{keyword}")
-    public List<ArtRequestDto> searchArt(@PathVariable String keyword){
+    public List<ArtDto> searchArt(@PathVariable String keyword){
         return artService.searchArt(keyword);
     }
 }

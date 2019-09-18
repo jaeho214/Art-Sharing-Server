@@ -3,6 +3,7 @@ package kr.ac.skuniv.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
