@@ -8,6 +8,8 @@ spring:
     username: jaeho
 #    password: sec031031!
     password: 1q2w3e4r!
+
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,5 +17,17 @@ spring:
     show-sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
   resources:
     add-mappings: true
+
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 215MB
+
+# 파일 저장경로 추가해야 함
+
