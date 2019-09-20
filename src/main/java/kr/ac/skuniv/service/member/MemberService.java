@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Service
 public class MemberService {
@@ -179,4 +180,15 @@ public class MemberService {
                 .build();
     }
 
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies){
+			if(cookie.getName().equals("user")){
+				cookie.setValue(null);
+				cookie.setMaxAge(0);
+			}
+		}
+		logger.info("Logout Successfully!!");
+		response.sendError(HttpServletResponse.SC_OK, "Logout Successfully");
+	}
 }

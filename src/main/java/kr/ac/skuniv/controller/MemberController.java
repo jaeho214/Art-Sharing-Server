@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/artSharing/sign")
@@ -65,6 +66,13 @@ public class MemberController {
     @PostMapping("/check")
     public boolean checkUserId(@RequestBody String userId){
         return memberService.checkUserID(userId);
+    }
+
+
+    @ApiOperation("로그아웃")
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        memberService.logout(request, response);
     }
 
 
