@@ -7,8 +7,11 @@ import kr.ac.skuniv.domain.entity.Rent;
 import kr.ac.skuniv.repository.ArtRepository;
 import kr.ac.skuniv.repository.MemberRepository;
 import kr.ac.skuniv.repository.RentRepository;
+import kr.ac.skuniv.security.JwtProvider;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,32 +22,57 @@ public class RentService {
     private RentRepository rentRepository;
     private MemberRepository memberRepository;
     private ArtRepository artRepository;
+    private JwtProvider jwtProvider;
 
     private List<RentDto> rentDtos = new ArrayList<>();
 
-    public RentService(RentRepository rentRepository, MemberRepository memberRepository, ArtRepository artRepository) {
-                this.rentRepository = rentRepository;
-                this.memberRepository = memberRepository;
-                this.artRepository = artRepository;
+    private String token = "";
+
+    public RentService(RentRepository rentRepository, MemberRepository memberRepository, ArtRepository artRepository, JwtProvider jwtProvider) {
+        this.rentRepository = rentRepository;
+        this.memberRepository = memberRepository;
+        this.artRepository = artRepository;
+        this.jwtProvider = jwtProvider;
+    }
+
+    public void clearList(){
+        //중복된 코드를 없애기 위한 코드
+        //rentDtos를 전역변수로 놓고 계속 비워주면서 작업할 수 있도록 비워주는 메소드 작성
+        rentDtos.clear();
+    }
+
+    public void createRentHistory(HttpServletRequest request, RentDto rentDto) {
+
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("user")){
+                token = cookie.getValue();
             }
+        }
 
-            public void clearList(){
-                //중복된 코드를 없애기 위한 코드
-                //rentDtos를 전역변수로 놓고 계속 비워주면서 작업할 수 있도록 비워주는 메소드 작성
-                rentDtos.clear();
-            }
+        //회원 정보 찾기
+        String member = jwtProvider.getUserIdByToken(token);
+        rentDto.setMember(member);
 
-            public List<RentDto> getArtRentHistory(Long artNo) {
-                List<Rent> rentList = rentRepository.findByArt_Id(artNo);
+        Rent rent = rentDto.toEntity();
 
-                clearList();
+        Art art = artRepository.findById(rentDto.getArtNo()).get();
+        rent.setArt(art);
 
-                for(Rent rent : rentList){
-                    rentDtos.add(
-                            RentDto.builder()
-                                    .artNo(rent.getArt().getId())
-                                    .rentDate(rent.getRentDate())
-                                    .returnDate(rent.getReturnDate())
+        rentRepository.save(rent);
+    }
+
+    public List<RentDto> getArtRentHistory(Long artNo) {
+        List<Rent> rentList = rentRepository.findByArt_Id(artNo);
+
+        clearList();
+
+        for(Rent rent : rentList){
+            rentDtos.add(
+                    RentDto.builder()
+                        .artNo(rent.getArt().getId())
+                        .rentDate(rent.getRentDate())
+                        .returnDate(rent.getReturnDate())
                         .price(rent.getPrice())
                         .member(rent.getMember().getId())
                         .build()
