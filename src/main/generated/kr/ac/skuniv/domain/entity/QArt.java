@@ -24,8 +24,6 @@ public class QArt extends EntityPathBase<Art> {
 
     public final StringPath artName = createString("artName");
 
-    public final DateTimePath<java.util.Date> date = createDateTime("date", java.util.Date.class);
-
     public final StringPath explanation = createString("explanation");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -34,9 +32,11 @@ public class QArt extends EntityPathBase<Art> {
 
     public final StringPath price = createString("price");
 
-    public final ListPath<Reply, QReply> replies = this.<Reply, QReply>createList("replies", Reply.class, QReply.class, PathInits.DIRECT2);
+    public final DatePath<java.time.LocalDate> regDate = createDate("regDate", java.time.LocalDate.class);
 
-    public final StringPath title = createString("title");
+    public final BooleanPath rentCheck = createBoolean("rentCheck");
+
+    public final ListPath<Reply, QReply> replies = this.<Reply, QReply>createList("replies", Reply.class, QReply.class, PathInits.DIRECT2);
 
     public QArt(String variable) {
         this(Art.class, forVariable(variable), INITS);

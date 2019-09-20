@@ -23,28 +23,28 @@ public class RentService {
     private List<RentDto> rentDtos = new ArrayList<>();
 
     public RentService(RentRepository rentRepository, MemberRepository memberRepository, ArtRepository artRepository) {
-        this.rentRepository = rentRepository;
-        this.memberRepository = memberRepository;
-        this.artRepository = artRepository;
-    }
+                this.rentRepository = rentRepository;
+                this.memberRepository = memberRepository;
+                this.artRepository = artRepository;
+            }
 
-    public void clearList(){
-        //중복된 코드를 없애기 위한 코드
-        //rentDtos를 전역변수로 놓고 계속 비워주면서 작업할 수 있도록 비워주는 메소드 작성
-        rentDtos.clear();
-    }
+            public void clearList(){
+                //중복된 코드를 없애기 위한 코드
+                //rentDtos를 전역변수로 놓고 계속 비워주면서 작업할 수 있도록 비워주는 메소드 작성
+                rentDtos.clear();
+            }
 
-    public List<RentDto> getArtRentHistory(Long artNo) {
-        List<Rent> rentList = rentRepository.findByArt_Id(artNo);
+            public List<RentDto> getArtRentHistory(Long artNo) {
+                List<Rent> rentList = rentRepository.findByArt_Id(artNo);
 
-        clearList();
+                clearList();
 
-        for(Rent rent : rentList){
-            rentDtos.add(
-                    RentDto.builder()
-                        .artNo(rent.getArt().getId())
-                        .rentDate(rent.getRentDate())
-                        .returnDate(rent.getReturnDate())
+                for(Rent rent : rentList){
+                    rentDtos.add(
+                            RentDto.builder()
+                                    .artNo(rent.getArt().getId())
+                                    .rentDate(rent.getRentDate())
+                                    .returnDate(rent.getReturnDate())
                         .price(rent.getPrice())
                         .member(rent.getMember().getId())
                         .build()
