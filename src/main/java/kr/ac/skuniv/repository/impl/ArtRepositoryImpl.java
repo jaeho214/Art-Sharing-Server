@@ -101,7 +101,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
                         .regDate(reply.getRegDate())
                         .updateDate(reply.getUpdateDate())
                         .replyNo(reply.getReplyNo())
-                        .member(reply.getMember())
+                        .userId(reply.getMember().getId())
                         .build()
             );
         }
