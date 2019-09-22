@@ -1,6 +1,7 @@
 package kr.ac.skuniv.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.ac.skuniv.domain.dto.ReplyDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +11,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
 public class Reply {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyNo;
 
     private String title;
@@ -32,18 +33,23 @@ public class Reply {
     private Member member;
 
     @CreationTimestamp
-    private Timestamp regDate;
+    private LocalDate regDate;
 
     @UpdateTimestamp
-    private Timestamp updateDate;
+    private LocalDate updateDate;
 
     @Builder
-    public Reply(String title, String content, Art art, Member member, Timestamp regDate, Timestamp updateDate) {
+    public Reply(String title, String content, Art art, Member member, LocalDate regDate, LocalDate updateDate) {
         this.title = title;
         this.content = content;
         this.art = art;
         this.member = member;
         this.regDate = regDate;
         this.updateDate = updateDate;
+    }
+
+    public void updateReply(ReplyDto replyDto){
+        this.title = replyDto.getTitle();
+        this.content = replyDto.getContent();
     }
 }

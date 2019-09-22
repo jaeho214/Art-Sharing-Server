@@ -18,8 +18,7 @@ public class Art {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;   // 작품 등록 번호
-	
-	//private Date date; //대여 날짜
+
 	private String artName; //작품 이름
 	private String price; //하루당 가격
 	private String explanation; //설명
@@ -40,16 +39,17 @@ public class Art {
 //    private List<Rent> rents;
 
 	@Builder
-	public Art(LocalDate date, String artName, String price, String explanation, Member member) {
-		//this.date = date;
+	public Art(String artName, String price, String explanation, boolean rentCheck, LocalDate regDate, Member member, List<Reply> replies) {
 		this.artName = artName;
 		this.price = price;
 		this.explanation = explanation;
+		this.rentCheck = rentCheck;
+		this.regDate = regDate;
 		this.member = member;
+		this.replies = replies;
 	}
 
 	public void updateArt(ArtDto artUpdateDto) {
-		//this.date = artUpdateDto.getDate();
 		this.artName = artUpdateDto.getArtName();
 		this.price = artUpdateDto.getPrice();
 		this.explanation = artUpdateDto.getExplanation();

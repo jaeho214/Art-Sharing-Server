@@ -5,39 +5,41 @@ import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.domain.entity.Reply;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Getter @Setter
+@NoArgsConstructor
 public class ReplyDto {
     private Long replyNo;
     private String title;
     private String content;
-    private Art art;
-    private Member member;
-    private Timestamp regDate;
-    private Timestamp updateDate;
+    private Long artNo;
+    private String userId;
+    private LocalDate regDate;
+    private LocalDate updateDate;
 
 
     @Builder
-    public ReplyDto(Long replyNo, String title, String content, Art art, Member member, Timestamp regDate, Timestamp updateDate) {
+    public ReplyDto(Long replyNo, String title, String content, Long artNo, String userId, LocalDate regDate, LocalDate updateDate) {
         this.replyNo = replyNo;
         this.title = title;
         this.content = content;
-        this.art = art;
-        this.member = member;
+        this.artNo = artNo;
+        this.userId = userId;
         this.regDate = regDate;
         this.updateDate = updateDate;
     }
 
 
-    public Reply toEntity(){
+    public Reply toEntity(Member member, Art art){
         return Reply.builder()
                 .title(this.title)
                 .content(this.content)
-                .art(this.art)
-                .member(this.member)
+                .art(art)
+                .member(member)
                 .regDate(this.regDate)
                 .updateDate(this.updateDate)
                 .build();
