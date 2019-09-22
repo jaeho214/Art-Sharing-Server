@@ -24,8 +24,7 @@ public class Member {
 	//사용자 아이디
 	@Column(unique = true)
 	private String id;
-	
-	//이름  비밀번호 성별 나이 소속 번호 종류
+
 	private String name;
 	private String password;
 	private String sex;
