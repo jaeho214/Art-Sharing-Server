@@ -47,8 +47,13 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
+        String bearerToken = "";
         Cookie[] cookies = request.getCookies();
-        String bearerToken = cookies[0].getValue(); //user라는 쿠키의 값을 꺼내서
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("user")){
+                bearerToken = cookie.getValue();
+            }
+        }
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

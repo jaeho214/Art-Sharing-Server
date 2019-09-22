@@ -29,8 +29,13 @@ public class AuthenticationTokenFilter extends GenericFilterBean {
         log.info("=================Token을 확인하는 Filter 실행================");
 
         try{
+            String token="";
             Cookie[] cookies = getAsHttpRequest(request).getCookies();
-            String token = cookies[0].getValue(); //user라는 쿠키의 값을 꺼내서
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("user")){
+                    token = cookie.getValue();
+                }
+            }
             //String token = jwtProvider.resolveToken(getAsHttpRequest(request));
 
             log.info(getAsHttpRequest(request).getRequestURL().toString());
