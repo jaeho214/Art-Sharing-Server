@@ -28,13 +28,13 @@ public class QReply extends EntityPathBase<Reply> {
 
     public final QMember member;
 
-    public final DateTimePath<java.sql.Timestamp> regDate = createDateTime("regDate", java.sql.Timestamp.class);
+    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> replyNo = createNumber("replyNo", Long.class);
 
     public final StringPath title = createString("title");
 
-    public final DateTimePath<java.sql.Timestamp> updateDate = createDateTime("updateDate", java.sql.Timestamp.class);
+    public final DateTimePath<java.time.LocalDateTime> updateDate = createDateTime("updateDate", java.time.LocalDateTime.class);
 
     public QReply(String variable) {
         this(Reply.class, forVariable(variable), INITS);

@@ -28,13 +28,13 @@ public class QArt extends EntityPathBase<Art> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final BooleanPath isRent = createBoolean("isRent");
+
     public final QMember member;
 
     public final StringPath price = createString("price");
 
-    public final DatePath<java.time.LocalDate> regDate = createDate("regDate", java.time.LocalDate.class);
-
-    public final BooleanPath rentCheck = createBoolean("rentCheck");
+    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
     public final ListPath<Reply, QReply> replies = this.<Reply, QReply>createList("replies", Reply.class, QReply.class, PathInits.DIRECT2);
 
