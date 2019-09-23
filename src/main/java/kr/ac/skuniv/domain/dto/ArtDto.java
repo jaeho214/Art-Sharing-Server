@@ -23,20 +23,20 @@ public class ArtDto {
     private String artName; //작품 이름
     private String price; //하루당 가격
     private String explanation; //설명
-    private LocalDate regDate;
+    private LocalDateTime regDate;
     private String userId;
-    private boolean rentCheck;
+    private boolean isRent = false; // TODO : 대여를 하게 되면 true로 바꿔주기
     private List<ReplyDto> replyList = new ArrayList<>();
 
     @Builder
-    public ArtDto(Long id, String artName, String price, String explanation,LocalDate regDate, String userId, boolean rentCheck, List<ReplyDto> replyList) {
+    public ArtDto(Long id, String artName, String price, String explanation,LocalDateTime regDate, String userId, boolean isRent, List<ReplyDto> replyList) {
         this.id = id;
         this.artName = artName;
         this.price = price;
         this.explanation = explanation;
         this.regDate = regDate;
         this.userId = userId;
-        this.rentCheck = rentCheck;
+        this.isRent = isRent;
         this.replyList = replyList;
     }
 

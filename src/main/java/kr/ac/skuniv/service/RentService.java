@@ -26,7 +26,7 @@ public class RentService {
 
     private List<RentDto> rentDtos = new ArrayList<>();
 
-    private String token = "";
+    private String token = null;
 
     public RentService(RentRepository rentRepository, MemberRepository memberRepository, ArtRepository artRepository, JwtProvider jwtProvider) {
         this.rentRepository = rentRepository;
@@ -51,13 +51,12 @@ public class RentService {
         }
 
         //회원 정보 찾기
-        String member = jwtProvider.getUserIdByToken(token);
-        rentDto.setMember(member);
-
-        Rent rent = rentDto.toEntity();
+        String userId = jwtProvider.getUserIdByToken(token);
+        Member member = memberRepository.findById(userId);
 
         Art art = artRepository.findById(rentDto.getArtNo()).get();
-        rent.setArt(art);
+
+        Rent rent = rentDto.toEntity(member, art);
 
         rentRepository.save(rent);
     }

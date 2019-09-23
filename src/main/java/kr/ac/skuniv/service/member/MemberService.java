@@ -30,7 +30,7 @@ public class MemberService {
 		this.jwtProvider = jwtProvider;
 		this.passwordEncoder = passwordEncoder;
 	}
-	private String token = "";
+	private String token = null;
 
 	/**
 	 * 회원가입
@@ -176,9 +176,11 @@ public class MemberService {
 	 */
 	private String getUserIdByToken(HttpServletRequest request) throws UserDefineException {
 		Cookie[] cookies = request.getCookies();
-		for(Cookie cookie : cookies){
-			if(cookie.getName().equals("user")){
-				token = cookie.getValue();
+		if(cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("user")) {
+					token = cookie.getValue();
+				}
 			}
 		}
 		return jwtProvider.getUserIdByToken(token);

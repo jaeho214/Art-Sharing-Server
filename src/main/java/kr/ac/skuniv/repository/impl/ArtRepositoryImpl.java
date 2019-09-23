@@ -39,7 +39,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     @Override
     public Page<ArtDto> searchArt(String searchKeyword, int pageNum) {
         JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.rentCheck, member.name))
+        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, member.name))
                 .from(art)
                 .join(art.member, member)
                 .where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword)))
@@ -52,7 +52,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     @Override
     public Page<ArtDto> getArtsByUserId(int pageNum, String userId) {
         JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.rentCheck, member.name))
+        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, member.name))
                 .from(art)
                 .join(art.member, member)
                 .where(art.member.id.eq(userId))
@@ -66,7 +66,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     @Override
     public Page<ArtDto> getAllArts(int pageNum) {
         JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.rentCheck, member.name))
+        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, member.name))
                 .from(art)
                 .join(art.member, member)
                 .orderBy(art.id.desc())
@@ -79,7 +79,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     @Override
     public ArtDto getArtDetail(Long artNo) {
         JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.rentCheck, art.explanation, art.regDate, member.name))
+        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, art.explanation, art.regDate, member.name))
                 .from(art)
                 .join(art.member, member)
                 .where(art.id.eq(artNo));

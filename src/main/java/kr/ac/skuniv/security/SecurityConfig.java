@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -44,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     @Override
-    //swagger 페이지로 진입하기 위한 ignoring
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers(AUTH_ARR)
@@ -62,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/artSharing/sign").permitAll()
+                        .anyRequest().permitAll()
                 .and()
                     .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                     .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)

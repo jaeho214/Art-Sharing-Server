@@ -22,7 +22,7 @@ public class ArtController {
     }
 
     @ApiOperation(value = "작품 등록")
-    @PostMapping("/register")
+    @PostMapping
     public void saveArt(HttpServletRequest request, @RequestBody ArtDto artRequestDto) {
         artService.saveArt(request, artRequestDto);
     }

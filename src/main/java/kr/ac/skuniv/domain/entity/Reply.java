@@ -10,8 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -33,13 +32,13 @@ public class Reply {
     private Member member;
 
     @CreationTimestamp
-    private LocalDate regDate;
+    private LocalDateTime regDate;
 
     @UpdateTimestamp
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     @Builder
-    public Reply(String title, String content, Art art, Member member, LocalDate regDate, LocalDate updateDate) {
+    public Reply(String title, String content, Art art, Member member, LocalDateTime regDate, LocalDateTime updateDate) {
         this.title = title;
         this.content = content;
         this.art = art;

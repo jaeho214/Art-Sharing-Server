@@ -33,7 +33,7 @@ public class ArtService {
         this.memberRepository = memberRepository;
     }
 
-    private String token = "";
+    private String token = null;
 
     /**
      * 작품 등록
@@ -211,7 +211,7 @@ public class ArtService {
     /**
      * 댓글 삭제
      * @param request : userId를 조회하기 위한 HttpServletRequest 객체
-     * @param replyNo : 삭제할 댓글의 번호
+     * @param replyNo : 삭제할 댓글의 번호s
      */
     public void deleteReply(HttpServletRequest request, Long replyNo) {
         String userId = getUserIdByToken(request);
@@ -235,9 +235,11 @@ public class ArtService {
      */
     private String getUserIdByToken(HttpServletRequest request) throws UserDefineException {
         Cookie[] cookies = request.getCookies();
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("user")){
-                token = cookie.getValue();
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    token = cookie.getValue();
+                }
             }
         }
         return jwtProvider.getUserIdByToken(token);

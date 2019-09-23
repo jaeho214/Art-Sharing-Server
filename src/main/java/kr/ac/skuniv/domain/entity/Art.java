@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,10 +23,10 @@ public class Art {
 	private String artName; //작품 이름
 	private String price; //하루당 가격
 	private String explanation; //설명
-	private boolean rentCheck; //대여 여부 체크
+	private boolean isRent; //대여 여부 체크
 
 	@CreationTimestamp
-    private LocalDate regDate; //등록일
+    private LocalDateTime regDate; //등록일
 
 	//단방향으로 작가당 작품 여러개
 	@ManyToOne
@@ -39,11 +40,11 @@ public class Art {
 //    private List<Rent> rents;
 
 	@Builder
-	public Art(String artName, String price, String explanation, boolean rentCheck, LocalDate regDate, Member member, List<Reply> replies) {
+	public Art(String artName, String price, String explanation, boolean isRent, LocalDateTime regDate, Member member, List<Reply> replies) {
 		this.artName = artName;
 		this.price = price;
 		this.explanation = explanation;
-		this.rentCheck = rentCheck;
+		this.isRent = isRent;
 		this.regDate = regDate;
 		this.member = member;
 		this.replies = replies;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -18,12 +19,12 @@ public class ReplyDto {
     private String content;
     private Long artNo;
     private String userId;
-    private LocalDate regDate;
-    private LocalDate updateDate;
+    private LocalDateTime regDate;
+    private LocalDateTime updateDate;
 
 
     @Builder
-    public ReplyDto(Long replyNo, String title, String content, Long artNo, String userId, LocalDate regDate, LocalDate updateDate) {
+    public ReplyDto(Long replyNo, String title, String content, Long artNo, String userId, LocalDateTime regDate, LocalDateTime updateDate) {
         this.replyNo = replyNo;
         this.title = title;
         this.content = content;
