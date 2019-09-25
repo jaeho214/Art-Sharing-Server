@@ -55,4 +55,8 @@ public class Art {
 		this.price = artUpdateDto.getPrice();
 		this.explanation = artUpdateDto.getExplanation();
 	}
+
+	public void changeRentStatus(Boolean isRent){
+		this.isRent = isRent;
+	}
 }

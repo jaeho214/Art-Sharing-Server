@@ -1,12 +1,16 @@
 package kr.ac.skuniv.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import kr.ac.skuniv.domain.dto.ArtDto;
 import kr.ac.skuniv.domain.dto.ReplyDto;
+import kr.ac.skuniv.domain.entity.Art;
 import kr.ac.skuniv.service.ArtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -15,16 +19,26 @@ import java.util.List;
 @RequestMapping("artSharing/art")
 public class ArtController {
 
-    ArtService artService;
+    private ArtService artService;
+    private ObjectMapper objectMapper;
 
-    public ArtController(ArtService artService) {
+    public ArtController(ArtService artService, ObjectMapper objectMapper) {
         this.artService = artService;
+        this.objectMapper = objectMapper;
     }
 
-    @ApiOperation(value = "작품 등록")
+//    @ApiOperation(value = "작품 등록")
+//    @PostMapping
+//    public void saveArt(HttpServletRequest request, @RequestBody ArtDto artRequestDto) {
+//        artService.saveArt(request, artRequestDto);
+//    }
+
+    @ApiOperation(value = "작품, 이미지 같이 저장")
     @PostMapping
-    public void saveArt(HttpServletRequest request, @RequestBody ArtDto artRequestDto) {
-        artService.saveArt(request, artRequestDto);
+    public ResponseEntity<Art> saveArt(@RequestPart MultipartFile file, @RequestParam String json) throws Exception {
+        ArtDto artSave = objectMapper.readValue(json, ArtDto.class);
+        Art art = artService.saveArtAndFile(artSave, file);
+        return ResponseEntity.ok(art);
     }
 
     @ApiOperation(value = "작품 정보 수정")
