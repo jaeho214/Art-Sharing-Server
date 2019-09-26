@@ -1,7 +1,7 @@
 package kr.ac.skuniv.service.member;
 
-import kr.ac.skuniv.domain.dto.MemberDto;
-import kr.ac.skuniv.domain.dto.SignUpDto;
+import kr.ac.skuniv.domain.dto.member.MemberDto;
+import kr.ac.skuniv.domain.dto.member.SignUpDto;
 import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.exception.UserDefineException;

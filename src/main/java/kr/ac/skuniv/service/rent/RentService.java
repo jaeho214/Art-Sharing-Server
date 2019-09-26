@@ -1,4 +1,4 @@
-package kr.ac.skuniv.service;
+package kr.ac.skuniv.service.rent;
 
 import kr.ac.skuniv.domain.dto.RentDto;
 import kr.ac.skuniv.domain.entity.Art;

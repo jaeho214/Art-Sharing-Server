@@ -1,5 +1,7 @@
 package kr.ac.skuniv.domain.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import kr.ac.skuniv.config.LocalDateConfig;
 import kr.ac.skuniv.domain.entity.Art;
 import kr.ac.skuniv.domain.entity.Member;
 import kr.ac.skuniv.domain.entity.Rent;
@@ -15,15 +17,16 @@ import java.time.LocalDateTime;
 public class RentDto {
     private Long rentNo;
     private Long artNo;
-    private LocalDateTime rentDate;
+    @JsonDeserialize(using = LocalDateConfig.class)
+    private LocalDate rentDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime returnDate;
+    @JsonDeserialize(using = LocalDateConfig.class)
+    private LocalDate returnDate;
     private String price;
     private String member;
 
     @Builder
-    public RentDto(Long rentNo, Long artNo, LocalDateTime rentDate, LocalDateTime returnDate, String price, String member) {
+    public RentDto(Long rentNo, Long artNo, LocalDate rentDate, LocalDate returnDate, String price, String member) {
         this.rentNo = rentNo;
         this.artNo = artNo;
         this.rentDate = rentDate;

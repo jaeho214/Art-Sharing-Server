@@ -1,4 +1,4 @@
-package kr.ac.skuniv.domain.dto;
+package kr.ac.skuniv.domain.dto.member;
 
 import kr.ac.skuniv.domain.entity.Member;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberDto {
 
-	//이름 / 아이디 / 비밀번호 / 성별 / 나이 / 소속 / 번호 / 개인,작가,기업 구분하는 타입
 	private String name;
 	private String id;
 	private String password;
