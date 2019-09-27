@@ -8,6 +8,7 @@ import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -24,11 +25,11 @@ public class MemberUpdateService {
 
     /**
      * 회원정보 수정
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @param memberUpdateDto : 수정할 데이터
      */
-    public void updateMember(HttpServletRequest request, MemberUpdateDto memberUpdateDto) {
-        String userId = commonService.getUserIdByToken(request);
+    public void updateMember(Cookie cookie, MemberUpdateDto memberUpdateDto) {
+        String userId = commonService.getUserIdByCookie(cookie);
 
         Member member = memberRepository.findById(userId);
 

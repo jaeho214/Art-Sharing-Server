@@ -34,7 +34,7 @@ public class SignInService {
      * @param signInDto : 로그인할 데이터 (ID, PASSWORD)
      * @param response : 로그인 정보를 cookie에 담기 위한 객체
      */
-    public void signIn(SignInDto signInDto, HttpServletResponse response) {
+    public String signIn(SignInDto signInDto, HttpServletResponse response) {
 
         Member member = memberRepository.findById(signInDto.getId());
 
@@ -50,20 +50,20 @@ public class SignInService {
         Cookie cookie = new Cookie("user", jwtProvider.createToken(member.getId(), member.getRole()));
         cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);
+
+        return jwtProvider.createToken(member.getId(), member.getRole());
     }
 
     /**
      * 로그아웃
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param response : 로그인 정보를 cookie에서 삭제하기 위한 객체
      */
-    public void logout(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("user")){
-                cookie.setValue(null);
-                cookie.setMaxAge(0);
-            }
-        }
+    public void logout(HttpServletResponse response){
+        Cookie cookie = new Cookie("user" , null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         logger.info("Logout Successfully!!");
     }
 }

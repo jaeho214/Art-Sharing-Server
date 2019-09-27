@@ -7,6 +7,7 @@ import kr.ac.skuniv.artsharing.repository.ReplyRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -22,11 +23,11 @@ public class ReplyUpdateService {
 
     /**
      * 댓글 수정
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @param replyDto : 댓글을 수정할 데이터
      */
-    public void updateReply(HttpServletRequest request, ReplyDto replyDto) {
-        String userId = artCommon.getUserIdByToken(request);
+    public void updateReply(Cookie cookie, ReplyDto replyDto) {
+        String userId = artCommon.getUserIdByCookie(cookie);
 
         Reply reply = replyRepository.findById(replyDto.getReplyNo())
                 .orElseThrow(() -> new UserDefineException("해당 댓글을 찾을 수 없습니다."));

@@ -6,7 +6,7 @@ import kr.ac.skuniv.artsharing.repository.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
 
 @Service
 public class ArtDeleteService {
@@ -22,11 +22,11 @@ public class ArtDeleteService {
 
     /**
      * 작품 삭제
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @param id : 수정할 작품의 번호
      */
-    public Art deleteArt(HttpServletRequest request, Long id) {
-        String userId = commonService.getUserIdByToken(request);
+    public Art deleteArt(Cookie cookie, Long id) {
+        String userId = commonService.getUserIdByCookie(cookie);
 
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");

@@ -6,6 +6,7 @@ import kr.ac.skuniv.artsharing.repository.MemberRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -20,10 +21,10 @@ public class MemberDeleteService {
 
     /**
      * 회원 탈퇴
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      */
-    public void deleteMember(HttpServletRequest request) {
-        String userId = commonService.getUserIdByToken(request);
+    public void deleteMember(Cookie cookie) {
+        String userId = commonService.getUserIdByCookie(cookie);
 
         Member member = memberRepository.findById(userId);
 

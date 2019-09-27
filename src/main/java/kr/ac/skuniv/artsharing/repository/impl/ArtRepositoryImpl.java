@@ -43,7 +43,8 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
         jpaQuery = setQuery(jpaQuery);
         jpaQuery.where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword)))
                 .orderBy(art.id.desc())
-                ;
+                .offset(--pageNum * DEFAULT_LIMIT_SIZE)
+                .limit(DEFAULT_LIMIT_SIZE);
         List<ArtGetDto> arts = jpaQuery.fetch();
         return new PageImpl<>(arts, PageRequest.of(pageNum, DEFAULT_LIMIT_SIZE, new Sort(Sort.Direction.DESC, "id")),arts.size());
     }
@@ -102,6 +103,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
         }
         return new ArtGetDetailDto().setReply(replyDtos);
     }
+
 
     private JPAQuery<ArtGetDto> setQuery(JPAQuery<ArtGetDto> query){
         return query.select(Projections.constructor(ArtGetDto.class, art.id, art.artName, art.price, art.member.name, art.isRent, artImage.imageUrl))

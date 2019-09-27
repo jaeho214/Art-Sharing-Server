@@ -1,6 +1,7 @@
 package kr.ac.skuniv.artsharing.security;
 
 import io.jsonwebtoken.*;
+import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import kr.ac.skuniv.artsharing.service.member.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,7 @@ public class JwtProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username, String role) {
+    public String createToken(String username, MemberRole role) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", role);
 

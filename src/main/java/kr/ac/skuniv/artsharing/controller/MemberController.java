@@ -3,18 +3,17 @@ package kr.ac.skuniv.artsharing.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import kr.ac.skuniv.artsharing.domain.dto.member.MemberGetDto;
-import kr.ac.skuniv.artsharing.domain.dto.member.MemberUpdateDto;
-import kr.ac.skuniv.artsharing.domain.dto.member.SignUpDto;
-import kr.ac.skuniv.artsharing.domain.dto.member.SignInDto;
+import kr.ac.skuniv.artsharing.domain.dto.member.*;
 import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import kr.ac.skuniv.artsharing.service.member.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/artSharing/sign")
@@ -57,31 +56,45 @@ public class MemberController {
             @ApiImplicitParam(name = "signInDto", value="로그인할 회원의 정보", required = true, dataType = "SignInDto")
     })
     @PostMapping
-    public ResponseEntity login(@RequestBody SignInDto signInDto, HttpServletResponse response) {
-        signInService.signIn(signInDto,response);
-        return ResponseEntity.ok().build();
+    public String signIn(@RequestBody SignInDto signInDto, HttpServletResponse response) {
+        return signInService.signIn(signInDto,response);
     }
 
     @ApiOperation(value = "회원 정보 열람")
     @GetMapping
-    public MemberGetDto getMemberInfo(HttpServletRequest request) {
-        return memberGetService.getMemberInfo(request);
+    public MemberGetDto getMemberInfo(@CookieValue(value = "user", required = false)Cookie cookie) {
+        return memberGetService.getMemberInfo(cookie);
     }
+
+    @ApiOperation(value = "작가 리스트 열람")
+    @GetMapping("/artistList")
+    public List<ArtistGetDto> getArtistList(){
+        return memberGetService.getArtistList();
+    }
+
 
     @ApiOperation(value = "회원 정보 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "memberUpdateDto", value="수정할 데이터", required = true, dataType = "MemberUpdateDto")
     })
     @PutMapping
-    public ResponseEntity updateMember(HttpServletRequest request, @RequestBody MemberUpdateDto memberUpdateDto) {
-        memberUpdateService.updateMember(request, memberUpdateDto);
+    public ResponseEntity updateMember(@CookieValue(value = "user", required = false)Cookie cookie,
+                                       @RequestBody MemberUpdateDto memberUpdateDto) {
+        memberUpdateService.updateMember(cookie, memberUpdateDto);
         return ResponseEntity.ok().build();
     }
 
+//    @ApiOperation(value = "회원 탈퇴")
+//    @DeleteMapping
+//    public ResponseEntity removeMember(HttpServletRequest request) {
+//        memberDeleteService.deleteMember(request);
+//        return ResponseEntity.ok().build();
+//    }
+
     @ApiOperation(value = "회원 탈퇴")
     @DeleteMapping
-    public ResponseEntity removeMember(HttpServletRequest request) {
-        memberDeleteService.deleteMember(request);
+    public ResponseEntity removeMember(@CookieValue(value = "user", required = false)Cookie cookie) {
+        memberDeleteService.deleteMember(cookie);
         return ResponseEntity.ok().build();
     }
 
@@ -98,8 +111,8 @@ public class MemberController {
 
     @ApiOperation(value = "로그아웃")
     @GetMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request){
-        signInService.logout(request);
+    public ResponseEntity logout(HttpServletResponse response){
+        signInService.logout(response);
         return ResponseEntity.ok().build();
     }
 

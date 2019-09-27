@@ -1,12 +1,9 @@
 package kr.ac.skuniv.artsharing.domain.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import kr.ac.skuniv.artsharing.domain.dto.member.MemberUpdateDto;
+import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,11 +28,13 @@ public class Member {
 	private String age;
 	private String affiliation; // 소속
 	private String phone;
-	private String role; // 역할(작가 or 고객)
+
+	@Enumerated(value = EnumType.STRING)
+	private MemberRole role; // 역할(작가 or 고객)
 
 	
 	@Builder
-	public Member(String name, String id, String password, String sex, String age, String affiliation, String phone, String role) {
+	public Member(String name, String id, String password, String sex, String age, String affiliation, String phone, MemberRole role) {
 		this.name = name;
 		this.id = id;
 		this.password = password;
@@ -53,7 +52,6 @@ public class Member {
 		this.age = memberUpdateDto.getAge();
 		this.affiliation = memberUpdateDto.getAffiliation();
 		this.phone = memberUpdateDto.getPhone();
-		this.role = memberUpdateDto.getRole();
 	}
 	
 }

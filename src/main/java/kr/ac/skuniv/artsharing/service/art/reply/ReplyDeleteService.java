@@ -6,6 +6,7 @@ import kr.ac.skuniv.artsharing.repository.ReplyRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -21,11 +22,11 @@ public class ReplyDeleteService {
 
     /**
      * 댓글 삭제
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @param replyNo : 삭제할 댓글의 번호s
      */
-    public void deleteReply(HttpServletRequest request, Long replyNo) {
-        String userId = artCommon.getUserIdByToken(request);
+    public void deleteReply(Cookie cookie, Long replyNo) {
+        String userId = artCommon.getUserIdByCookie(cookie);
 
         Reply reply = replyRepository.findById(replyNo)
                 .orElseThrow(() -> new UserDefineException("해당 댓글을 찾을 수 없습니다."));

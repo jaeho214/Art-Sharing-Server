@@ -12,6 +12,7 @@ import kr.ac.skuniv.artsharing.repository.RentRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
@@ -30,8 +31,8 @@ public class RentSaveService {
         this.memberRepository = memberRepository;
     }
 
-    public Rent saveRent(HttpServletRequest request, RentSaveDto rentSaveDto, Long artNo) {
-        String userId = commonService.getUserIdByToken(request);
+    public Rent saveRent(Cookie cookie, RentSaveDto rentSaveDto, Long artNo) {
+        String userId = commonService.getUserIdByCookie(cookie);
 
         Member member = memberRepository.findById(userId);
         Art art = artRepository.findById(artNo).get();
@@ -47,8 +48,8 @@ public class RentSaveService {
         return rentRepository.save(rent);
     }
 
-    public Rent returnArt(HttpServletRequest request, Long artNo) {
-        String userId = commonService.getUserIdByToken(request);
+    public Rent returnArt(Cookie cookie, Long artNo) {
+        String userId = commonService.getUserIdByCookie(cookie);
 
         Art art = artRepository.findById(artNo)
                 .orElseThrow( () -> new UserDefineException("해당 작품이 없습니다."));

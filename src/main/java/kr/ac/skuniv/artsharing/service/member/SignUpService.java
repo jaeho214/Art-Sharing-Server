@@ -33,10 +33,10 @@ public class SignUpService {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
 
         if(roles.equals(MemberRole.CLIENT)){
-            member.setRole("CLIENT");
+            member.setRole(MemberRole.CLIENT);
         }
         else if(roles.equals(MemberRole.ARTIST)){
-            member.setRole("ARTIST");
+            member.setRole(MemberRole.ARTIST);
         }
 
         return memberRepository.save(member);

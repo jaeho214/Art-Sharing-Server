@@ -1,6 +1,7 @@
 package kr.ac.skuniv.artsharing.service.member;
 
 import kr.ac.skuniv.artsharing.domain.entity.Member;
+import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import kr.ac.skuniv.artsharing.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +37,7 @@ public class  UserDetailsServiceImpl implements UserDetailsService {
         return new User(member.getId(),member.getPassword(),makeGrantedAuthority(member.getRole()));
     }
 
-    private List<? extends GrantedAuthority> makeGrantedAuthority(String role) {
+    private List<? extends GrantedAuthority> makeGrantedAuthority(MemberRole role) {
         List<GrantedAuthority> list = new ArrayList<>();
         list.add(new SimpleGrantedAuthority("ROLE_" + role));
         return list;

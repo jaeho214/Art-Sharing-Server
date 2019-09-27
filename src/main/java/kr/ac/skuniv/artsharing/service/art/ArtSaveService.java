@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -43,12 +44,12 @@ public class ArtSaveService {
 
     /**
      * 작품 등록
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @param artSaveDto : 등록될 작품의 데이터
      */
-    public void saveArt(HttpServletRequest request, ArtSaveDto artSaveDto) {
-        String userId = commonService.getUserIdByToken(request);
-        String userRole = commonService.getUserRoleByToken(request);
+    public void saveArt(Cookie cookie, ArtSaveDto artSaveDto) {
+        String userId = commonService.getUserIdByCookie(cookie);
+        String userRole = commonService.getUserRoleByCookie(cookie);
 
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");
@@ -62,9 +63,9 @@ public class ArtSaveService {
         }
     }
 
-    public Art saveArtAndFile(HttpServletRequest request, ArtSaveDto artSaveDto, MultipartFile file) throws IOException {
-        String userId = commonService.getUserIdByToken(request);
-        String userRole = commonService.getUserRoleByToken(request);
+    public Art saveArtAndFile(Cookie cookie, ArtSaveDto artSaveDto, MultipartFile file) throws IOException {
+        String userId = commonService.getUserIdByCookie(cookie);
+        String userRole = commonService.getUserRoleByCookie(cookie);
 
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");

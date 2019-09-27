@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 
 @RestController
@@ -59,27 +59,28 @@ public class ArtController {
 
     @ApiOperation(value = "작품, 이미지 같이 저장")
     @PostMapping
-    public ResponseEntity<Art> saveArt(HttpServletRequest request,
+    public ResponseEntity<Art> saveArt(@CookieValue(value = "user", required = false) Cookie cookie,
                                        @RequestPart MultipartFile imageFile,
                                        @RequestParam String json) throws Exception {
         ArtSaveDto artSave = objectMapper.readValue(json, ArtSaveDto.class);
-        Art art = artSaveService.saveArtAndFile(request, artSave, imageFile);
+        Art art = artSaveService.saveArtAndFile(cookie, artSave, imageFile);
         return ResponseEntity.ok(art);
     }
 
     @ApiOperation(value = "작품 정보 수정")
     @PutMapping
-    public ResponseEntity<Art> updateArt(HttpServletRequest request,
+    public ResponseEntity<Art> updateArt(@CookieValue(value = "user", required = false) Cookie cookie,
                           @RequestPart(required = false) MultipartFile imageFile,
                           @RequestParam String json) throws IOException {
         ArtUpdateDto artUpdate = objectMapper.readValue(json, ArtUpdateDto.class);
-        return ResponseEntity.ok(artUpdateService.updateArt(imageFile, request, artUpdate));
+        return ResponseEntity.ok(artUpdateService.updateArt(imageFile, cookie, artUpdate));
     }
 
     @ApiOperation(value = "작품 삭제")
     @DeleteMapping("/{artNo}")
-    public ResponseEntity<Art> deleteArt(HttpServletRequest request,@PathVariable Long artNo){
-        return ResponseEntity.ok(artDeleteService.deleteArt(request, artNo));
+    public ResponseEntity<Art> deleteArt(@CookieValue(value = "user", required = false) Cookie cookie,
+                                         @PathVariable Long artNo){
+        return ResponseEntity.ok(artDeleteService.deleteArt(cookie, artNo));
     }
 
     @ApiOperation(value = "모든 작품 조회")
@@ -88,10 +89,18 @@ public class ArtController {
         return artGetService.getAllArts(pageNum);
     }
 
-    @ApiOperation(value = "작가의 작품 조회")
+    @ApiOperation(value = "로그인 되어 있는 작가가 자기 작품 조회")
     @GetMapping("/{pageNum}")
-    public Page<ArtGetDto> getArtsByUserId(HttpServletRequest request, @PathVariable int pageNum){
-        return artGetService.getArtsByUserId(request,pageNum);
+    public Page<ArtGetDto> getArtsByUserId(@CookieValue(value = "user", required = false) Cookie cookie,
+                                           @PathVariable int pageNum){
+        return artGetService.getArtsByUserId(cookie,pageNum);
+    }
+
+    @ApiOperation(value = "작가 보기에서 작가 이름을 클릭하여 작가의 작품 조회")
+    @GetMapping("/{artistId}/{pageNum}")
+    public Page<ArtGetDto> getArtsByArtist(@PathVariable String artistId,
+                                           @PathVariable int pageNum){
+        return artGetService.getArtsByArtist(artistId, pageNum);
     }
 
     @ApiOperation(value = "작품 상세보기")
@@ -102,26 +111,30 @@ public class ArtController {
 
     @ApiOperation(value = "작품명 및 작가이름 검색")
     @GetMapping("/search/{keyword}/{pageNum}")
-    public Page<ArtGetDto> searchArt(@PathVariable String keyword, @PathVariable int pageNum){
+    public Page<ArtGetDto> searchArt(@PathVariable String keyword,
+                                     @PathVariable int pageNum){
         return artGetService.searchArt(keyword, pageNum);
     }
 
     @ApiOperation(value = "댓글 등록")
     @PostMapping("/reply")
-    public void saveReply(HttpServletRequest request, @RequestBody ReplyDto replyDto){
-        replySaveService.saveReply(request, replyDto);
+    public void saveReply(@CookieValue(value = "user", required = false) Cookie cookie,
+                          @RequestBody ReplyDto replyDto){
+        replySaveService.saveReply(cookie, replyDto);
     }
 
     @ApiOperation(value = "댓글 수정")
     @PutMapping("/reply")
-    public void updateReply(HttpServletRequest request, @RequestBody ReplyDto replyDto){
-        replyUpdateService.updateReply(request, replyDto);
+    public void updateReply(@CookieValue(value = "user", required = false) Cookie cookie,
+                            @RequestBody ReplyDto replyDto){
+        replyUpdateService.updateReply(cookie, replyDto);
     }
 
     @ApiOperation(value = "댓글 삭제")
     @DeleteMapping("/reply/{replyNo}")
-    public void deleteReply(HttpServletRequest request, @PathVariable Long replyNo){
-        replyDeleteService.deleteReply(request, replyNo);
+    public void deleteReply(@CookieValue(value = "user", required = false) Cookie cookie,
+                            @PathVariable Long replyNo){
+        replyDeleteService.deleteReply(cookie, replyNo);
     }
 
     @ApiOperation(value = "사진 상세보기")

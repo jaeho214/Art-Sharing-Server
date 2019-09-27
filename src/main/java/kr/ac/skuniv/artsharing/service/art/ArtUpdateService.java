@@ -10,6 +10,7 @@ import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -31,11 +32,11 @@ public class ArtUpdateService {
 
     /**
      * 작품 수정
-     * @param request : userId를 조회하기 위한 HttpServletRequest 객체
+     * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @param artUpdateDto : 작품을 수정할 데이터
      */
-    public Art updateArt(MultipartFile imageFile, HttpServletRequest request, ArtUpdateDto artUpdateDto) throws IOException {
-        String userId = commonService.getUserIdByToken(request);
+    public Art updateArt(MultipartFile imageFile, Cookie cookie, ArtUpdateDto artUpdateDto) throws IOException {
+        String userId = commonService.getUserIdByCookie(cookie);
 
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");

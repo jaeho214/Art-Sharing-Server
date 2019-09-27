@@ -1,6 +1,7 @@
 package kr.ac.skuniv.artsharing.domain.dto.member;
 
 import kr.ac.skuniv.artsharing.domain.entity.Member;
+import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import lombok.*;
 
 @Getter @Setter
@@ -15,7 +16,7 @@ public class SignUpDto {
 	private String age;
 	private String affiliation;
 	private String phone;
-	private String role;
+	private MemberRole role;
 
 
 	public Member toEntity() {

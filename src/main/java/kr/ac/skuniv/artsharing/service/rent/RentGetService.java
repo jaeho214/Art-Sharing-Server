@@ -8,6 +8,7 @@ import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -21,9 +22,9 @@ public class RentGetService {
         this.commonService = commonService;
     }
 
-    public Page<RentGetDto> getArtRentHistory(HttpServletRequest request, Long artNo, int pageNum) {
-        String userId = commonService.getUserIdByToken(request);
-        String userRole = commonService.getUserRoleByToken(request);
+    public Page<RentGetDto> getArtRentHistory(Cookie cookie, Long artNo, int pageNum) {
+        String userId = commonService.getUserIdByCookie(cookie);
+        String userRole = commonService.getUserRoleByCookie(cookie);
 
         if(!userRole.equals(MemberRole.ARTIST)){
             throw new UserDefineException("작품의 대여목록을 열람할 권한이 없습니다.");
@@ -37,9 +38,9 @@ public class RentGetService {
         return rentPage;
     }
 
-    public Page<RentGetDto> getMemberRentHistory(HttpServletRequest request, int pageNum) {
-        String userId = commonService.getUserIdByToken(request);
-        String userRole = commonService.getUserRoleByToken(request);
+    public Page<RentGetDto> getMemberRentHistory(Cookie cookie, int pageNum) {
+        String userId = commonService.getUserIdByCookie(cookie);
+        String userRole = commonService.getUserRoleByCookie(cookie);
 
         if(!userRole.equals(MemberRole.CLIENT)){ // FIXME : 고객만 대여할 수 있다고 한다면 냅두고 작가도 대여할 수 있다면 삭제
             throw new UserDefineException("작가는 대여할 수 없습니다.");
