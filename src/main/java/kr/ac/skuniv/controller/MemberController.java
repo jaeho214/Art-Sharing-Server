@@ -1,17 +1,15 @@
 package kr.ac.skuniv.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.ac.skuniv.domain.dto.MemberDto;
-import kr.ac.skuniv.domain.dto.SignUpDto;
+import kr.ac.skuniv.domain.dto.member.MemberDto;
+import kr.ac.skuniv.domain.dto.member.SignUpDto;
 import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.service.member.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/artSharing/sign")

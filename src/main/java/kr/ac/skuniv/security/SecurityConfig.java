@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/artSharing/sign/artist")
                 .antMatchers("/artSharing/sign/admin")
                 .antMatchers(HttpMethod.POST,"/artSharing/sign")
+                .antMatchers("/artSharing/art/**")
         ;
     }
 
@@ -60,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/artSharing/sign").permitAll()
-                        .anyRequest().permitAll()
+                        .antMatchers("/artSharing/art").permitAll()
+                        .anyRequest().anonymous()
                 .and()
                     .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                     .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)

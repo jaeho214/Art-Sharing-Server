@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 //TODO : 대여DB 생각해보자, DB설계를 다시 제대로 해보자
 
@@ -19,12 +18,13 @@ public class Rent {
     private Long rentNo;
 
     @CreationTimestamp
-    private LocalDateTime rentDate; // 대여날짜는 대여를 하고 대여 기록이 DB에 삽입될 때 생성
+    private LocalDate rentDate; // 대여날짜는 대여를 하고 대여 기록이 DB에 삽입될 때 생성
 
-    private LocalDateTime returnDate; // 반납날짜는 프론트에서 request로 날짜를 받아서
+    private LocalDate returnDate; // 반납날짜는 프론트에서 request로 날짜를 받아서
     private String price; // 대여 비용
 
     @ManyToOne
+    @JoinColumn(name = "renter")
     private Member member; //대여인
 
     @ManyToOne
@@ -32,7 +32,7 @@ public class Rent {
     private Art art;
 
     @Builder
-    public Rent(Long rentNo, LocalDateTime rentDate, LocalDateTime returnDate, String price, Member member, Art art) {
+    public Rent(Long rentNo, LocalDate rentDate, LocalDate returnDate, String price, Member member, Art art) {
         this.rentNo = rentNo;
         this.rentDate = rentDate;
         this.returnDate = returnDate;
