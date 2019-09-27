@@ -5,8 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Builder
 @Getter @Setter
-@Builder @AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 @Entity
 public class ArtImage {
 
@@ -32,6 +33,12 @@ public class ArtImage {
     @JoinColumn(name = "Art_no")
     private Art art;
 
-
+    public void updateArtImage(ArtImage artImage){
+        this.imageName = artImage.imageName;
+        this.imageType = artImage.imageType;
+        this.imagePath = artImage.imagePath;
+        this.imageSize = artImage.imageSize;
+        this.imageUrl = artImage.imageUrl;
+    }
 
 }

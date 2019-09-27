@@ -21,7 +21,7 @@ public class ArtSaveDto {
 
 //    @JsonDeserialize(using = LocalDateConfig.class)
 //    private LocalDate regDate;
-    private String userId;
+//    private String userId;
     private boolean isRent = false; // TODO : 대여를 하게 되면 true로 바꿔주기
 //    private List<ReplyDto> replyList = new ArrayList<>();
 //    private String imageUrl;

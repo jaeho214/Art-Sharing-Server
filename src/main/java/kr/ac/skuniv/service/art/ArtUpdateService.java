@@ -3,10 +3,10 @@ package kr.ac.skuniv.service.art;
 import kr.ac.skuniv.domain.dto.art.ArtUpdateDto;
 import kr.ac.skuniv.domain.entity.Art;
 import kr.ac.skuniv.domain.entity.ArtImage;
-import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.ArtImageRepository;
 import kr.ac.skuniv.repository.ArtRepository;
+import kr.ac.skuniv.service.CommonService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,14 +16,14 @@ import java.io.IOException;
 @Service
 public class ArtUpdateService {
 
-    private final ArtCommonService artCommon;
+    private final CommonService commonService;
     private final ArtRepository artRepository;
     private final ArtImageRepository artImageRepository;
     private final ArtSaveService artSaveService;
 
-    public ArtUpdateService(ArtCommonService artCommon, ArtRepository artRepository,
+    public ArtUpdateService(CommonService commonService, ArtRepository artRepository,
                             ArtImageRepository artImageRepository, ArtSaveService artSaveService) {
-        this.artCommon = artCommon;
+        this.commonService = commonService;
         this.artRepository = artRepository;
         this.artImageRepository = artImageRepository;
         this.artSaveService = artSaveService;
@@ -35,8 +35,7 @@ public class ArtUpdateService {
      * @param artUpdateDto : 작품을 수정할 데이터
      */
     public Art updateArt(MultipartFile imageFile, HttpServletRequest request, ArtUpdateDto artUpdateDto) throws IOException {
-        String userId = artCommon.getUserIdByToken(request);
-        String userRole = artCommon.getUserRoleByToken(request);
+        String userId = commonService.getUserIdByToken(request);
 
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");

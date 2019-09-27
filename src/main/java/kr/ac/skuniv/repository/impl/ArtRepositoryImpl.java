@@ -2,8 +2,9 @@ package kr.ac.skuniv.repository.impl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
-import kr.ac.skuniv.domain.dto.ArtDto;
 import kr.ac.skuniv.domain.dto.ReplyDto;
+import kr.ac.skuniv.domain.dto.art.ArtGetDetailDto;
+import kr.ac.skuniv.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.domain.entity.*;
 import kr.ac.skuniv.repository.custom.ArtRepositoryCustom;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
 
     private QArt art = QArt.art;
     private QReply reply = QReply.reply;
-    private QMember member = QMember.member;
+    private QArtImage artImage = QArtImage.artImage;
 
     public ArtRepositoryImpl() {
         super(Art.class);
@@ -37,54 +38,48 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     private final int DEFAULT_LIMIT_SIZE = 9;
 
     @Override
-    public Page<ArtDto> searchArt(String searchKeyword, int pageNum) {
-        JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, member.name))
-                .from(art)
-                .join(art.member, member)
-                .where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword)))
+    public Page<ArtGetDto> searchArt(String searchKeyword, int pageNum) {
+        JPAQuery<ArtGetDto> jpaQuery = new JPAQuery<>(entityManager);
+        jpaQuery = setQuery(jpaQuery);
+        jpaQuery.where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword)))
                 .orderBy(art.id.desc())
                 ;
-        List<ArtDto> arts = jpaQuery.fetch();
+        List<ArtGetDto> arts = jpaQuery.fetch();
         return new PageImpl<>(arts, PageRequest.of(pageNum, DEFAULT_LIMIT_SIZE, new Sort(Sort.Direction.DESC, "id")),arts.size());
     }
 
     @Override
-    public Page<ArtDto> getArtsByUserId(int pageNum, String userId) {
-        JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, member.name))
-                .from(art)
-                .join(art.member, member)
-                .where(art.member.id.eq(userId))
+    public Page<ArtGetDto> getArtsByUserId(int pageNum, String userId) {
+        JPAQuery<ArtGetDto> jpaQuery = new JPAQuery<>(entityManager);
+        jpaQuery = setQuery(jpaQuery);
+        jpaQuery.where(art.member.id.eq(userId))
                 .orderBy(art.id.desc())
                 .offset(--pageNum * DEFAULT_LIMIT_SIZE)
                 .limit(DEFAULT_LIMIT_SIZE);
-        List<ArtDto> arts = jpaQuery.fetch();
+        List<ArtGetDto> arts = jpaQuery.fetch();
         return new PageImpl<>(arts, PageRequest.of(pageNum, DEFAULT_LIMIT_SIZE, new Sort(Sort.Direction.DESC, "id")),arts.size());
     }
 
     @Override
-    public Page<ArtDto> getAllArts(int pageNum) {
-        JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, member.name))
-                .from(art)
-                .join(art.member, member)
-                .orderBy(art.id.desc())
+    public Page<ArtGetDto> getAllArts(int pageNum) {
+        JPAQuery<ArtGetDto> jpaQuery = new JPAQuery<>(entityManager);
+        jpaQuery = setQuery(jpaQuery);
+        jpaQuery.orderBy(art.id.desc())
                 .offset(--pageNum * DEFAULT_LIMIT_SIZE)
                 .limit(DEFAULT_LIMIT_SIZE);
-        List<ArtDto> arts = jpaQuery.fetch();
+        List<ArtGetDto> arts = jpaQuery.fetch();
         return new PageImpl<>(arts, PageRequest.of(pageNum, DEFAULT_LIMIT_SIZE, new Sort(Sort.Direction.DESC, "id")),arts.size());
     }
 
     @Override
-    public ArtDto getArtDetail(Long artNo) {
-        JPAQuery<ArtDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtDto.class, art.id, art.artName, art.price, art.isRent, art.explanation, art.regDate, member.name))
-                .from(art)
-                .join(art.member, member)
+    public ArtGetDetailDto getArtDetail(Long artNo) {
+        JPAQuery<ArtGetDetailDto> jpaQuery = new JPAQuery<>(entityManager);
+        jpaQuery.select(Projections.constructor(ArtGetDetailDto.class, art.id, art.artName, art.price, art.isRent, art.explanation, art.regDate, art.member.name, artImage.imageUrl))
+                .from(artImage)
+                .join(artImage.art, art)
                 .where(art.id.eq(artNo));
 
-        ArtDto artDto = jpaQuery.fetchOne();
+        ArtGetDetailDto artDto = jpaQuery.fetchOne();
 
         List<Reply> replies = jpaQuery
                 .join(art.replies, reply)
@@ -105,8 +100,12 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
                         .build()
             );
         }
+        return new ArtGetDetailDto().setReply(replyDtos);
+    }
 
-
-        return new ArtDto().setReply(replyDtos);
+    private JPAQuery<ArtGetDto> setQuery(JPAQuery<ArtGetDto> query){
+        return query.select(Projections.constructor(ArtGetDto.class, art.id, art.artName, art.price, art.member.name, art.isRent, artImage.imageUrl))
+                .from(artImage)
+                .join(artImage.art, art);
     }
 }

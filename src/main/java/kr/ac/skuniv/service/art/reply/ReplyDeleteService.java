@@ -3,7 +3,7 @@ package kr.ac.skuniv.service.art.reply;
 import kr.ac.skuniv.domain.entity.Reply;
 import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.ReplyRepository;
-import kr.ac.skuniv.service.art.ArtCommonService;
+import kr.ac.skuniv.service.CommonService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class ReplyDeleteService {
 
-    private final ArtCommonService artCommon;
+    private final CommonService artCommon;
     private final ReplyRepository replyRepository;
 
-    public ReplyDeleteService(ArtCommonService artCommon, ReplyRepository replyRepository) {
+    public ReplyDeleteService(CommonService artCommon, ReplyRepository replyRepository) {
         this.artCommon = artCommon;
         this.replyRepository = replyRepository;
     }

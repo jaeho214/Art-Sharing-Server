@@ -8,7 +8,7 @@ import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.ArtRepository;
 import kr.ac.skuniv.repository.MemberRepository;
 import kr.ac.skuniv.repository.ReplyRepository;
-import kr.ac.skuniv.service.art.ArtCommonService;
+import kr.ac.skuniv.service.CommonService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class ReplySaveService {
 
-    private final ArtCommonService artCommon;
+    private final CommonService artCommon;
     private final MemberRepository memberRepository;
     private final ArtRepository artRepository;
     private final ReplyRepository replyRepository;
 
-    public ReplySaveService(ArtCommonService artCommon, MemberRepository memberRepository, ArtRepository artRepository, ReplyRepository replyRepository) {
+    public ReplySaveService(CommonService artCommon, MemberRepository memberRepository, ArtRepository artRepository, ReplyRepository replyRepository) {
         this.artCommon = artCommon;
         this.memberRepository = memberRepository;
         this.artRepository = artRepository;

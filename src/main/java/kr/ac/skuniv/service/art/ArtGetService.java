@@ -7,6 +7,7 @@ import kr.ac.skuniv.domain.roles.MemberRole;
 import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.ArtImageRepository;
 import kr.ac.skuniv.repository.ArtRepository;
+import kr.ac.skuniv.service.CommonService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.apache.commons.io.IOUtils;
@@ -20,12 +21,12 @@ import java.io.InputStream;
 @Service
 public class ArtGetService {
 
-    private final ArtCommonService artCommon;
+    private final CommonService commonService;
     private final ArtRepository artRepository;
     private final ArtImageRepository artImageRepository;
 
-    public ArtGetService(ArtCommonService artCommon, ArtRepository artRepository, ArtImageRepository artImageRepository) {
-        this.artCommon = artCommon;
+    public ArtGetService(CommonService commonService, ArtRepository artRepository, ArtImageRepository artImageRepository) {
+        this.commonService = commonService;
         this.artRepository = artRepository;
         this.artImageRepository = artImageRepository;
     }
@@ -64,8 +65,8 @@ public class ArtGetService {
      */
     public Page<ArtGetDto> getArtsByUserId(HttpServletRequest request, int pageNum) {
         //작가의 작품 리스트 가져오기
-        String userId = artCommon.getUserIdByToken(request);
-        String userRole = artCommon.getUserRoleByToken(request);
+        String userId = commonService.getUserIdByToken(request);
+        String userRole = commonService.getUserRoleByToken(request);
 
         if(userId == null) {
             throw new UserDefineException("로그인이 필요합니다.");

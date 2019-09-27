@@ -1,4 +1,4 @@
-package kr.ac.skuniv.service.art;
+package kr.ac.skuniv.service;
 
 import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.security.JwtProvider;
@@ -8,12 +8,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-public class ArtCommonService {
+public class CommonService {
 
     private final JwtProvider jwtProvider;
     private String token = "";
 
-    public ArtCommonService(JwtProvider jwtProvider) {
+    public CommonService(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
     }
 

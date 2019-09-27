@@ -1,6 +1,7 @@
 package kr.ac.skuniv.domain.entity;
 
-import kr.ac.skuniv.domain.dto.ArtDto;
+import kr.ac.skuniv.domain.dto.art.ArtGetDetailDto;
+import kr.ac.skuniv.domain.dto.art.ArtUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,10 +23,12 @@ public class Art {
 	private String artName; //작품 이름
 	private String price; //하루당 가격
 	private String explanation; //설명
-	private boolean isRent; //대여 여부 체크
+
+	@Column(nullable = false)
+	private boolean isRent = false; //대여 여부 체크
 
 	@CreationTimestamp
-    private LocalDateTime regDate; //등록일
+    private LocalDate regDate; //등록일
 
 	//단방향으로 작가당 작품 여러개
 	@ManyToOne
@@ -40,7 +42,7 @@ public class Art {
 //    private List<Rent> rents;
 
 	@Builder
-	public Art(String artName, String price, String explanation, boolean isRent, LocalDateTime regDate, Member member, List<Reply> replies) {
+	public Art(String artName, String price, String explanation, boolean isRent, LocalDate regDate, Member member, List<Reply> replies) {
 		this.artName = artName;
 		this.price = price;
 		this.explanation = explanation;
@@ -50,7 +52,7 @@ public class Art {
 		this.replies = replies;
 	}
 
-	public void updateArt(ArtDto artUpdateDto) {
+	public void updateArt(ArtUpdateDto artUpdateDto) {
 		this.artName = artUpdateDto.getArtName();
 		this.price = artUpdateDto.getPrice();
 		this.explanation = artUpdateDto.getExplanation();

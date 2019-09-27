@@ -1,6 +1,5 @@
 package kr.ac.skuniv.service.art;
 
-import kr.ac.skuniv.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.domain.dto.art.ArtSaveDto;
 import kr.ac.skuniv.domain.entity.Art;
 import kr.ac.skuniv.domain.entity.ArtImage;
@@ -9,6 +8,7 @@ import kr.ac.skuniv.exception.UserDefineException;
 import kr.ac.skuniv.repository.ArtImageRepository;
 import kr.ac.skuniv.repository.ArtRepository;
 import kr.ac.skuniv.repository.MemberRepository;
+import kr.ac.skuniv.service.CommonService;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,15 +26,15 @@ public class ArtSaveService {
 
     private static final String IMAGE_PATH = "resources.image-locations";
 
-    private final ArtCommonService artCommon;
+    private final CommonService commonService;
     private final ArtRepository artRepository;
     private final MemberRepository memberRepository;
     private final ArtImageRepository artImageRepository;
     private Environment environment;
 
-    public ArtSaveService(ArtCommonService artCommon, ArtRepository artRepository, MemberRepository memberRepository,
+    public ArtSaveService(CommonService commonService, ArtRepository artRepository, MemberRepository memberRepository,
                           ArtImageRepository artImageRepository, Environment environment) {
-        this.artCommon = artCommon;
+        this.commonService = commonService;
         this.artRepository = artRepository;
         this.memberRepository = memberRepository;
         this.artImageRepository = artImageRepository;
@@ -47,14 +47,14 @@ public class ArtSaveService {
      * @param artSaveDto : 등록될 작품의 데이터
      */
     public void saveArt(HttpServletRequest request, ArtSaveDto artSaveDto) {
-        String userId = artCommon.getUserIdByToken(request);
-        String userRole = artCommon.getUserRoleByToken(request);
+        String userId = commonService.getUserIdByToken(request);
+        String userRole = commonService.getUserRoleByToken(request);
 
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");
 
         if(userRole.equals(MemberRole.ARTIST)){
-            artSaveDto.setUserId(userId);
+            //artSaveDto.setUserId(userId);
             Art art = artSaveDto.toEntity(memberRepository.findById(userId));
             artRepository.save(art);
         }else{
@@ -62,14 +62,23 @@ public class ArtSaveService {
         }
     }
 
-    public Art saveArtAndFile(ArtSaveDto artSaveDto, MultipartFile file) throws IOException {
+    public Art saveArtAndFile(HttpServletRequest request, ArtSaveDto artSaveDto, MultipartFile file) throws IOException {
+        String userId = commonService.getUserIdByToken(request);
+        String userRole = commonService.getUserRoleByToken(request);
+
+        if(userId == null)
+            throw new UserDefineException("로그인이 필요합니다.");
+
+        if(userRole.equals(MemberRole.CLIENT)){
+            throw new UserDefineException("작품을 등록할 권한이 없습니다.");
+        }
+
         Art art = Art.builder()
                 .artName(artSaveDto.getArtName())
                 .explanation(artSaveDto.getExplanation())
                 .price(artSaveDto.getPrice())
                 .isRent(false)
-                //.regDate(artSaveDto.getRegDate())
-                .member(memberRepository.findById(artSaveDto.getUserId()))
+                .member(memberRepository.findById(userId))
                 .build();
 
         artRepository.save(art);
