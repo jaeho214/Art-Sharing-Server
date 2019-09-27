@@ -1,36 +1,53 @@
 package kr.ac.skuniv.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.ac.skuniv.domain.dto.RentDto;
-import kr.ac.skuniv.service.RentService;
+import kr.ac.skuniv.domain.dto.rent.RentGetDto;
+import kr.ac.skuniv.domain.dto.rent.RentSaveDto;
+import kr.ac.skuniv.domain.entity.Rent;
+import kr.ac.skuniv.service.rent.RentGetService;
+import kr.ac.skuniv.service.rent.RentSaveService;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/artSharing/rent")
 public class RentController {
 
-    private RentService rentService;
+    private RentGetService rentGetService;
+    private RentSaveService rentSaveService;
 
-    public RentController(RentService rentService) {
-        this.rentService = rentService;
+    public RentController(RentGetService rentGetService, RentSaveService rentSaveService) {
+        this.rentGetService = rentGetService;
+        this.rentSaveService = rentSaveService;
     }
 
-    @GetMapping("/{artNo}")
-    @ApiOperation(value = "작품의 대여기록 조회")
-    public List<RentDto> getArtRentHistory(@PathVariable Long artNo) {
-        return rentService.getArtRentHistory(artNo);
+    @ApiOperation(value = "대여 신청")
+    @PostMapping("/{artNo}")
+    public ResponseEntity<Rent> saveRent(HttpServletRequest request, @RequestBody RentSaveDto rentSaveDto, @PathVariable Long artNo){
+        return ResponseEntity.ok(rentSaveService.saveRent(request, rentSaveDto, artNo));
     }
 
-    @GetMapping("/{userId}")
-    @ApiOperation(value = "회원의 대여기록 조회")
-    public List<RentDto> getMemberRentHistory(@PathVariable String userId) {
-        return rentService.getMemberRentHistory(userId);
+    @ApiOperation(value = "현재 로그인한 작가의 작품을 대여한 대여목록 조회")
+    @GetMapping("/{artNo}/{pageNum}")
+    public Page<RentGetDto> getArtRentHistory(HttpServletRequest request, @PathVariable Long artNo,@PathVariable int pageNum) {
+        return rentGetService.getArtRentHistory(request, artNo, pageNum);
     }
 
-    @PostMapping
-    public void postRent(@RequestBody RentDto rentDto){
-        rentService.postRent(rentDto);
+    @ApiOperation(value = "현재 로그인한 고객이 대여한 대여목록 조회")
+    @GetMapping("/{pageNum}")
+    public Page<RentGetDto> getMemberRentHistory(HttpServletRequest request, @PathVariable int pageNum) {
+        return rentGetService.getMemberRentHistory(request, pageNum);
     }
+
+    @ApiOperation(value = "반납 신청")
+    @GetMapping("/return/{artNo}")
+    public ResponseEntity<Rent> returnArt(HttpServletRequest request, @PathVariable Long artNo){
+        return ResponseEntity.ok(rentSaveService.returnArt(request,artNo));
+    }
+
+
 }
