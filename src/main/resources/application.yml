@@ -18,16 +18,13 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
-
-  resources:
-    add-mappings: true
-
-
   servlet:
     multipart:
       enabled: true
-      max-file-size: 200MB
-      max-request-size: 215MB
+      max-file-size: 1MB
+      max-request-size: 1MB
 
-# 파일 저장경로 추가해야 함
+resources:
+  image-locations : C:\artSharing\
+  image-url : 127.0.0.1:8080
 
