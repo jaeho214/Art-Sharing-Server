@@ -1,6 +1,6 @@
 package kr.ac.skuniv.artsharing.service.art.reply;
 
-import kr.ac.skuniv.artsharing.domain.dto.ReplyDto;
+import kr.ac.skuniv.artsharing.domain.dto.reply.ReplySaveDto;
 import kr.ac.skuniv.artsharing.domain.entity.Art;
 import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.entity.Reply;
@@ -12,7 +12,6 @@ import kr.ac.skuniv.artsharing.service.CommonService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class ReplySaveService {
@@ -32,19 +31,19 @@ public class ReplySaveService {
     /**
      * 댓글 저장
      * @param cookie : userId를 조회하기 위한 Cookie 객체
-     * @param replyDto : 저장할 댓글의 데이터
+     * @param replySaveDto : 저장할 댓글의 데이터
      */
-    public void saveReply(Cookie cookie, ReplyDto replyDto) {
+    public void saveReply(Cookie cookie, ReplySaveDto replySaveDto) {
         String userId = artCommon.getUserIdByCookie(cookie);
 
         Member member = memberRepository.findById(userId);
-        Art art = artRepository.findById(replyDto.getArtNo()).get();
+        Art art = artRepository.findById(replySaveDto.getArtNo()).get();
 
         if(member == null || art == null){
             throw new UserDefineException("댓글을 저장할 수 없습니다.");
         }
 
-        Reply reply = replyDto.toEntity(member, art);
+        Reply reply = replySaveDto.toEntity(member, art);
 
         replyRepository.save(reply);
     }

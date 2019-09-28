@@ -51,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/artSharing/sign/admin")
                 .antMatchers(HttpMethod.POST,"/artSharing/sign")
                 .antMatchers("/artSharing/art/**")
+                .antMatchers("/artSharing/sign/**")
+                .antMatchers("/artSharing/rent/**")
         ;
     }
 

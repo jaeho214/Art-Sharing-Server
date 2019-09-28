@@ -84,13 +84,6 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-//    @ApiOperation(value = "회원 탈퇴")
-//    @DeleteMapping
-//    public ResponseEntity removeMember(HttpServletRequest request) {
-//        memberDeleteService.deleteMember(request);
-//        return ResponseEntity.ok().build();
-//    }
-
     @ApiOperation(value = "회원 탈퇴")
     @DeleteMapping
     public ResponseEntity removeMember(@CookieValue(value = "user", required = false)Cookie cookie) {

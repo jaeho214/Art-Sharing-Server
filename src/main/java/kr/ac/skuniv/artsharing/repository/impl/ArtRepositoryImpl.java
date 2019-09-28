@@ -2,10 +2,12 @@ package kr.ac.skuniv.artsharing.repository.impl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
-import kr.ac.skuniv.artsharing.domain.dto.ReplyDto;
+import kr.ac.skuniv.artsharing.domain.dto.reply.ReplyGetDto;
+import kr.ac.skuniv.artsharing.domain.dto.reply.ReplySaveDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.entity.*;
+import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import kr.ac.skuniv.artsharing.repository.custom.ArtRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -41,7 +43,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     public Page<ArtGetDto> searchArt(String searchKeyword, int pageNum) {
         JPAQuery<ArtGetDto> jpaQuery = new JPAQuery<>(entityManager);
         jpaQuery = setQuery(jpaQuery);
-        jpaQuery.where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword)))
+        jpaQuery.where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword).and(art.member.role.eq(MemberRole.ARTIST))))
                 .orderBy(art.id.desc())
                 .offset(--pageNum * DEFAULT_LIMIT_SIZE)
                 .limit(DEFAULT_LIMIT_SIZE);
@@ -83,25 +85,27 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
         ArtGetDetailDto artDto = jpaQuery.fetchOne();
 
         List<Reply> replies = jpaQuery
-                .join(art.replies, reply)
+                .join(artImage.art.replies, reply)
                 .transform(groupBy(art.id).as(list(reply))) //art.id 끼리 묶어서 reply 를 가져온다
                 .get(artNo); //art.id 가 artNo 와 같은 걸 가져온다
 
-        List<ReplyDto> replyDtos = new ArrayList<>();
+        List<ReplyGetDto> replyGetDtos = new ArrayList<>();
 
-        for(Reply reply : replies){
-            replyDtos.add(
-                    ReplyDto.builder()
-                        .title(reply.getTitle())
-                        .content(reply.getContent())
-                        .regDate(reply.getRegDate())
-                        .updateDate(reply.getUpdateDate())
-                        .replyNo(reply.getReplyNo())
-                        .userId(reply.getMember().getId())
-                        .build()
-            );
+        if(replies != null) {
+            for (Reply reply : replies) {
+                replyGetDtos.add(
+                        ReplyGetDto.builder()
+                                .title(reply.getTitle())
+                                .content(reply.getContent())
+                                .regDate(reply.getRegDate())
+                                .updateDate(reply.getUpdateDate())
+                                .replyNo(reply.getReplyNo())
+                                .userId(reply.getMember().getId())
+                                .build()
+                );
+            }
         }
-        return new ArtGetDetailDto().setReply(replyDtos);
+        return artDto.setReply(replyGetDtos);
     }
 
 

@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/mydata?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    url: jdbc:mysql://jaehodb.cmokv5cfhdtd.us-east-2.rds.amazonaws.com:3306/art-sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/art_sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://jaehodb.cmokv5cfhdtd.us-east-2.rds.amazonaws.com:3306/art-sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 
 #    username: hongyj
-    username: jaeho
+    username: jpa_user
 #    password: sec031031!
-    password: 1q2w3e4r!
+    password: jpa_user
 
 
   jpa:

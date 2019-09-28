@@ -33,7 +33,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath phone = createString("phone");
 
-    public final StringPath role = createString("role");
+    public final EnumPath<kr.ac.skuniv.artsharing.domain.roles.MemberRole> role = createEnum("role", kr.ac.skuniv.artsharing.domain.roles.MemberRole.class);
 
     public final StringPath sex = createString("sex");
 

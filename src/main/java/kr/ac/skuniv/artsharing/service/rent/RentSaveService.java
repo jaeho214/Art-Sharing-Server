@@ -71,32 +71,11 @@ public class RentSaveService {
 
         rentRepository.save(rent);
 
-        art.changeRentStatus(false); // 반납여부 false 로 바꿈
+        art.changeRentStatus(false); // 대여여부 false 로 바꿈
 
         artRepository.save(art);
 
         return rent;
     }
-
-//    public void createRentHistory(HttpServletRequest request, RentSaveDto rentSaveDto) {
-//
-//        Cookie[] cookies = request.getCookies();
-//        for(Cookie cookie : cookies){
-//            if(cookie.getName().equals("user")){
-//                token = cookie.getValue();
-//            }
-//        }
-//
-//        //회원 정보 찾기
-//        String userId = jwtProvider.getUserIdByToken(token);
-//        Member member = memberRepository.findById(userId);
-//
-//        Art art = artRepository.findById(rentSaveDto.getArtNo()).get();
-//
-//        Rent rent = rentSaveDto.toEntity(member, art);
-//
-//        rentRepository.save(rent);
-//    }
-
 
 }

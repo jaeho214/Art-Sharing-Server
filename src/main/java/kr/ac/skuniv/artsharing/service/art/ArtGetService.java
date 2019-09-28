@@ -73,7 +73,7 @@ public class ArtGetService {
             throw new UserDefineException("로그인이 필요합니다.");
         }
 
-        if(!userRole.equals(MemberRole.ARTIST)){
+        if(!userRole.equals(MemberRole.ARTIST.name())){
             throw new UserDefineException("일반 고객은 작품을 조회할 수 없습니다.");
         }
 
@@ -99,7 +99,7 @@ public class ArtGetService {
      */
     public Page<ArtGetDto> searchArt(String keyword, int pageNum) {
         //검색
-        return artRepository.searchArt(keyword,pageNum);
+        return artRepository.searchArt(keyword, pageNum);
     }
 
     /**

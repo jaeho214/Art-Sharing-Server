@@ -31,16 +31,24 @@ public class RentRepositoryImpl extends QuerydslRepositorySupport implements Ren
 
     @Override
     public RentGetDto findRecentRent(Long artNo) {
-        JPAQuery<RentGetDto> jpaQuery = new JPAQuery<>(entityManager);
+        JPAQuery<Rent> jpaQuery = new JPAQuery<>(entityManager);
         jpaQuery.select(rent)
                 .from(rent)
                 .where(rent.art.id.eq(artNo))
                 .orderBy(rent.rentNo.desc())
-                .limit(1);
+                ;
 
-        RentGetDto rent = jpaQuery.fetchOne();
+        List<Rent> rentList = jpaQuery.fetch();
+        Rent rent = rentList.get(0);
 
-        return rent;
+        return RentGetDto.builder()
+                .artNo(rent.getArt().getId())
+                .price(rent.getPrice())
+                .member(rent.getMember().getId())
+                .rentDate(rent.getRentDate())
+                .returnDate(rent.getReturnDate())
+                .rentNo(rent.getRentNo())
+                .build();
     }
 
     @Override

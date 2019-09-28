@@ -1,7 +1,7 @@
 package kr.ac.skuniv.artsharing.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.ac.skuniv.artsharing.domain.dto.ReplyDto;
+import kr.ac.skuniv.artsharing.domain.dto.reply.ReplyUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,8 +47,8 @@ public class Reply {
         this.updateDate = updateDate;
     }
 
-    public void updateReply(ReplyDto replyDto){
-        this.title = replyDto.getTitle();
-        this.content = replyDto.getContent();
+    public void updateReply(ReplyUpdateDto replyUpdateDto){
+        this.title = replyUpdateDto.getTitle();
+        this.content = replyUpdateDto.getContent();
     }
 }

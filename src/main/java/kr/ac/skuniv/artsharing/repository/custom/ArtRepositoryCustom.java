@@ -2,6 +2,7 @@ package kr.ac.skuniv.artsharing.repository.custom;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
+import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import org.springframework.data.domain.Page;
 
 public interface ArtRepositoryCustom {

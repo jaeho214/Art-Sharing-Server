@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.domain.dto;
+package kr.ac.skuniv.artsharing.domain.dto.reply;
 
 import kr.ac.skuniv.artsharing.domain.entity.Art;
 import kr.ac.skuniv.artsharing.domain.entity.Member;
@@ -12,25 +12,25 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
-public class ReplyDto {
-    private Long replyNo;
+public class ReplySaveDto {
+    //private Long replyNo;
     private String title;
     private String content;
     private Long artNo;
-    private String userId;
-    private LocalDateTime regDate;
-    private LocalDateTime updateDate;
+    //private String userId;
+    //private LocalDateTime regDate;
+    //private LocalDateTime updateDate;
 
 
     @Builder
-    public ReplyDto(Long replyNo, String title, String content, Long artNo, String userId, LocalDateTime regDate, LocalDateTime updateDate) {
-        this.replyNo = replyNo;
+    public ReplySaveDto(Long replyNo, String title, String content, Long artNo, String userId, LocalDateTime regDate, LocalDateTime updateDate) {
+        //this.replyNo = replyNo;
         this.title = title;
         this.content = content;
         this.artNo = artNo;
-        this.userId = userId;
-        this.regDate = regDate;
-        this.updateDate = updateDate;
+        //this.userId = userId;
+        //this.regDate = regDate;
+        //this.updateDate = updateDate;
     }
 
 
@@ -40,8 +40,8 @@ public class ReplyDto {
                 .content(this.content)
                 .art(art)
                 .member(member)
-                .regDate(this.regDate)
-                .updateDate(this.updateDate)
+                //.regDate(this.regDate)
+                //.updateDate(this.updateDate)
                 .build();
     }
 }

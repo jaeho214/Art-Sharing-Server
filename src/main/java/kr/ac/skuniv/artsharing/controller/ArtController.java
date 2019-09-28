@@ -2,11 +2,12 @@ package kr.ac.skuniv.artsharing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
-import kr.ac.skuniv.artsharing.domain.dto.ReplyDto;
+import kr.ac.skuniv.artsharing.domain.dto.reply.ReplySaveDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtSaveDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtUpdateDto;
+import kr.ac.skuniv.artsharing.domain.dto.reply.ReplyUpdateDto;
 import kr.ac.skuniv.artsharing.domain.entity.Art;
 import kr.ac.skuniv.artsharing.service.art.ArtDeleteService;
 import kr.ac.skuniv.artsharing.service.art.ArtGetService;
@@ -119,15 +120,15 @@ public class ArtController {
     @ApiOperation(value = "댓글 등록")
     @PostMapping("/reply")
     public void saveReply(@CookieValue(value = "user", required = false) Cookie cookie,
-                          @RequestBody ReplyDto replyDto){
-        replySaveService.saveReply(cookie, replyDto);
+                          @RequestBody ReplySaveDto replySaveDto){
+        replySaveService.saveReply(cookie, replySaveDto);
     }
 
     @ApiOperation(value = "댓글 수정")
     @PutMapping("/reply")
     public void updateReply(@CookieValue(value = "user", required = false) Cookie cookie,
-                            @RequestBody ReplyDto replyDto){
-        replyUpdateService.updateReply(cookie, replyDto);
+                            @RequestBody ReplyUpdateDto replyUpdateDto){
+        replyUpdateService.updateReply(cookie, replyUpdateDto);
     }
 
     @ApiOperation(value = "댓글 삭제")

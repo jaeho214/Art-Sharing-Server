@@ -26,7 +26,7 @@ public class RentGetService {
         String userId = commonService.getUserIdByCookie(cookie);
         String userRole = commonService.getUserRoleByCookie(cookie);
 
-        if(!userRole.equals(MemberRole.ARTIST)){
+        if(!userRole.equals(MemberRole.ARTIST.name())){
             throw new UserDefineException("작품의 대여목록을 열람할 권한이 없습니다.");
         }
         Page<RentGetDto> rentPage = rentRepository.findRentByArt(userId, artNo, pageNum);
@@ -42,7 +42,7 @@ public class RentGetService {
         String userId = commonService.getUserIdByCookie(cookie);
         String userRole = commonService.getUserRoleByCookie(cookie);
 
-        if(!userRole.equals(MemberRole.CLIENT)){ // FIXME : 고객만 대여할 수 있다고 한다면 냅두고 작가도 대여할 수 있다면 삭제
+        if(!userRole.equals(MemberRole.CLIENT.name())){ // FIXME : 고객만 대여할 수 있다고 한다면 냅두고 작가도 대여할 수 있다면 삭제
             throw new UserDefineException("작가는 대여할 수 없습니다.");
         }
 

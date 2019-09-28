@@ -39,7 +39,7 @@ public class  UserDetailsServiceImpl implements UserDetailsService {
 
     private List<? extends GrantedAuthority> makeGrantedAuthority(MemberRole role) {
         List<GrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority("ROLE_" + role));
+        list.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
         return list;
     }
 

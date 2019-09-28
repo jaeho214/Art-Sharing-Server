@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class SignInService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MemberService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SignUpService.class);
 
     final private MemberRepository memberRepository;
     final private JwtProvider jwtProvider;
@@ -49,6 +49,7 @@ public class SignInService {
 
         Cookie cookie = new Cookie("user", jwtProvider.createToken(member.getId(), member.getRole()));
         cookie.setMaxAge(60*60*24);
+        cookie.setPath("/");
         response.addCookie(cookie);
 
         return jwtProvider.createToken(member.getId(), member.getRole());

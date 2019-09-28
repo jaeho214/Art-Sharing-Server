@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignUpService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MemberService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SignUpService.class);
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;

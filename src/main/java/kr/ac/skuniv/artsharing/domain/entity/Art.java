@@ -34,7 +34,7 @@ public class Art {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reply> replies;
 
 //	@OneToMany

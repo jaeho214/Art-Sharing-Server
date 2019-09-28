@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -54,7 +53,7 @@ public class ArtSaveService {
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");
 
-        if(userRole.equals(MemberRole.ARTIST)){
+        if(userRole.equals(MemberRole.ARTIST.name())){
             //artSaveDto.setUserId(userId);
             Art art = artSaveDto.toEntity(memberRepository.findById(userId));
             artRepository.save(art);
@@ -70,7 +69,8 @@ public class ArtSaveService {
         if(userId == null)
             throw new UserDefineException("로그인이 필요합니다.");
 
-        if(userRole.equals(MemberRole.CLIENT)){
+        System.out.println(MemberRole.ARTIST);
+        if(!(userRole.equals(MemberRole.ARTIST.name()))){
             throw new UserDefineException("작품을 등록할 권한이 없습니다.");
         }
 
