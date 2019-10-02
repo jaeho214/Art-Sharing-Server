@@ -32,6 +32,11 @@ public class ArtGetService {
         this.artImageRepository = artImageRepository;
     }
 
+    /**
+     * 이미지를 가져오는 메소드
+     * @param artNo : 작품 번호
+     * @return : 작품의 바이트
+     */
     public byte[] getImageResource(Long artNo) {
         ArtImage artImage = artImageRepository.findByArt(artRepository.findById(artNo).get()).get();
         byte[] result = null;

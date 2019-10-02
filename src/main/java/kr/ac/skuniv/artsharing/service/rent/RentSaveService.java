@@ -31,6 +31,13 @@ public class RentSaveService {
         this.memberRepository = memberRepository;
     }
 
+    /**
+     * 작품 대여
+     * @param cookie : 대여인 정보
+     * @param rentSaveDto : 대여할 기간 및 비용 등의 데이터
+     * @param artNo : 대여할 작품 번호
+     * @return : Rent 객체
+     */
     public Rent saveRent(Cookie cookie, RentSaveDto rentSaveDto, Long artNo) {
         String userId = commonService.getUserIdByCookie(cookie);
 
@@ -48,6 +55,12 @@ public class RentSaveService {
         return rentRepository.save(rent);
     }
 
+    /**
+     * 작품 반납
+     * @param cookie : 반납할 사용자의 정보
+     * @param artNo : 작품 번호
+     * @return : Rent 객체
+     */
     public Rent returnArt(Cookie cookie, Long artNo) {
         String userId = commonService.getUserIdByCookie(cookie);
 

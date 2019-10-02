@@ -16,6 +16,11 @@ public class CommonService {
         this.jwtProvider = jwtProvider;
     }
 
+    /**
+     * 고객의 아이디를 얻어내는 메소드
+     * @param cookie : 고객 정보가 담긴 토큰이 있는 쿠키
+     * @return : 사용자 아이디 String
+     */
     public String getUserIdByCookie(Cookie cookie){
         if(cookie == null){
             throw new UserDefineException("로그인을 하세요!!");
@@ -24,6 +29,11 @@ public class CommonService {
         return jwtProvider.getUserIdByToken(token);
     }
 
+    /**
+     * 고객의 권한을 얻어내는 메소드
+     * @param cookie : 고객 정보가 담긴 토큰이 있는 쿠키
+     * @return : 권한 String
+     */
     public String getUserRoleByCookie(Cookie cookie){
         if(cookie == null){
             throw new UserDefineException("로그인을 하세요!!");

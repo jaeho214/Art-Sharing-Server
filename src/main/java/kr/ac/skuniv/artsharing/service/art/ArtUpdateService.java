@@ -56,6 +56,13 @@ public class ArtUpdateService {
         return artRepository.save(art);
     }
 
+
+    /**
+     * 작품의 이미지를 수정하는 메소드
+     * @param imageFile : 수정할 이미지 파일
+     * @param artNo : 수정할 작품 번호
+     * @throws IOException
+     */
     private void updateArtImage(MultipartFile imageFile, Long artNo) throws IOException {
         Art art = artRepository.findById(artNo).get();
         ArtImage artImage = artImageRepository.findByArt(art).get();

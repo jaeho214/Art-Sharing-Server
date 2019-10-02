@@ -22,6 +22,13 @@ public class RentGetService {
         this.commonService = commonService;
     }
 
+    /**
+     * 작가가 본인의 작품의 대여기록을 조회
+     * @param cookie : 사용자 정보
+     * @param artNo : 작품 번호
+     * @param pageNum : 페이지 번호
+     * @return : 대여 기록
+     */
     public Page<RentGetDto> getArtRentHistory(Cookie cookie, Long artNo, int pageNum) {
         String userId = commonService.getUserIdByCookie(cookie);
         String userRole = commonService.getUserRoleByCookie(cookie);
@@ -38,6 +45,12 @@ public class RentGetService {
         return rentPage;
     }
 
+    /**
+     * 고객이 자신의 대여기록을 조회
+     * @param cookie : 고객 정보
+     * @param pageNum : 페이지 번호
+     * @return : 대여 기록
+     */
     public Page<RentGetDto> getMemberRentHistory(Cookie cookie, int pageNum) {
         String userId = commonService.getUserIdByCookie(cookie);
         String userRole = commonService.getUserRoleByCookie(cookie);

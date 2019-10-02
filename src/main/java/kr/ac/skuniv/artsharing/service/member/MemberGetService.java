@@ -49,6 +49,10 @@ public class MemberGetService {
                 .build();
     }
 
+    /**
+     * 모든 작품 조회
+     * @return : 작품 리스트
+     */
     public List<ArtistGetDto> getArtistList() {
         List<Member> memberList = memberRepository.findByRole(MemberRole.ARTIST);
         List<ArtistGetDto> artistList = new ArrayList<>();
