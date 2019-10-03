@@ -26,11 +26,12 @@ public class SignUpService {
     /**
      * 회원가입
      * @param signUpDto : 회원가입을 진행할 데이터
-     * @param roles : 고객과 작가를 구분하기 위한 권한
      */
-    public Member signUp(SignUpDto signUpDto, MemberRole roles) {
+    public Member signUp(SignUpDto signUpDto) {
         Member member = signUpDto.toEntity();
         member.setPassword(passwordEncoder.encode(member.getPassword()));
+
+        MemberRole roles = signUpDto.getRole();
 
         if(roles.equals(MemberRole.CLIENT)){
             member.setRole(MemberRole.CLIENT);

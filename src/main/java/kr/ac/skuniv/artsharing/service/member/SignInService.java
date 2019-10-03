@@ -52,7 +52,7 @@ public class SignInService {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return jwtProvider.createToken(member.getId(), member.getRole());
+        return member.getName();
     }
 
     /**
