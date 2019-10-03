@@ -33,23 +33,32 @@ public class MemberController {
         this.memberDeleteService = memberDeleteService;
     }
 
-    @ApiOperation(value = "고객 회원가입")
+    @ApiOperation(value = "회원가입")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "signUpDto", value="가입할 고객의 정보", required = true, dataType = "SignUpDto")
     })
-    @PostMapping("/client")
-    public ResponseEntity<Member> client_signUp(@RequestBody SignUpDto signUpDto) {
-        return ResponseEntity.ok(signUpService.signUp(signUpDto, MemberRole.CLIENT));
+    @PostMapping("/signUp")
+    public ResponseEntity<Member> signUp(@RequestBody SignUpDto signUpDto) {
+        return ResponseEntity.ok(signUpService.signUp(signUpDto));
     }
 
-    @ApiOperation(value = "예술가 회원가입")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "signUpDto", value="가입할 예술가의 정보", required = true, dataType = "SignUpDto")
-    })
-    @PostMapping("/artist")
-    public ResponseEntity<Member> artist_signUp(@RequestBody SignUpDto signUpDto) {
-        return ResponseEntity.ok(signUpService.signUp(signUpDto, MemberRole.ARTIST));
-    }
+//    @ApiOperation(value = "고객 회원가입")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "signUpDto", value="가입할 고객의 정보", required = true, dataType = "SignUpDto")
+//    })
+//    @PostMapping("/client")
+//    public ResponseEntity<Member> client_signUp(@RequestBody SignUpDto signUpDto) {
+//        return ResponseEntity.ok(signUpService.signUp(signUpDto, MemberRole.CLIENT));
+//    }
+//
+//    @ApiOperation(value = "예술가 회원가입")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "signUpDto", value="가입할 예술가의 정보", required = true, dataType = "SignUpDto")
+//    })
+//    @PostMapping("/artist")
+//    public ResponseEntity<Member> artist_signUp(@RequestBody SignUpDto signUpDto) {
+//        return ResponseEntity.ok(signUpService.signUp(signUpDto, MemberRole.ARTIST));
+//    }
 
     @ApiOperation(value = "로그인")
     @ApiImplicitParams({
