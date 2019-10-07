@@ -25,6 +25,6 @@ spring:
       max-request-size: 1MB
 
 resources:
-  image-locations : C:\artSharing\
-  image-url : 127.0.0.1:8080
+  image-locations : /home/ubuntu/ec2-user/img/
+  image-url : 52.78.45.58:8080
 
