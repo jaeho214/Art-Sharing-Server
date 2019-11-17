@@ -5,9 +5,9 @@ spring:
 #    url: jdbc:mysql://jaehodb.cwa8drqjuwbz.ap-northeast-2.rds.amazonaws.com:3306/art_sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 
 #    username: hongyj
-    username: root
+    username:
 #    password: sec031031!
-    password: 1q2w3e4r!
+    password:
 
 
   jpa:
@@ -26,5 +26,5 @@ spring:
 
 resources:
   image-locations : /home/ubuntu/ec2-user/img/
-  image-url : 142.63.193.106:8080
+  image-url :
 
