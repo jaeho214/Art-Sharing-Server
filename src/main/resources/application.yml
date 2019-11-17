@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/art_sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    url: jdbc:mysql://jaehodb.cwa8drqjuwbz.ap-northeast-2.rds.amazonaws.com:3306/art_sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/art_sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://jaehodb.cwa8drqjuwbz.ap-northeast-2.rds.amazonaws.com:3306/art_sharing?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 
 #    username: hongyj
-    username: artSharing
+    username: root
 #    password: sec031031!
-    password: 1q2w3e
+    password: 1q2w3e4r!
 
 
   jpa:
@@ -26,5 +26,5 @@ spring:
 
 resources:
   image-locations : /home/ubuntu/ec2-user/img/
-  image-url : 52.78.45.58:8080
+  image-url : 142.63.193.106:8080
 
