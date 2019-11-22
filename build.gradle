@@ -50,6 +50,7 @@ dependencies {
 	)
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
 	compile 'commons-io:commons-io:2.6'
+	compile group: 'org.yaml', name: 'snakeyaml', version: '1.23'
 }
 
 sourceSets {
