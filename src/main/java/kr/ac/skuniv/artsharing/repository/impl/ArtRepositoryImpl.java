@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
@@ -75,7 +76,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     }
 
     @Override
-    public ArtGetDetailDto getArtDetail(Long artNo) {
+    public Optional<ArtGetDetailDto> getArtDetail(Long artNo) {
         JPAQuery<ArtGetDetailDto> jpaQuery = new JPAQuery<>(entityManager);
         jpaQuery.select(Projections.constructor(ArtGetDetailDto.class, art.id, art.artName, art.price, art.isRent, art.explanation, art.regDate, art.member.name, artImage.imageUrl))
                 .from(artImage)
@@ -105,7 +106,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
                 );
             }
         }
-        return artDto.setReply(replyGetDtos);
+        return Optional.ofNullable(artDto.setReply(replyGetDtos));
     }
 
 

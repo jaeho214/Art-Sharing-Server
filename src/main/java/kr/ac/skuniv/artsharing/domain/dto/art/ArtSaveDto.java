@@ -1,9 +1,11 @@
 package kr.ac.skuniv.artsharing.domain.dto.art;
 
-import kr.ac.skuniv.artsharing.config.LocalDateConfig;
 import kr.ac.skuniv.artsharing.domain.entity.Art;
 import kr.ac.skuniv.artsharing.domain.entity.Member;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
@@ -16,12 +18,15 @@ public class ArtSaveDto {
 
 
 
-    public Art toEntity(Member member) {
+    public Art of(Member member) {
         return Art.builder()
                 .artName(artName)
                 .price(price)
                 .explanation(explanation)
+                .isRent(false)
                 .member(member)
+                .regDate(LocalDate.now())
+                .replies(new ArrayList<>())
                 .build();
     }
 }

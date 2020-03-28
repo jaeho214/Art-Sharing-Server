@@ -2,18 +2,19 @@ package kr.ac.skuniv.artsharing.service.art;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
+import kr.ac.skuniv.artsharing.domain.entity.Art;
 import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
 import kr.ac.skuniv.artsharing.repository.ArtImageRepository;
 import kr.ac.skuniv.artsharing.repository.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,19 +39,20 @@ public class ArtGetService {
      * @return : 작품의 바이트
      */
     public byte[] getImageResource(Long artNo) {
-        ArtImage artImage = artImageRepository.findByArt(artRepository.findById(artNo).get()).get();
-        byte[] result = null;
+        Art art = artRepository.findById(artNo)
+                .orElseThrow(() -> new UserDefineException("해당 작품을 찾을 수 없습니다."));
+        ArtImage artImage = artImageRepository.findByArt(art)
+                .orElseThrow(()->new UserDefineException("해당 이미지를 찾을 수 없습니다."));
+
         try{
             File file = new File(artImage.getImagePath());
 
             InputStream in = new FileInputStream(file);
-            result = IOUtils.toByteArray(in);
-
-            return result;
+            return IOUtils.toByteArray(in);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     /**
@@ -71,18 +73,13 @@ public class ArtGetService {
      */
     public Page<ArtGetDto> getArtsByUserId(Cookie cookie, int pageNum) {
         //작가의 작품 리스트 가져오기
-        String userId = commonService.getUserIdByCookie(cookie);
-        String userRole = commonService.getUserRoleByCookie(cookie);
+        Member member = commonService.getMemberByCookie(cookie);
 
-        if(userId == null) {
-            throw new UserDefineException("로그인이 필요합니다.");
-        }
-
-        if(!userRole.equals(MemberRole.ARTIST.name())){
+        if(!member.getRole().equals(MemberRole.ARTIST.name())){
             throw new UserDefineException("일반 고객은 작품을 조회할 수 없습니다.");
         }
 
-        return artRepository.getArtsByUserId(pageNum,userId);
+        return artRepository.getArtsByUserId(pageNum,member.getId());
     }
 
     /**
@@ -114,11 +111,8 @@ public class ArtGetService {
      */
     public ArtGetDetailDto getArtDetail(Long artNo) {
         //작품을 눌렀을 때 상세보기
-        ArtGetDetailDto artDto = artRepository.getArtDetail(artNo);
-
-        if(artDto == null){
-            throw new UserDefineException("해당 번호의 작품이 없습니다.");
-        }
+        ArtGetDetailDto artDto = artRepository.getArtDetail(artNo)
+                .orElseThrow(()-> new UserDefineException("해당 작품을 찾을 수 없습니다."));
 
         return artDto;
     }

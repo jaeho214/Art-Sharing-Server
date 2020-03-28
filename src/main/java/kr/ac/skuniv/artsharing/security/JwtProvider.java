@@ -1,9 +1,12 @@
 package kr.ac.skuniv.artsharing.security;
 
 import io.jsonwebtoken.*;
+import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
+import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.repository.MemberRepository;
 import kr.ac.skuniv.artsharing.service.member.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +19,11 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class JwtProvider {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+
+    private final UserDetailsServiceImpl userDetailsService;
+
     private final long validityMilliseconds = 360000000;
     private String secretKey = "ARTSHARINGDEVELOP";
 
@@ -75,12 +80,19 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUserIdByToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(resolveToken(token)).getBody().getSubject();
+    public String getUserIdByToken(String token){
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(resolveToken(token))
+                .getBody()
+                .getSubject();
     }
 
     public String getUserRoleByToken(String token) {
-        String roles = (String) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(resolveToken(token)).getBody().get("roles");
-        return roles;
+        return  (String) Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(resolveToken(token))
+                .getBody()
+                .get("roles");
     }
 }
