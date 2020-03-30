@@ -19,13 +19,23 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
+
     public final StringPath affiliation = createString("affiliation");
 
     public final StringPath age = createString("age");
 
-    public final StringPath id = createString("id");
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final NumberPath<Long> mno = createNumber("mno", Long.class);
+    //inherited
+    public final BooleanPath deleted = _super.deleted;
+
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedAt = _super.lastModifiedAt;
 
     public final StringPath name = createString("name");
 
@@ -36,6 +46,8 @@ public class QMember extends EntityPathBase<Member> {
     public final EnumPath<kr.ac.skuniv.artsharing.domain.roles.MemberRole> role = createEnum("role", kr.ac.skuniv.artsharing.domain.roles.MemberRole.class);
 
     public final StringPath sex = createString("sex");
+
+    public final StringPath userId = createString("userId");
 
     public QMember(String variable) {
         super(Member.class, forVariable(variable));

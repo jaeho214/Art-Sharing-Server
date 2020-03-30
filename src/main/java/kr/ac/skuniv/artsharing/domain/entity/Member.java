@@ -4,23 +4,25 @@ import javax.persistence.*;
 
 import kr.ac.skuniv.artsharing.domain.dto.member.MemberUpdateDto;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
+import kr.ac.skuniv.artsharing.util.JpaBasePersistable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Member {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long mno;
+@AttributeOverride(name = "id", column = @Column(name = "member_id"))
+@Where(clause = "deleted=0")
+@DynamicUpdate
+public class Member extends JpaBasePersistable {
 	
 	//사용자 아이디
 	@Column(unique = true)
-	private String id;
+	private String userId;
 
 	private String name;
 	private String password;
@@ -34,9 +36,9 @@ public class Member {
 
 	
 	@Builder
-	public Member(String name, String id, String password, String sex, String age, String affiliation, String phone, MemberRole role) {
+	public Member(String name, String userId, String password, String sex, String age, String affiliation, String phone, MemberRole role) {
 		this.name = name;
-		this.id = id;
+		this.userId = userId;
 		this.password = password;
 		this.sex = sex;
 		this.age = age;

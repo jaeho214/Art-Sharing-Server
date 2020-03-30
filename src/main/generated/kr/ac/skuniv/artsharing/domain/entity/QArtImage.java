@@ -22,9 +22,18 @@ public class QArtImage extends EntityPathBase<ArtImage> {
 
     public static final QArtImage artImage = new QArtImage("artImage");
 
+    public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
+
     public final QArt art;
 
-    public final NumberPath<Long> artImageNo = createNumber("artImageNo", Long.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final BooleanPath deleted = _super.deleted;
+
+    //inherited
+    public final NumberPath<Long> id = _super.id;
 
     public final StringPath imageName = createString("imageName");
 
@@ -35,6 +44,9 @@ public class QArtImage extends EntityPathBase<ArtImage> {
     public final StringPath imageType = createString("imageType");
 
     public final StringPath imageUrl = createString("imageUrl");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedAt = _super.lastModifiedAt;
 
     public QArtImage(String variable) {
         this(ArtImage.class, forVariable(variable), INITS);

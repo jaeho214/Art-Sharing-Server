@@ -22,19 +22,29 @@ public class QArt extends EntityPathBase<Art> {
 
     public static final QArt art = new QArt("art");
 
+    public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
+
     public final StringPath artName = createString("artName");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final BooleanPath deleted = _super.deleted;
 
     public final StringPath explanation = createString("explanation");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //inherited
+    public final NumberPath<Long> id = _super.id;
 
     public final BooleanPath isRent = createBoolean("isRent");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedAt = _super.lastModifiedAt;
 
     public final QMember member;
 
     public final StringPath price = createString("price");
-
-    public final DatePath<java.time.LocalDate> regDate = createDate("regDate", java.time.LocalDate.class);
 
     public final ListPath<Reply, QReply> replies = this.<Reply, QReply>createList("replies", Reply.class, QReply.class, PathInits.DIRECT2);
 
