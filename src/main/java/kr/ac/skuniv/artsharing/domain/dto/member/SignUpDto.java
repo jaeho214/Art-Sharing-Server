@@ -2,32 +2,34 @@ package kr.ac.skuniv.artsharing.domain.dto.member;
 
 import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignUpDto {
 
 	private String name;
-	private String id;
+	private String userId;
 	private String password;
 	private String sex;
 	private String age;
 	private String affiliation;
 	private String phone;
-	private MemberRole role;
+	private String role;
 
 
-	public Member toEntity() {
+	public Member of(String password, MemberRole role) {
 		return Member.builder()
-				.name(name)
-				.id(id)
+				.name(this.name)
+				.userId(this.userId)
 				.password(password)
-				.sex(sex)
-				.age(age)
-				.affiliation(affiliation)
-				.phone(phone)
+				.sex(this.sex)
+				.age(this.age)
+				.affiliation(this.affiliation)
+				.phone(this.phone)
 				.role(role)
 				.build();
 	}

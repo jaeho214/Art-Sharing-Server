@@ -25,7 +25,7 @@ public class CommonService {
     public Member getMemberByCookie(Cookie cookie){
         try{
             String userID = jwtProvider.getUserIdByToken(cookie.getValue());
-            Member member =  memberRepository.findById(userID)
+            Member member =  memberRepository.findByUserId(userID)
                     .orElseThrow(()-> new UserDefineException("회원을 찾을 수 없습니다."));
             return member;
         }catch (Exception e){
@@ -51,7 +51,7 @@ public class CommonService {
     public void checkMember(String userId, String writer){
         if(userId.equals(writer))
             return;
-        throw new UserDefineException("작품을 수정할 수 있는 권한이 없습니다.");
+        throw new UserDefineException("해당 작업을 할 수 있는 권한이 없습니다.");
     }
 
 

@@ -1,37 +1,30 @@
 package kr.ac.skuniv.artsharing.service.member;
 
 import kr.ac.skuniv.artsharing.domain.entity.Member;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.MemberRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class MemberDeleteService {
     private final CommonService commonService;
-    private final MemberRepository memberRepository;
 
-    public MemberDeleteService(CommonService commonService, MemberRepository memberRepository) {
-        this.commonService = commonService;
-        this.memberRepository = memberRepository;
-    }
 
     /**
      * 회원 탈퇴
      * @param cookie : userId를 조회하기 위한 Cookie 객체
      */
-    public void deleteMember(Cookie cookie) {
-        String userId = commonService.getUserIdByCookie(cookie);
+    public ResponseEntity deleteMember(Cookie cookie) {
+        Member member= commonService.getMemberByCookie(cookie);
 
-        Member member = memberRepository.findById(userId);
-
-        if(member == null)
-            throw new UserDefineException("회원 정보를 삭제할 수 없습니다.");
-
-        memberRepository.delete(member);
-
+        //memberRepository.delete(member);
+        member.delete();
+        return ResponseEntity.noContent().build();
     }
 }

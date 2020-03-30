@@ -2,7 +2,9 @@ package kr.ac.skuniv.artsharing.service.member;
 
 import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
+import kr.ac.skuniv.artsharing.exception.UserDefineException;
 import kr.ac.skuniv.artsharing.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,25 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class  UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findById(username);
+        Member member = memberRepository.findByUserId(username).orElseThrow(()->new UsernameNotFoundException(username));
 
-        if(member == null) {
-            throw new UsernameNotFoundException(username);
-        }
-
-//        return User.builder()
-//                .username(member.getId())
-//                .password(member.getPassword())
-//                .roles(member.getRole())
-//                .build();
-        return new User(member.getId(),member.getPassword(),makeGrantedAuthority(member.getRole()));
+        return new User(member.getUserId(),member.getPassword(),makeGrantedAuthority(member.getRole()));
     }
 
     private List<? extends GrantedAuthority> makeGrantedAuthority(MemberRole role) {
