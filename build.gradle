@@ -20,6 +20,11 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url "https://dl.bintray.com/mockito/maven" }
+}
+
+test {
+	useJUnitPlatform()
 }
 
 def queryDSLVersion = '4.2.1'
@@ -51,6 +56,12 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
 	compile 'commons-io:commons-io:2.6'
 	compile group: 'org.yaml', name: 'snakeyaml', version: '1.23'
+	testImplementation 'org.mockito:mockito-junit-jupiter:2.17.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+	testCompileOnly 'junit:junit:4.12'
+	testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
+	testImplementation 'org.jeasy:easy-random-core:4.1.0'
 }
 
 sourceSets {
@@ -64,3 +75,14 @@ tasks.withType(JavaCompile){
 clean.doLast {
 	file(generated).deleteDir()
 }
+
+task generateQueryDSL(type: JavaCompile, group: 'build') {
+	source = sourceSets.main.java
+	classpath = configurations.compile
+	options.compilerArgs = [
+			"-proc:only",
+			"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+	]
+	destinationDir = file('./src/main/generated')
+}
+
