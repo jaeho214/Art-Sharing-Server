@@ -5,21 +5,21 @@ import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
 import kr.ac.skuniv.artsharing.repository.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ArtDeleteService {
 
     private final CommonService commonService;
     private final ArtRepository artRepository;
 
-    public ArtDeleteService(CommonService commonService, ArtRepository artRepository) {
-        this.commonService = commonService;
-        this.artRepository = artRepository;
-    }
 
     /**
      * 작품 삭제
@@ -32,9 +32,10 @@ public class ArtDeleteService {
         Art art = artRepository.findById(id)
                 .orElseThrow(()->new UserDefineException("해당 작품을 찾을 수 없습니다."));
 
-        commonService.checkMember(member.getId(), art.getMember().getId());
+        commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 
-        artRepository.delete(art);
+        //artRepository.delete(art);
+        art.delete();
 
         return ResponseEntity.noContent().build();
     }

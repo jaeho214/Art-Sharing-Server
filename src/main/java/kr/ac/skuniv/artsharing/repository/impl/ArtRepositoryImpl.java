@@ -41,7 +41,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     private final int DEFAULT_LIMIT_SIZE = 9;
 
     @Override
-    public Page<ArtGetDto> searchArt(String searchKeyword, int pageNum) {
+    public Page<ArtGetDto> searchArtByKeyword(String searchKeyword, int pageNum) {
         JPAQuery<ArtGetDto> jpaQuery = new JPAQuery<>(entityManager);
         jpaQuery = setQuery(jpaQuery);
         jpaQuery.where(art.artName.contains(searchKeyword).or(art.member.name.contains(searchKeyword).and(art.member.role.eq(MemberRole.ARTIST))))
@@ -53,10 +53,10 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     }
 
     @Override
-    public Page<ArtGetDto> getArtsByUserId(int pageNum, String userId) {
+    public Page<ArtGetDto> getArtsByUserId(String userId, int pageNum) {
         JPAQuery<ArtGetDto> jpaQuery = new JPAQuery<>(entityManager);
         jpaQuery = setQuery(jpaQuery);
-        jpaQuery.where(art.member.id.eq(userId))
+        jpaQuery.where(art.member.userId.eq(userId))
                 .orderBy(art.id.desc())
                 .offset(--pageNum * DEFAULT_LIMIT_SIZE)
                 .limit(DEFAULT_LIMIT_SIZE);
@@ -78,7 +78,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
     @Override
     public Optional<ArtGetDetailDto> getArtDetail(Long artNo) {
         JPAQuery<ArtGetDetailDto> jpaQuery = new JPAQuery<>(entityManager);
-        jpaQuery.select(Projections.constructor(ArtGetDetailDto.class, art.id, art.artName, art.price, art.isRent, art.explanation, art.regDate, art.member.name, artImage.imageUrl))
+        jpaQuery.select(Projections.constructor(ArtGetDetailDto.class, art.id, art.artName, art.price, art.isRent, art.explanation, art.createdAt, art.member.name, artImage.imageUrl))
                 .from(artImage)
                 .join(artImage.art, art)
                 .where(art.id.eq(artNo));
@@ -86,7 +86,7 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
         ArtGetDetailDto artDto = jpaQuery.fetchOne();
 
         List<Reply> replies = jpaQuery
-                .join(artImage.art.replies, reply)
+                .join(artImage.art.replies, reply).fetchJoin()
                 .transform(groupBy(art.id).as(list(reply))) //art.id 끼리 묶어서 reply 를 가져온다
                 .get(artNo); //art.id 가 artNo 와 같은 걸 가져온다
 
@@ -98,10 +98,9 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
                         ReplyGetDto.builder()
                                 .title(reply.getTitle())
                                 .content(reply.getContent())
-                                .regDate(reply.getRegDate())
-                                .updateDate(reply.getUpdateDate())
-                                .replyNo(reply.getReplyNo())
-                                .userId(reply.getMember().getId())
+                                .createdAt(reply.getCreatedAt())
+                                .id(reply.getId())
+                                .writer(reply.getMember().getUserId())
                                 .build()
                 );
             }

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@AttributeOverride(name = "id", column = @Column(name = "art_id"))
+@AttributeOverride(name = "id", column = @Column(name = "artImage_id"))
 @Where(clause = "deleted=0")
 public class ArtImage extends JpaBasePersistable {
     @NotNull

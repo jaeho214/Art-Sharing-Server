@@ -29,8 +29,19 @@ public class ArtGetDto {
                 .id(art.getId())
                 .artName(art.getArtName())
                 .price(art.getPrice())
-                .userId(art.getMember().getId())
+                .userId(art.getMember().getUserId())
                 .imageUrl(artImage.getImageUrl())
+                .isRent(art.isRent())
+                .build();
+    }
+
+    public static ArtGetDto of(Art art){
+        return ArtGetDto.builder()
+                .id(art.getId())
+                .artName(art.getArtName())
+                .price(art.getPrice())
+                .userId(art.getMember().getUserId())
+                .imageUrl(null)
                 .isRent(art.isRent())
                 .build();
     }

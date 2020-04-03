@@ -21,20 +21,20 @@ public class ArtGetDetailDto {
     private String explanation; //설명
 
     @JsonDeserialize(using = LocalDateConfig.class)
-    private LocalDate regDate;
+    private LocalDate createdAt;
     private String artistName;
     private String imageUrl;
 
     private List<ReplyGetDto> replyList = new ArrayList<>();
 
     @Builder
-    public ArtGetDetailDto(Long id, String artName, String price, boolean isRent, String explanation, LocalDate regDate, String artistName, String imageUrl) {
+    public ArtGetDetailDto(Long id, String artName, String price, boolean isRent, String explanation, LocalDate createdAt, String artistName, String imageUrl) {
         this.id = id;
         this.artName = artName;
         this.price = price;
         this.isRent = isRent;
         this.explanation = explanation;
-        this.regDate = regDate;
+        this.createdAt = createdAt;
         this.artistName = artistName;
         this.imageUrl = imageUrl;
     }

@@ -24,7 +24,7 @@ public class Art extends JpaBasePersistable {
 	private String artName; //작품 이름
 	@Column(name = "price", length = 30, nullable = false)
 	private String price; //하루당 가격
-	@Column(name = "price", length = 100, nullable = false)
+	@Column(name = "explanation", length = 100, nullable = false)
 	private String explanation; //설명
 
 	@Column(name = "isRent", nullable = false)

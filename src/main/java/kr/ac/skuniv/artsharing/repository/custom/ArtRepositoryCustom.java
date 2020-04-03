@@ -8,8 +8,8 @@ import org.springframework.data.domain.Page;
 import java.util.Optional;
 
 public interface ArtRepositoryCustom {
-    Page<ArtGetDto> searchArt(String searchKeyword, int pageNum);
-    Page<ArtGetDto> getArtsByUserId(int pageNum, String userId);
+    Page<ArtGetDto> searchArtByKeyword(String searchKeyword, int pageNum);
+    Page<ArtGetDto> getArtsByUserId(String userId, int pageNum);
     Page<ArtGetDto> getAllArts(int pageNum);
     Optional<ArtGetDetailDto> getArtDetail(Long artNo);
 
