@@ -1,9 +1,9 @@
 package kr.ac.skuniv.artsharing.service.member;
 
 import kr.ac.skuniv.artsharing.domain.dto.member.SignInDto;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.MemberRepository;
+import kr.ac.skuniv.artsharing.repository.member.MemberRepository;
 import kr.ac.skuniv.artsharing.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

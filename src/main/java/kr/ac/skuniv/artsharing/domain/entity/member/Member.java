@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.domain.entity;
+package kr.ac.skuniv.artsharing.domain.entity.member;
 
 import javax.persistence.*;
 

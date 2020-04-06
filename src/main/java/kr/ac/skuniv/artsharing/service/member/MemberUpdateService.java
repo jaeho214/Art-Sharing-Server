@@ -2,18 +2,14 @@ package kr.ac.skuniv.artsharing.service.member;
 
 import kr.ac.skuniv.artsharing.domain.dto.member.MemberGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.member.MemberUpdateDto;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.MemberRepository;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.controller;
+package kr.ac.skuniv.artsharing.controller.member;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
