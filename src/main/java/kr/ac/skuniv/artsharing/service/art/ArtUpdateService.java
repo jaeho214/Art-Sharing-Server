@@ -3,12 +3,12 @@ package kr.ac.skuniv.artsharing.service.art;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtUpdateDto;
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.ArtImageRepository;
-import kr.ac.skuniv.artsharing.repository.ArtRepository;
+import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
+import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import kr.ac.skuniv.artsharing.service.artImage.ArtImageService;
 import lombok.RequiredArgsConstructor;
@@ -46,11 +46,11 @@ public class ArtUpdateService {
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 
         ArtImage updatedImage = null;
-        if(imageFile != null){
+        if(imageFile.getContentType() != null){
             updatedImage = updateArtImage(imageFile, art);
         }
-
         art.updateArt(artUpdateDto);
+
 
         if(updatedImage == null)
             return ArtGetDto.of(art);

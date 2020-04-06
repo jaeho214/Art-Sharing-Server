@@ -1,19 +1,16 @@
 package kr.ac.skuniv.artsharing.service.art;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
-import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetPagingDto;
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
-import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.ArtImageRepository;
-import kr.ac.skuniv.artsharing.repository.ArtRepository;
+import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
+import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,16 +103,13 @@ public class ArtGetService {
 
     /**
      * 작품 상세보기
-     * @param artNo : 작품 조회 화면에서 클릭이 된 작품의 번호
+     * @param art_id : 작품 조회 화면에서 클릭이 된 작품의 번호
      * @return : 해당 작품과 댓글들
      */
-    @Transactional(readOnly = true)
-    public ArtGetDetailDto getArtDetail(Long artNo) {
+    public ArtGetDetailDto getArtDetail(Long art_id) {
         //작품을 눌렀을 때 상세보기
-        ArtGetDetailDto artDto = artRepository.getArtDetail(artNo)
+        return artRepository.getArtDetail(art_id)
                 .orElseThrow(()-> new UserDefineException("해당 작품을 찾을 수 없습니다."));
-
-        return artDto;
     }
 
 

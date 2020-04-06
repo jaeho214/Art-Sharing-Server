@@ -2,6 +2,7 @@ package kr.ac.skuniv.artsharing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import kr.ac.skuniv.artsharing.controller.art.ArtController;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetPagingDto;

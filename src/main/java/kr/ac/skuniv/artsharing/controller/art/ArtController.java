@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.controller;
+package kr.ac.skuniv.artsharing.controller.art;
 
 import io.swagger.annotations.ApiOperation;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
@@ -37,7 +37,7 @@ public class ArtController {
     }
 
     @ApiOperation(value = "작품 정보 수정")
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity updateArt(@CookieValue(value = "user", required = false) Cookie cookie,
                                     @RequestPart(required = false) MultipartFile imageFile,
                                     @RequestParam String json) throws IOException {

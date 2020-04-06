@@ -3,11 +3,11 @@ package kr.ac.skuniv.artsharing.service.art;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtSaveDto;
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
-import kr.ac.skuniv.artsharing.repository.ArtImageRepository;
-import kr.ac.skuniv.artsharing.repository.ArtRepository;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
+import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
+import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import kr.ac.skuniv.artsharing.service.artImage.ArtImageService;
 import org.jeasy.random.EasyRandom;
@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import javax.servlet.http.Cookie;
-import java.awt.*;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.*;

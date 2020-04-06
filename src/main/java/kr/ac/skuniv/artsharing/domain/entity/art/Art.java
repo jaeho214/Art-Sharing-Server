@@ -1,14 +1,15 @@
-package kr.ac.skuniv.artsharing.domain.entity;
+package kr.ac.skuniv.artsharing.domain.entity.art;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtUpdateDto;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
+import kr.ac.skuniv.artsharing.domain.entity.reply.Reply;
 import kr.ac.skuniv.artsharing.util.JpaBasePersistable;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -37,20 +38,35 @@ public class Art extends JpaBasePersistable {
 	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reply> replies;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "artImage_id")
+	private ArtImage artImage;
+
 	@Builder
-	public Art(String artName, String price, String explanation, boolean isRent, Member member, List<Reply> replies) {
+	public Art(String artName,
+			   String price,
+			   String explanation,
+			   boolean isRent,
+			   Member member,
+			   List<Reply> replies,
+			   ArtImage artImage) {
 		this.artName = artName;
 		this.price = price;
 		this.explanation = explanation;
 		this.isRent = isRent;
 		this.member = member;
 		this.replies = replies;
+		this.artImage = artImage;
 	}
 
 	public void updateArt(ArtUpdateDto artUpdateDto) {
 		this.artName = artUpdateDto.getArtName();
 		this.price = artUpdateDto.getPrice();
 		this.explanation = artUpdateDto.getExplanation();
+	}
+
+	public void updateArtImage(ArtImage artImage){
+		this.artImage = artImage;
 	}
 
 	public void changeRentStatus(Boolean isRent){

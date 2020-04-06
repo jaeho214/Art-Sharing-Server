@@ -1,5 +1,7 @@
-package kr.ac.skuniv.artsharing.domain.entity;
+package kr.ac.skuniv.artsharing.domain.entity.artImage;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.util.JpaBasePersistable;
 import lombok.*;
 import org.hibernate.annotations.Where;
@@ -24,6 +26,7 @@ public class ArtImage extends JpaBasePersistable {
     @NotNull
     private String imageUrl;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "art_id")
     private Art art;

@@ -1,7 +1,7 @@
 package kr.ac.skuniv.artsharing.service.artImage;
 
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -37,14 +37,18 @@ public class ArtImageService {
                     .path("/artSharing/art/image/" + art.getId())
                     .toUriString();
 
-            return ArtImage.builder()
-                    .imageName(file.getOriginalFilename())
-                    .imageSize(file.getSize())
-                    .imageType(file.getContentType())
-                    .imageUrl(imageUrl)
-                    .imagePath(environment.getProperty(IMAGE_PATH) + savePath + File.separator + fileName)
-                    .art(art)
-                    .build();
+            ArtImage artImage =
+                    ArtImage.builder()
+                            .imageName(file.getOriginalFilename())
+                            .imageSize(file.getSize())
+                            .imageType(file.getContentType())
+                            .imageUrl(imageUrl)
+                            .imagePath(environment.getProperty(IMAGE_PATH) + savePath + File.separator + fileName)
+                            .art(art)
+                            .build();
+
+            art.updateArtImage(artImage);
+            return artImage;
         }catch (IOException ioe){
             ioe.printStackTrace();
         }

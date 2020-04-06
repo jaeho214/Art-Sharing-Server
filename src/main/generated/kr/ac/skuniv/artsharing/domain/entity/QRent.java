@@ -8,6 +8,7 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import kr.ac.skuniv.artsharing.domain.entity.rent.Rent;
 
 
 /**
@@ -22,15 +23,27 @@ public class QRent extends EntityPathBase<Rent> {
 
     public static final QRent rent = new QRent("rent");
 
+    public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
+
     public final QArt art;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final BooleanPath deleted = _super.deleted;
+
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedAt = _super.lastModifiedAt;
 
     public final QMember member;
 
     public final StringPath price = createString("price");
 
     public final DatePath<java.time.LocalDate> rentDate = createDate("rentDate", java.time.LocalDate.class);
-
-    public final NumberPath<Long> rentNo = createNumber("rentNo", Long.class);
 
     public final DatePath<java.time.LocalDate> returnDate = createDate("returnDate", java.time.LocalDate.class);
 

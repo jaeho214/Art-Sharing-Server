@@ -3,12 +3,12 @@ package kr.ac.skuniv.artsharing.service.art;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtSaveDto;
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.ArtImageRepository;
-import kr.ac.skuniv.artsharing.repository.ArtRepository;
+import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
+import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import kr.ac.skuniv.artsharing.service.artImage.ArtImageService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class ArtSaveService {
         try {
             ArtSaveDto artSaveDto = objectMapper.readValue(json, ArtSaveDto.class);
 
-            if (file == null)
+            if (file.getContentType() == null)
                 throw new UserDefineException("이미지를 등록해주세요!");
 
             Member member = commonService.getMemberByCookie(cookie);

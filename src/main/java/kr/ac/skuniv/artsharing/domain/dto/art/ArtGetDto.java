@@ -1,7 +1,7 @@
 package kr.ac.skuniv.artsharing.domain.dto.art;
 
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.ArtImage;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import lombok.*;
 
 @Getter @Setter
@@ -11,7 +11,7 @@ public class ArtGetDto {
     private String artName; //작품 이름
     private String price; //하루당 가격
     private String userId;
-    private boolean isRent; // TODO : 대여를 하게 되면 true로 바꿔주기
+    private boolean isRent;
     private String imageUrl;
 
     @Builder

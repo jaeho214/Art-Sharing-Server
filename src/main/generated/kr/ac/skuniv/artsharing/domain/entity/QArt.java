@@ -8,6 +8,8 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.reply.Reply;
 
 
 /**
@@ -23,6 +25,8 @@ public class QArt extends EntityPathBase<Art> {
     public static final QArt art = new QArt("art");
 
     public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
+
+    public final QArtImage artImage;
 
     public final StringPath artName = createString("artName");
 
@@ -66,6 +70,7 @@ public class QArt extends EntityPathBase<Art> {
 
     public QArt(Class<? extends Art> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.artImage = inits.isInitialized("artImage") ? new QArtImage(forProperty("artImage"), inits.get("artImage")) : null;
         this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
     }
 

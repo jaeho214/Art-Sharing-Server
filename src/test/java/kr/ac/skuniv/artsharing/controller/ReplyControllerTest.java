@@ -1,9 +1,8 @@
 package kr.ac.skuniv.artsharing.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kr.ac.skuniv.artsharing.domain.dto.art.ArtSaveDto;
+import kr.ac.skuniv.artsharing.controller.reply.ReplyController;
 import kr.ac.skuniv.artsharing.domain.dto.reply.ReplyGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.reply.ReplySaveDto;
 import kr.ac.skuniv.artsharing.domain.dto.reply.ReplyUpdateDto;
@@ -25,7 +24,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.servlet.http.Cookie;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
