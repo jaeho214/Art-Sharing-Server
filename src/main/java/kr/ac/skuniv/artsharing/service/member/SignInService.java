@@ -3,6 +3,8 @@ package kr.ac.skuniv.artsharing.service.member;
 import kr.ac.skuniv.artsharing.domain.dto.member.SignInDto;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.member.MemberNotFoundException;
+import kr.ac.skuniv.artsharing.exception.member.WrongPasswordException;
 import kr.ac.skuniv.artsharing.repository.member.MemberRepository;
 import kr.ac.skuniv.artsharing.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +32,10 @@ public class SignInService {
     public String signIn(SignInDto signInDto, HttpServletResponse response) {
 
         Member member = memberRepository.findByUserId(signInDto.getUserId())
-                .orElseThrow(()->new UserDefineException("존재하지 않는 아이디입니다."));
+                .orElseThrow(MemberNotFoundException::new);
 
         if(!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())) {
-            throw new UserDefineException("비밀번호가 틀렸습니다.");
+            throw new WrongPasswordException();
         }
 
         Cookie cookie = new Cookie("user", jwtProvider.createToken(member.getUserId(), member.getRole()));

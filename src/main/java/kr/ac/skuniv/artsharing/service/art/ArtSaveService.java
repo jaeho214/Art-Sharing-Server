@@ -7,6 +7,7 @@ import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.artImage.ArtImageNullException;
 import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
@@ -33,7 +34,7 @@ public class ArtSaveService {
             ArtSaveDto artSaveDto = objectMapper.readValue(json, ArtSaveDto.class);
 
             if (file.getContentType() == null)
-                throw new UserDefineException("이미지를 등록해주세요!");
+                throw new ArtImageNullException();
 
             Member member = commonService.getMemberByCookie(cookie);
 

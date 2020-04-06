@@ -2,7 +2,7 @@ package kr.ac.skuniv.artsharing.service.art;
 
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,7 @@ public class ArtDeleteService {
     public ResponseEntity deleteArt(Cookie cookie, Long id) {
         Member member = commonService.getMemberByCookie(cookie);
 
-        Art art = artRepository.findById(id)
-                .orElseThrow(()->new UserDefineException("해당 작품을 찾을 수 없습니다."));
+        Art art = artRepository.findById(id).orElseThrow(ArtNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 

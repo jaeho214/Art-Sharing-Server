@@ -2,7 +2,11 @@ package kr.ac.skuniv.artsharing.service;
 
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
+import kr.ac.skuniv.artsharing.exception.BusinessLogicException;
+import kr.ac.skuniv.artsharing.exception.ErrorCodeType;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.member.CookieNotFoundException;
+import kr.ac.skuniv.artsharing.exception.member.MemberNotFoundException;
 import kr.ac.skuniv.artsharing.repository.member.MemberRepository;
 import kr.ac.skuniv.artsharing.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,22 +31,22 @@ public class CommonService {
         try{
             String userID = jwtProvider.getUserIdByToken(cookie.getValue());
             Member member =  memberRepository.findByUserId(userID)
-                    .orElseThrow(()-> new UserDefineException("회원을 찾을 수 없습니다."));
+                    .orElseThrow(MemberNotFoundException::new);
             return member;
         }catch (Exception e){
-            throw new UserDefineException("로그인이 필요합니다.");
+            throw new CookieNotFoundException();
         }
     }
 
     public void checkAuthority(String userId, String writer){
         if(userId.equals(writer))
             return;
-        throw new UserDefineException("해당 작업을 할 수 있는 권한이 없습니다.");
+        throw new BusinessLogicException(ErrorCodeType.USER_UNAUTHORIZED);
     }
 
     public void checkRole(MemberRole role){
         if (!(role.equals(MemberRole.ARTIST))) {
-            throw new UserDefineException("작품을 등록할 권한이 없습니다.");
+            throw new BusinessLogicException(ErrorCodeType.USER_UNAUTHORIZED);
         }
     }
 

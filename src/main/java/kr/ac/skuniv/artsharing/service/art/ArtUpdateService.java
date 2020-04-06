@@ -7,6 +7,8 @@ import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
+import kr.ac.skuniv.artsharing.exception.artImage.ArtImageNotFoundException;
 import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
@@ -41,7 +43,7 @@ public class ArtUpdateService {
         Member member = commonService.getMemberByCookie(cookie);
 
         Art art = artRepository.findById(artUpdateDto.getId())
-                .orElseThrow(() -> new UserDefineException("작품을 찾을 수 없습니다."));
+                .orElseThrow(ArtNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 
@@ -67,7 +69,7 @@ public class ArtUpdateService {
      */
     private ArtImage updateArtImage(MultipartFile imageFile, Art art) {
         ArtImage artImage = artImageRepository.findByArt(art)
-                .orElseThrow(()-> new UserDefineException("해당 이미지를 찾을 수 없습니다."));
+                .orElseThrow(ArtImageNotFoundException::new);
 
         ArtImage updateArtImage = artImageService.saveImage(imageFile, art);
 

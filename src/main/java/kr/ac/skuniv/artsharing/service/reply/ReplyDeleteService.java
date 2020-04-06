@@ -3,6 +3,7 @@ package kr.ac.skuniv.artsharing.service.reply;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.domain.entity.reply.Reply;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.reply.ReplyNotFoundException;
 import kr.ac.skuniv.artsharing.repository.reply.ReplyRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class ReplyDeleteService {
         Member member = commonService.getMemberByCookie(cookie);
 
         Reply reply = replyRepository.findById(replyNo)
-                .orElseThrow(() -> new UserDefineException("해당 댓글을 찾을 수 없습니다."));
+                .orElseThrow(ReplyNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), reply.getMember().getUserId());
 

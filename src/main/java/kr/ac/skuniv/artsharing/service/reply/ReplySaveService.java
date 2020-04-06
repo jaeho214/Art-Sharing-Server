@@ -6,6 +6,7 @@ import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.domain.entity.reply.Reply;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
+import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.repository.reply.ReplyRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
@@ -31,7 +32,7 @@ public class ReplySaveService {
         Member member = commonService.getMemberByCookie(cookie);
 
         Art art = artRepository.findById(replySaveDto.getArtNo())
-                .orElseThrow(()->new UserDefineException("해당 게시물을 찾을 수 없습니다."));
+                .orElseThrow(ArtNotFoundException::new);
 
         Reply savedReply = replyRepository.save(replySaveDto.of(member, art));
 

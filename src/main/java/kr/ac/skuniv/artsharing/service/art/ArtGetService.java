@@ -5,9 +5,10 @@ import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetPagingDto;
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
+import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
+import kr.ac.skuniv.artsharing.exception.artImage.ArtImageNotFoundException;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
+import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -35,9 +36,9 @@ public class ArtGetService {
      */
     public byte[] getImageResource(Long art_id) {
         Art art = artRepository.findById(art_id)
-                .orElseThrow(() -> new UserDefineException("해당 작품을 찾을 수 없습니다."));
+                .orElseThrow(ArtNotFoundException::new);
         ArtImage artImage = artImageRepository.findByArt(art)
-                .orElseThrow(()->new UserDefineException("해당 이미지를 찾을 수 없습니다."));
+                .orElseThrow(ArtImageNotFoundException::new);
 
         try{
             File file = new File(artImage.getImagePath());
@@ -109,7 +110,7 @@ public class ArtGetService {
     public ArtGetDetailDto getArtDetail(Long art_id) {
         //작품을 눌렀을 때 상세보기
         return artRepository.getArtDetail(art_id)
-                .orElseThrow(()-> new UserDefineException("해당 작품을 찾을 수 없습니다."));
+                .orElseThrow(ArtNotFoundException::new);
     }
 
 
