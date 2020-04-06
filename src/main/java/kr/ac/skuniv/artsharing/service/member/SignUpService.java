@@ -32,7 +32,7 @@ public class SignUpService {
      * @param userId : 중복 체크를 하고자 하는 userId
      * @return : 중복된 ID가 없으면 false
      */
-    public Boolean checkUserID(String userId) {
+    public Boolean checkUserId(String userId) {
         return memberRepository.existsByUserId(userId);
     }
 }

@@ -22,7 +22,6 @@ public class SignInService {
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
-
     /**
      * 로그인
      * @param signInDto : 로그인할 데이터 (ID, PASSWORD)

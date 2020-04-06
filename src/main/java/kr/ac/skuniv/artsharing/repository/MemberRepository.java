@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import kr.ac.skuniv.artsharing.domain.entity.Member;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
-	Member findById(String userId);
+	Optional<Member> findByUserId(String userId);
 	List<Member> findByRole(MemberRole role);
+	Boolean existsByUserId(String userId);
 }

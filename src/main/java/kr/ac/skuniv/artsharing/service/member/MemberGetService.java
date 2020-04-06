@@ -7,6 +7,7 @@ import kr.ac.skuniv.artsharing.repository.MemberRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import java.util.ArrayList;
@@ -23,16 +24,18 @@ public class MemberGetService {
      * @param cookie : userId를 조회하기 위한 Cookie 객체
      * @return : 조회한 회원 정보
      */
-    public MemberGetDto getMemberInfo(Cookie cookie) {
+    @Transactional(readOnly = true)
+    public MemberGetDto getMember(Cookie cookie) {
         Member member = commonService.getMemberByCookie(cookie);
 
         return MemberGetDto.of(member);
     }
 
     /**
-     * 모든 작품 조회
-     * @return : 작품 리스트
+     * 모든 작가 조회
+     * @return : 작가 리스트
      */
+    @Transactional(readOnly = true)
     public List<MemberGetDto> getArtistList() {
         List<Member> memberList = memberRepository.findByRole(MemberRole.ARTIST);
         List<MemberGetDto> artistList = new ArrayList<>();

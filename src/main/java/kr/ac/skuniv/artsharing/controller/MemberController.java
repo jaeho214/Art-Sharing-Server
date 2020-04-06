@@ -43,14 +43,14 @@ public class MemberController {
             @ApiImplicitParam(name = "signInDto", value="로그인할 회원의 정보", required = true, dataType = "SignInDto")
     })
     @PostMapping
-    public String signIn(@RequestBody SignInDto signInDto, HttpServletResponse response) {
-        return signInService.signIn(signInDto,response);
+    public ResponseEntity signIn(@RequestBody SignInDto signInDto, HttpServletResponse response) {
+        return ResponseEntity.ok().body(signInService.signIn(signInDto,response));
     }
 
     @ApiOperation(value = "회원 정보 열람")
     @GetMapping
-    public ResponseEntity getMemberInfo(@CookieValue(value = "user", required = false) Cookie cookie) {
-        return ResponseEntity.ok().body(memberGetService.getMemberInfo(cookie));
+    public ResponseEntity getMember(@CookieValue(value = "user", required = false) Cookie cookie) {
+        return ResponseEntity.ok().body(memberGetService.getMember(cookie));
     }
 
     @ApiOperation(value = "작가 리스트 열람")
@@ -72,7 +72,7 @@ public class MemberController {
 
     @ApiOperation(value = "회원 탈퇴")
     @DeleteMapping
-    public ResponseEntity removeMember(@CookieValue(value = "user", required = false) Cookie cookie) {
+    public ResponseEntity deleteMember(@CookieValue(value = "user", required = false) Cookie cookie) {
         return memberDeleteService.deleteMember(cookie);
     }
 
@@ -81,9 +81,9 @@ public class MemberController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value="중복 체크할 아이디", required = true, dataType = "string")
     })
-    @PostMapping("/check")
-    public boolean checkUserId(@RequestBody String userId){
-        return signUpService.checkUserID(userId);
+    @GetMapping("/check")
+    public boolean checkUserId(@RequestParam("userId") String userId){
+        return signUpService.checkUserId(userId);
     }
 
 
