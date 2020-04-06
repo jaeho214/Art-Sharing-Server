@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.controller;
+package kr.ac.skuniv.artsharing.controller.member;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

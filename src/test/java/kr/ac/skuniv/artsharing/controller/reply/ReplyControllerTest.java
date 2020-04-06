@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.controller;
+package kr.ac.skuniv.artsharing.controller.reply;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
