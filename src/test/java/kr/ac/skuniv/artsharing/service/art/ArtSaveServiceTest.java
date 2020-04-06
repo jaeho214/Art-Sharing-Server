@@ -16,9 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import javax.servlet.http.Cookie;
+import java.awt.*;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.*;
@@ -49,7 +51,7 @@ class ArtSaveServiceTest {
     private Art artFixture = new EasyRandom().nextObject(Art.class);
     private ArtImage artImageFixture = new EasyRandom().nextObject(ArtImage.class);
     private Cookie cookie = new Cookie("user", "token");
-    private MockMultipartFile file = new MockMultipartFile("imageFile", "test.txt", null, "test data".getBytes());
+    private MockMultipartFile file = new MockMultipartFile("imageFile", "test.txt", MediaType.IMAGE_JPEG_VALUE, "test data".getBytes());
     @Test
     void saveArt() throws IOException {
         //given

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import javax.servlet.http.Cookie;
@@ -46,7 +47,7 @@ class ArtUpdateServiceTest {
     private Member memberFixture = new EasyRandom().nextObject(Member.class);
     private ArtImage artImageFixture = new EasyRandom().nextObject(ArtImage.class);
     private Art artFixture = new EasyRandom().nextObject(Art.class);
-    private MockMultipartFile file = new MockMultipartFile("imageFile", "test.txt", null, "test data".getBytes());
+    private MockMultipartFile file = new MockMultipartFile("imageFile", "test.txt", MediaType.IMAGE_JPEG_VALUE, "test data".getBytes());
     private Cookie cookie = new Cookie("user", "token");
 
     @Test
