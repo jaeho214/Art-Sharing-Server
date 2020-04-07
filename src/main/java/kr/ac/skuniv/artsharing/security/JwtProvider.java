@@ -1,10 +1,7 @@
 package kr.ac.skuniv.artsharing.security;
 
 import io.jsonwebtoken.*;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.MemberRepository;
 import kr.ac.skuniv.artsharing.service.member.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

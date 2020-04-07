@@ -3,10 +3,7 @@ package kr.ac.skuniv.artsharing.controller.member;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import kr.ac.skuniv.artsharing.domain.dto.member.MemberGetDto;
-import kr.ac.skuniv.artsharing.domain.dto.member.MemberUpdateDto;
-import kr.ac.skuniv.artsharing.domain.dto.member.SignInDto;
-import kr.ac.skuniv.artsharing.domain.dto.member.SignUpDto;
+import kr.ac.skuniv.artsharing.domain.dto.member.*;
 import kr.ac.skuniv.artsharing.service.member.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +81,13 @@ public class MemberController {
     @GetMapping("/check")
     public boolean checkUserId(@RequestParam("userId") String userId){
         return signUpService.checkUserId(userId);
+    }
+
+
+    @ApiOperation(value = "비밀번호 찾기")
+    @GetMapping("/password")
+    public ResponseEntity findPassword(@RequestBody MemberPasswordDto memberPasswordDto){
+        return ResponseEntity.ok().body(memberGetService.findPassword(memberPasswordDto));
     }
 
 

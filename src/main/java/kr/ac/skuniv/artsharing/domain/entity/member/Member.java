@@ -55,5 +55,9 @@ public class Member extends JpaBasePersistable {
 		this.affiliation = memberUpdateDto.getAffiliation();
 		this.phone = memberUpdateDto.getPhone();
 	}
+
+	public void updatePassword(String password){
+		this.password = password;
+	}
 	
 }
