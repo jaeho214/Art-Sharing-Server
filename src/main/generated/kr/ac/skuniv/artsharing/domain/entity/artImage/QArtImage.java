@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.domain.entity;
+package kr.ac.skuniv.artsharing.domain.entity.artImage;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 
 
 /**
@@ -17,7 +16,7 @@ import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 @Generated("com.querydsl.codegen.EntitySerializer")
 public class QArtImage extends EntityPathBase<ArtImage> {
 
-    private static final long serialVersionUID = -467363325L;
+    private static final long serialVersionUID = 27874435L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -25,7 +24,7 @@ public class QArtImage extends EntityPathBase<ArtImage> {
 
     public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
 
-    public final QArt art;
+    public final kr.ac.skuniv.artsharing.domain.entity.art.QArt art;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
@@ -67,7 +66,7 @@ public class QArtImage extends EntityPathBase<ArtImage> {
 
     public QArtImage(Class<? extends ArtImage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.art = inits.isInitialized("art") ? new QArt(forProperty("art"), inits.get("art")) : null;
+        this.art = inits.isInitialized("art") ? new kr.ac.skuniv.artsharing.domain.entity.art.QArt(forProperty("art"), inits.get("art")) : null;
     }
 
 }

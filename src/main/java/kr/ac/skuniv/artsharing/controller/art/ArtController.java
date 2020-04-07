@@ -85,6 +85,12 @@ public class ArtController {
         return ResponseEntity.ok().body(artGetService.searchArtByKeyword(keyword, pageNo));
     }
 
+    @ApiOperation(value = "대여 가능한 작품들 보기")
+    @GetMapping("/rent")
+    public ResponseEntity getArtByRent(@RequestParam("pageNo") int pageNo){
+        return ResponseEntity.ok().body(artGetService.getArtByRent(pageNo));
+    }
+
 
     @ApiOperation(value = "사진 상세보기")
     @GetMapping(value = "/image/{art_id}", produces = MediaType.IMAGE_JPEG_VALUE)

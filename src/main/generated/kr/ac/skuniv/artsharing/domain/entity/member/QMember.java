@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.domain.entity;
+package kr.ac.skuniv.artsharing.domain.entity.member;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 
 
 /**
@@ -16,7 +15,7 @@ import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 @Generated("com.querydsl.codegen.EntitySerializer")
 public class QMember extends EntityPathBase<Member> {
 
-    private static final long serialVersionUID = 1769977509L;
+    private static final long serialVersionUID = -1634704829L;
 
     public static final QMember member = new QMember("member1");
 

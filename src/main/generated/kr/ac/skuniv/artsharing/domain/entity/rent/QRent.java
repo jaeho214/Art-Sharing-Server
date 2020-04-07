@@ -1,4 +1,4 @@
-package kr.ac.skuniv.artsharing.domain.entity;
+package kr.ac.skuniv.artsharing.domain.entity.rent;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import kr.ac.skuniv.artsharing.domain.entity.rent.Rent;
 
 
 /**
@@ -17,7 +16,7 @@ import kr.ac.skuniv.artsharing.domain.entity.rent.Rent;
 @Generated("com.querydsl.codegen.EntitySerializer")
 public class QRent extends EntityPathBase<Rent> {
 
-    private static final long serialVersionUID = -690745852L;
+    private static final long serialVersionUID = -1013646045L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -25,7 +24,7 @@ public class QRent extends EntityPathBase<Rent> {
 
     public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
 
-    public final QArt art;
+    public final kr.ac.skuniv.artsharing.domain.entity.art.QArt art;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
@@ -39,11 +38,9 @@ public class QRent extends EntityPathBase<Rent> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedAt = _super.lastModifiedAt;
 
-    public final QMember member;
+    public final kr.ac.skuniv.artsharing.domain.entity.member.QMember member;
 
     public final StringPath price = createString("price");
-
-    public final DatePath<java.time.LocalDate> rentDate = createDate("rentDate", java.time.LocalDate.class);
 
     public final DatePath<java.time.LocalDate> returnDate = createDate("returnDate", java.time.LocalDate.class);
 
@@ -65,8 +62,8 @@ public class QRent extends EntityPathBase<Rent> {
 
     public QRent(Class<? extends Rent> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.art = inits.isInitialized("art") ? new QArt(forProperty("art"), inits.get("art")) : null;
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
+        this.art = inits.isInitialized("art") ? new kr.ac.skuniv.artsharing.domain.entity.art.QArt(forProperty("art"), inits.get("art")) : null;
+        this.member = inits.isInitialized("member") ? new kr.ac.skuniv.artsharing.domain.entity.member.QMember(forProperty("member")) : null;
     }
 
 }
