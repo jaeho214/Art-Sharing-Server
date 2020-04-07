@@ -1,7 +1,6 @@
-package kr.ac.skuniv.artsharing.repository;
+package kr.ac.skuniv.artsharing.repository.rent;
 
-import kr.ac.skuniv.artsharing.domain.entity.Rent;
-import kr.ac.skuniv.artsharing.repository.custom.RentRepositoryCustom;
+import kr.ac.skuniv.artsharing.domain.entity.rent.Rent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,28 +1,29 @@
 package kr.ac.skuniv.artsharing.domain.dto.rent;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import kr.ac.skuniv.artsharing.config.LocalDateConfig;
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
-import kr.ac.skuniv.artsharing.domain.entity.Rent;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
+import kr.ac.skuniv.artsharing.domain.entity.rent.Rent;
 import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RentSaveDto {
-//    private Long artNo;
-
-    @JsonDeserialize(using = LocalDateConfig.class)
+    //@JsonDeserialize(using = LocalDateConfig.class)
     private LocalDate returnDate;
     private String price;
 
-    public Rent toEntity(Member member, Art art) {
+    @Builder
+    public RentSaveDto(LocalDate returnDate, String price) {
+        this.returnDate = returnDate;
+        this.price = price;
+    }
+
+    public Rent of(Member member, Art art) {
         return Rent.builder()
-                .price(price)
-                .returnDate(returnDate)
+                .price(this.price)
+                .returnDate(this.returnDate)
                 .member(member)
                 .art(art)
                 .build();

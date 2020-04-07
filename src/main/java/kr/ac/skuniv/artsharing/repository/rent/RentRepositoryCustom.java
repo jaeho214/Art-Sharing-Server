@@ -1,10 +1,10 @@
-package kr.ac.skuniv.artsharing.repository.custom;
+package kr.ac.skuniv.artsharing.repository.rent;
 
 import kr.ac.skuniv.artsharing.domain.dto.rent.RentGetDto;
 import org.springframework.data.domain.Page;
 
 public interface RentRepositoryCustom {
-    RentGetDto findRecentRent(Long artNo);
-    Page<RentGetDto> findRentByArt(String userId, Long artNo, int pageNum);
+    RentGetDto findRentByArt_IdAndUserId(Long art_id, String userId);
+    Page<RentGetDto> findRentByArt(Long artNo, int pageNum);
     Page<RentGetDto> findRentByMember(String userId, int pageNum);
 }

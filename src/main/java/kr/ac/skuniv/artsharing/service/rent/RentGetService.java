@@ -1,71 +1,72 @@
 package kr.ac.skuniv.artsharing.service.rent;
 
 import kr.ac.skuniv.artsharing.domain.dto.rent.RentGetDto;
+import kr.ac.skuniv.artsharing.domain.dto.rent.RentGetPagingDto;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
 import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.RentRepository;
+import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
+import kr.ac.skuniv.artsharing.exception.rent.RentNotFoundException;
+import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
+import kr.ac.skuniv.artsharing.repository.rent.RentRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
+@RequiredArgsConstructor
 public class RentGetService {
 
     private final RentRepository rentRepository;
     private final CommonService commonService;
-
-    public RentGetService(RentRepository rentRepository, CommonService commonService) {
-        this.rentRepository = rentRepository;
-        this.commonService = commonService;
-    }
+    private final ArtRepository artRepository;
 
     /**
      * 작가가 본인의 작품의 대여기록을 조회
      * @param cookie : 사용자 정보
-     * @param artNo : 작품 번호
-     * @param pageNum : 페이지 번호
+     * @param art_id : 작품 번호
+     * @param pageNo : 페이지 번호
      * @return : 대여 기록
      */
-    public Page<RentGetDto> getArtRentHistory(Cookie cookie, Long artNo, int pageNum) {
-        String userId = commonService.getUserIdByCookie(cookie);
-        String userRole = commonService.getUserRoleByCookie(cookie);
+    @Transactional(readOnly = true)
+    public RentGetPagingDto getRentByArt(Cookie cookie, Long art_id, int pageNo) {
+        Member member = commonService.getMemberByCookie(cookie);
 
-        if(!userRole.equals(MemberRole.ARTIST.name())){
-            throw new UserDefineException("작품의 대여목록을 열람할 권한이 없습니다.");
-        }
-        Page<RentGetDto> rentPage = rentRepository.findRentByArt(userId, artNo, pageNum);
+        Art art = artRepository.findById(art_id).orElseThrow(ArtNotFoundException::new);
+
+        commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
+
+        Page<RentGetDto> rentPage = rentRepository.findRentByArt(art_id, pageNo);
 
         if(rentPage == null) {
-            throw new UserDefineException("대여 기록이 없습니다.");
+            throw new RentNotFoundException();
         }
 
-        return rentPage;
+        return RentGetPagingDto.of(rentPage);
     }
 
     /**
      * 고객이 자신의 대여기록을 조회
      * @param cookie : 고객 정보
-     * @param pageNum : 페이지 번호
+     * @param pageNo : 페이지 번호
      * @return : 대여 기록
      */
-    public Page<RentGetDto> getMemberRentHistory(Cookie cookie, int pageNum) {
-        String userId = commonService.getUserIdByCookie(cookie);
-        String userRole = commonService.getUserRoleByCookie(cookie);
+    @Transactional(readOnly = true)
+    public RentGetPagingDto getRent(Cookie cookie, int pageNo) {
+        Member member = commonService.getMemberByCookie(cookie);
 
-        if(!userRole.equals(MemberRole.CLIENT.name())){ // FIXME : 고객만 대여할 수 있다고 한다면 냅두고 작가도 대여할 수 있다면 삭제
-            throw new UserDefineException("작가는 대여할 수 없습니다.");
-        }
-
-        Page<RentGetDto> rentPage = rentRepository.findRentByMember(userId, pageNum);
+        Page<RentGetDto> rentPage = rentRepository.findRentByMember(member.getUserId(), pageNo);
 
         if(rentPage == null) {
-            throw new UserDefineException("대여한 작품이 없습니다!");
+            throw new RentNotFoundException();
         }
 
-        return rentPage;
+        return RentGetPagingDto.of(rentPage);
     }
 
 }

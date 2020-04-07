@@ -23,7 +23,11 @@ public enum  ErrorCodeType {
 
 
     //reply
-    REPLY_NOT_FOUND(400,"REPLY_001", "해당 댓글을 찾을 수 없습니다.");
+    REPLY_NOT_FOUND(400,"REPLY_001", "해당 댓글을 찾을 수 없습니다."),
+
+    //rent
+    RENT_NOT_FOUND(400, "RENT_001", "해당 대여 기록을 찾을 수 없습니다."),
+    ALREADY_RENT(400, "RENT_002", "이미 대여가 된 작품입니다.");
 
     private int status;
     private String code;

@@ -2,93 +2,64 @@ package kr.ac.skuniv.artsharing.service.rent;
 
 import kr.ac.skuniv.artsharing.domain.dto.rent.RentGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.rent.RentSaveDto;
-import kr.ac.skuniv.artsharing.domain.entity.Art;
-import kr.ac.skuniv.artsharing.domain.entity.Member;
-import kr.ac.skuniv.artsharing.domain.entity.Rent;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
-import kr.ac.skuniv.artsharing.repository.ArtRepository;
-import kr.ac.skuniv.artsharing.repository.MemberRepository;
-import kr.ac.skuniv.artsharing.repository.RentRepository;
+import kr.ac.skuniv.artsharing.domain.entity.art.Art;
+import kr.ac.skuniv.artsharing.domain.entity.member.Member;
+import kr.ac.skuniv.artsharing.domain.entity.rent.Rent;
+import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
+import kr.ac.skuniv.artsharing.exception.rent.RentNotFoundException;
+import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
+import kr.ac.skuniv.artsharing.repository.rent.RentRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class RentSaveService {
 
     private final CommonService commonService;
     private final RentRepository rentRepository;
     private final ArtRepository artRepository;
-    private final MemberRepository memberRepository;
-
-    public RentSaveService(CommonService commonService, RentRepository rentRepository, ArtRepository artRepository, MemberRepository memberRepository) {
-        this.commonService = commonService;
-        this.rentRepository = rentRepository;
-        this.artRepository = artRepository;
-        this.memberRepository = memberRepository;
-    }
 
     /**
      * 작품 대여
      * @param cookie : 대여인 정보
      * @param rentSaveDto : 대여할 기간 및 비용 등의 데이터
-     * @param artNo : 대여할 작품 번호
+     * @param art_id : 대여할 작품 번호
      * @return : Rent 객체
      */
-    public Rent saveRent(Cookie cookie, RentSaveDto rentSaveDto, Long artNo) {
-        String userId = commonService.getUserIdByCookie(cookie);
+    public RentGetDto saveRent(Cookie cookie, RentSaveDto rentSaveDto, Long art_id) {
+        Member member = commonService.getMemberByCookie(cookie);
 
-        Member member = memberRepository.findById(userId);
-        Art art = artRepository.findById(artNo).get();
-
-        if(art.isRent() == true){
-            throw new UserDefineException("작품이 이미 대여중입니다!");
-        }
+        Art art = artRepository.findById(art_id)
+                .orElseThrow(ArtNotFoundException::new);
 
         art.changeRentStatus(true);
 
-        Rent rent = rentSaveDto.toEntity(member, art);
-
-        return rentRepository.save(rent);
+        return RentGetDto.of(rentRepository.save(rentSaveDto.of(member, art)));
     }
 
     /**
      * 작품 반납
      * @param cookie : 반납할 사용자의 정보
-     * @param artNo : 작품 번호
+     * @param rent_id : 작품 번호
      * @return : Rent 객체
      */
-    public Rent returnArt(Cookie cookie, Long artNo) {
-        String userId = commonService.getUserIdByCookie(cookie);
+    public RentGetDto returnArt(Cookie cookie, Long rent_id) {
+        Member member = commonService.getMemberByCookie(cookie);
 
-        Art art = artRepository.findById(artNo)
-                .orElseThrow( () -> new UserDefineException("해당 작품이 없습니다."));
+        Rent rent = rentRepository.findById(rent_id).orElseThrow(RentNotFoundException::new);
 
-        if(!userId.equals(art.getMember().getId())){
-            throw new UserDefineException("작품을 반납할 권한이 없습니다.");
-        }
+        commonService.checkAuthority(member.getUserId(), rent.getMember().getUserId());
 
-        RentGetDto rentGetDto = rentRepository.findRecentRent(artNo);
+        rent.updateReturnDate(LocalDate.now());
 
-        Rent rent = Rent.builder()
-                .rentNo(rentGetDto.getRentNo())
-                .rentDate(rentGetDto.getRentDate())
-                .returnDate(LocalDate.now()) // 반납하면 오늘날짜로 바꾼 후
-                .price(rentGetDto.getPrice())
-                .member(memberRepository.findById(userId))
-                .art(art)
-                .build();
-
-        rentRepository.save(rent);
-
-        art.changeRentStatus(false); // 대여여부 false 로 바꿈
-
-        artRepository.save(art);
-
-        return rent;
+        return RentGetDto.of(rent);
     }
 
 }
