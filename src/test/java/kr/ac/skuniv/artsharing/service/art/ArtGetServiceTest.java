@@ -96,4 +96,16 @@ class ArtGetServiceTest {
         //then
         assertThat(arts.getArtName()).isEqualTo(artGetDetailDtoFixture.getArtName());
     }
+
+    @Test
+    void getArtByRent(){
+        //given
+        given(artRepository.getByRent(anyInt())).willReturn(artPageFixture);
+
+        //when
+        ArtGetPagingDto art = artGetService.getArtByRent(1);
+
+        //then
+        assertThat(art.getArtPages()).isNotNull();
+    }
 }

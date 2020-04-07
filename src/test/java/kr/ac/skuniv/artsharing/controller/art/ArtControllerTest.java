@@ -181,4 +181,16 @@ class ArtControllerTest {
         )
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getArtByRent() throws Exception{
+        given(artGetService.getArtByRent(anyInt())).willReturn(artGetPagingDtoFixture);
+
+        mockMvc.perform(
+                get("/artSharing/art/rent")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("pageNo", String.valueOf(1))
+        )
+                .andExpect(status().isOk());
+    }
 }
