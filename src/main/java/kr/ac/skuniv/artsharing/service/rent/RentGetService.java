@@ -41,13 +41,7 @@ public class RentGetService {
 
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 
-        Page<RentGetDto> rentPage = rentRepository.findRentByArt(art_id, pageNo);
-
-        if(rentPage == null) {
-            throw new RentNotFoundException();
-        }
-
-        return RentGetPagingDto.of(rentPage);
+        return RentGetPagingDto.of(rentRepository.findRentByArt(art_id, pageNo));
     }
 
     /**
@@ -60,13 +54,7 @@ public class RentGetService {
     public RentGetPagingDto getRent(Cookie cookie, int pageNo) {
         Member member = commonService.getMemberByCookie(cookie);
 
-        Page<RentGetDto> rentPage = rentRepository.findRentByMember(member.getUserId(), pageNo);
-
-        if(rentPage == null) {
-            throw new RentNotFoundException();
-        }
-
-        return RentGetPagingDto.of(rentPage);
+        return RentGetPagingDto.of(rentRepository.findRentByMember(member.getUserId(), pageNo));
     }
 
 }

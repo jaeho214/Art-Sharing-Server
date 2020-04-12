@@ -42,10 +42,9 @@ public class CommonService {
      */
     public Member getMemberByCookie(Cookie cookie){
         try{
-            String userID = jwtProvider.getUserIdByToken(cookie.getValue());
-            Member member =  memberRepository.findByUserId(userID)
+            return memberRepository.
+                    findByUserId(jwtProvider.getUserIdByToken(cookie.getValue()))
                     .orElseThrow(MemberNotFoundException::new);
-            return member;
         }catch (Exception e){
             throw new CookieNotFoundException();
         }

@@ -1,6 +1,5 @@
 package kr.ac.skuniv.artsharing.domain.dto.art;
 
-import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import lombok.*;
 import org.springframework.data.domain.Page;
 

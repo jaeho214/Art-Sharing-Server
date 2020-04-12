@@ -1,7 +1,6 @@
 package kr.ac.skuniv.artsharing.service.art;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
-import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetPagingDto;
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
@@ -13,10 +12,6 @@ import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

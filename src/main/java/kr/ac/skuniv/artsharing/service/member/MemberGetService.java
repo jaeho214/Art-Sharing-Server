@@ -37,9 +37,7 @@ public class MemberGetService {
      */
     @Transactional(readOnly = true)
     public MemberGetDto getMember(Cookie cookie) {
-        Member member = commonService.getMemberByCookie(cookie);
-
-        return MemberGetDto.of(member);
+        return MemberGetDto.of(commonService.getMemberByCookie(cookie));
     }
 
     /**
@@ -49,8 +47,8 @@ public class MemberGetService {
     @Transactional(readOnly = true)
     public List<MemberGetDto> getArtistList() {
         List<Member> memberList = memberRepository.findByRole(MemberRole.ARTIST);
-        List<MemberGetDto> artistList = new ArrayList<>();
 
+        List<MemberGetDto> artistList = new ArrayList<>();
         for(Member member : memberList){
             artistList.add(
                     MemberGetDto.of(member)

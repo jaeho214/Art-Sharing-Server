@@ -34,8 +34,6 @@ public class ReplySaveService {
         Art art = artRepository.findById(replySaveDto.getArtNo())
                 .orElseThrow(ArtNotFoundException::new);
 
-        Reply savedReply = replyRepository.save(replySaveDto.of(member, art));
-
-        return ReplyGetDto.of(savedReply);
+        return ReplyGetDto.of(replyRepository.save(replySaveDto.of(member, art)));
     }
 }

@@ -97,7 +97,7 @@ public class RentRepositoryImpl extends QuerydslRepositorySupport implements Ren
         return rentGetDtoList;
     }
 
-    private JPAQuery setQuery(){
+    private JPAQuery<Rent> setQuery(){
         JPAQuery<Rent> jpaQuery = new JPAQuery<>(entityManager);
         return jpaQuery.select(rent)
                 .from(rent)
