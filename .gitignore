@@ -4,7 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-**/main/resources/aws.yml
+
+
 
 ### STS ###
 .apt_generated
@@ -31,6 +32,5 @@ out/
 
 ### VS Code ###
 .vscode/
-aws.yml
-aws.yml
-aws.yml
+
+/src/main/resources/aws.yml
