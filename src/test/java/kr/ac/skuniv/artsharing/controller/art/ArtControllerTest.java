@@ -3,9 +3,7 @@ package kr.ac.skuniv.artsharing.controller.art;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import kr.ac.skuniv.artsharing.controller.art.ArtController;
-import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
-import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
-import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetPagingDto;
+import kr.ac.skuniv.artsharing.domain.dto.art.*;
 import kr.ac.skuniv.artsharing.service.art.ArtDeleteService;
 import kr.ac.skuniv.artsharing.service.art.ArtGetService;
 import kr.ac.skuniv.artsharing.service.art.ArtSaveService;
@@ -64,6 +62,8 @@ class ArtControllerTest {
     private ArtGetDto artGetDtoFixture = new EasyRandom().nextObject(ArtGetDto.class);
     private ArtGetDetailDto artGetDetailDtoFixture = new EasyRandom().nextObject(ArtGetDetailDto.class);
     private ArtGetPagingDto artGetPagingDtoFixture = new EasyRandom().nextObject(ArtGetPagingDto.class);
+    private ArtSaveDto artSaveDtoFixture = new EasyRandom().nextObject(ArtSaveDto.class);
+    private ArtUpdateDto artUpdateDtoFixture = new EasyRandom().nextObject(ArtUpdateDto.class);
     private MockMultipartFile file = new MockMultipartFile("imageFile", "test.txt", null, "test data".getBytes());
     private Cookie cookie = new Cookie("user", "token");
     private byte[] bytes = new byte[10];
@@ -71,32 +71,36 @@ class ArtControllerTest {
     @Test
     void saveArt() throws Exception {
         //given
-        given(artSaveService.saveArt(any(), anyString(), any())).willReturn(artGetDtoFixture);
+        given(artSaveService.saveArt(any(), any(ArtSaveDto.class))).willReturn(artGetDtoFixture);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/artSharing/art")
                 .file(file)
-                .param("json", "json")
                 .cookie(cookie)
                 .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        objectMapper.writeValueAsString(artSaveDtoFixture)
+                )
         )
                 .andExpect(status().isCreated());
     }
 
-//    @Test
-//    void updateArt() throws Exception {
-//        //given
-//        given(artUpdateService.updateArt(any(), any(), anyString())).willReturn(artGetDtoFixture);
-//
-//        mockMvc.perform(
-//                MockMvcRequestBuilders.multipart("/artSharing/art/update")
-//                        .file(file)
-//                        .param("json", "json")
-//                        .cookie(cookie)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        )
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void updateArt() throws Exception {
+        //given
+        given(artUpdateService.updateArt(any(), any(ArtUpdateDto.class))).willReturn(artGetDtoFixture);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/artSharing/art/update")
+                        .file(file)
+                        .cookie(cookie)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                objectMapper.writeValueAsString(artUpdateDtoFixture)
+                        )
+        )
+                .andExpect(status().isOk());
+    }
 
     @Test
     void deleteArt() throws Exception {

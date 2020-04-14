@@ -26,16 +26,16 @@ public class ArtGetDto {
         this.imageUrl = imageUrl;
     }
 
-    public static ArtGetDto of(Art art, ArtImage artImage){
-        return ArtGetDto.builder()
-                .id(art.getId())
-                .artName(art.getArtName())
-                .price(art.getPrice())
-                .userId(art.getMember().getUserId())
-                .imageUrl(artImage.getImageUrl())
-                .isRent(art.isRent())
-                .build();
-    }
+//    public static ArtGetDto of(Art art, ArtImage artImage){
+//        return ArtGetDto.builder()
+//                .id(art.getId())
+//                .artName(art.getArtName())
+//                .price(art.getPrice())
+//                .userId(art.getMember().getUserId())
+//                .imageUrl(artImage.getImageUrl())
+//                .isRent(art.isRent())
+//                .build();
+//    }
 
     public static ArtGetDto of(Art art){
         return ArtGetDto.builder()
@@ -43,7 +43,7 @@ public class ArtGetDto {
                 .artName(art.getArtName())
                 .price(art.getPrice())
                 .userId(art.getMember().getUserId())
-                .imageUrl(null)
+                .imageUrl(art.getImageUrl())
                 .isRent(art.isRent())
                 .build();
     }

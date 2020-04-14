@@ -11,14 +11,14 @@ import java.util.List;
 public class ArtGetPagingDto {
     private List<ArtGetDto> artPages = new ArrayList<>();
     private boolean isLast;
-    private boolean isEmpty;
+    private boolean hasContent;
     private boolean isFirst;
 
     @Builder
-    public ArtGetPagingDto(List<ArtGetDto> artPages, boolean isLast, boolean isEmpty, boolean isFirst) {
+    public ArtGetPagingDto(List<ArtGetDto> artPages, boolean isLast, boolean hasContent, boolean isFirst) {
         this.artPages = artPages;
         this.isLast = isLast;
-        this.isEmpty = isEmpty;
+        this.hasContent = hasContent;
         this.isFirst = isFirst;
     }
 
@@ -26,7 +26,7 @@ public class ArtGetPagingDto {
     public static ArtGetPagingDto of(Page<ArtGetDto> artPages){
         return ArtGetPagingDto.builder()
                 .artPages(artPages.getContent())
-                .isEmpty(artPages.isEmpty())
+                .hasContent(artPages.hasContent())
                 .isLast(artPages.isLast())
                 .isFirst(artPages.isFirst())
                 .build();

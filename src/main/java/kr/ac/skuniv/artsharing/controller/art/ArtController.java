@@ -2,6 +2,8 @@ package kr.ac.skuniv.artsharing.controller.art;
 
 import io.swagger.annotations.ApiOperation;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
+import kr.ac.skuniv.artsharing.domain.dto.art.ArtSaveDto;
+import kr.ac.skuniv.artsharing.domain.dto.art.ArtUpdateDto;
 import kr.ac.skuniv.artsharing.service.art.ArtDeleteService;
 import kr.ac.skuniv.artsharing.service.art.ArtGetService;
 import kr.ac.skuniv.artsharing.service.art.ArtSaveService;
@@ -30,20 +32,19 @@ public class ArtController {
     @ApiOperation(value = "작품, 이미지 같이 저장")
     @PostMapping
     public ResponseEntity saveArt(@CookieValue(value = "user", required = false) Cookie cookie,
-                                  @RequestPart MultipartFile imageFile,
-                                  @RequestParam String json){
-        ArtGetDto savedArt = artSaveService.saveArt(cookie, json, imageFile);
+                                  @RequestBody ArtSaveDto artSaveDto){
+        ArtGetDto savedArt = artSaveService.saveArt(cookie, artSaveDto);
         return ResponseEntity.created(URI.create("artSharing/art/" + savedArt.getId())).body(savedArt);
     }
 
     @ApiOperation(value = "작품 정보 수정")
-    @PutMapping
+    @PostMapping("/update")
     public ResponseEntity updateArt(@CookieValue(value = "user", required = false) Cookie cookie,
-                                    @RequestPart(required = false) MultipartFile imageFile,
-                                    @RequestParam String json) throws IOException {
+                                    @RequestBody ArtUpdateDto artUpdateDto) {
 
-        return ResponseEntity.ok(artUpdateService.updateArt(imageFile, cookie, json));
+        return ResponseEntity.ok(artUpdateService.updateArt(cookie, artUpdateDto));
     }
+
 
     @ApiOperation(value = "작품 삭제")
     @DeleteMapping("/{art_id}")

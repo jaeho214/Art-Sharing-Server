@@ -38,9 +38,12 @@ public class Art extends JpaBasePersistable {
 	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Reply> replies;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "artImage_id")
-	private ArtImage artImage;
+	@Column(name = "imageUrl", nullable = false)
+	private String imageUrl;
+
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "artImage_id")
+//	private ArtImage artImage;
 
 	@Builder
 	public Art(String artName,
@@ -49,24 +52,25 @@ public class Art extends JpaBasePersistable {
 			   boolean isRent,
 			   Member member,
 			   List<Reply> replies,
-			   ArtImage artImage) {
+			   String imageUrl) {
 		this.artName = artName;
 		this.price = price;
 		this.explanation = explanation;
 		this.isRent = isRent;
 		this.member = member;
 		this.replies = replies;
-		this.artImage = artImage;
+		this.imageUrl = imageUrl;
 	}
 
 	public void updateArt(ArtUpdateDto artUpdateDto) {
 		this.artName = artUpdateDto.getArtName();
 		this.price = artUpdateDto.getPrice();
 		this.explanation = artUpdateDto.getExplanation();
+		this.imageUrl = artUpdateDto.getImageUrl();
 	}
 
-	public void updateArtImage(ArtImage artImage){
-		this.artImage = artImage;
+	public void updateArtImage(String imageUrl){
+		this.imageUrl = imageUrl;
 	}
 
 	public void changeRentStatus(Boolean isRent){

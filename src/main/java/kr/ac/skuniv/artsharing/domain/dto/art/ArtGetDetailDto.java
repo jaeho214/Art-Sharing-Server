@@ -66,7 +66,7 @@ public class ArtGetDetailDto {
                 .explanation(art.getExplanation())
                 .createdAt(art.getCreatedAt())
                 .artistName(art.getMember().getName())
-                .imageUrl(art.getArtImage().getImageUrl())
+                .imageUrl(art.getImageUrl())
                 .replies(new ArrayList<>())
                 .build();
     }

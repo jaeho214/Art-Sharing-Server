@@ -24,8 +24,6 @@ public class QArt extends EntityPathBase<Art> {
 
     public final kr.ac.skuniv.artsharing.util.QJpaBasePersistable _super = new kr.ac.skuniv.artsharing.util.QJpaBasePersistable(this);
 
-    public final kr.ac.skuniv.artsharing.domain.entity.artImage.QArtImage artImage;
-
     public final StringPath artName = createString("artName");
 
     //inherited
@@ -38,6 +36,8 @@ public class QArt extends EntityPathBase<Art> {
 
     //inherited
     public final NumberPath<Long> id = _super.id;
+
+    public final StringPath imageUrl = createString("imageUrl");
 
     public final BooleanPath isRent = createBoolean("isRent");
 
@@ -68,7 +68,6 @@ public class QArt extends EntityPathBase<Art> {
 
     public QArt(Class<? extends Art> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.artImage = inits.isInitialized("artImage") ? new kr.ac.skuniv.artsharing.domain.entity.artImage.QArtImage(forProperty("artImage"), inits.get("artImage")) : null;
         this.member = inits.isInitialized("member") ? new kr.ac.skuniv.artsharing.domain.entity.member.QMember(forProperty("member")) : null;
     }
 

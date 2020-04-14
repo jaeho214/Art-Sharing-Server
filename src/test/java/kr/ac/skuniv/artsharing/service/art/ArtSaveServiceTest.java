@@ -1,30 +1,22 @@
 package kr.ac.skuniv.artsharing.service.art;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtSaveDto;
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
-import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
-import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
-import kr.ac.skuniv.artsharing.service.artImage.ArtImageService;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 
 import javax.servlet.http.Cookie;
-import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,31 +29,19 @@ class ArtSaveServiceTest {
     private CommonService commonService;
     @Mock
     private ArtRepository artRepository;
-    @Mock
-    private ArtImageRepository artImageRepository;
-    @Mock
-    private ArtImageService artImageService;
-    @Mock
-    private ObjectMapper objectMapper;
-
 
     private ArtSaveDto artSaveDtoFixture = new EasyRandom().nextObject(ArtSaveDto.class);
     private Member memberFixture = new EasyRandom().nextObject(Member.class);
     private Art artFixture = new EasyRandom().nextObject(Art.class);
-    private ArtImage artImageFixture = new EasyRandom().nextObject(ArtImage.class);
     private Cookie cookie = new Cookie("user", "token");
-    private MockMultipartFile file = new MockMultipartFile("imageFile", "test.txt", MediaType.IMAGE_JPEG_VALUE, "test data".getBytes());
     @Test
-    void saveArt() throws IOException {
+    void saveArt() {
         //given
-        given(objectMapper.readValue(anyString(), any(Class.class))).willReturn(artSaveDtoFixture);
         given(commonService.getMemberByCookie(any())).willReturn(memberFixture);
         given(artRepository.save(any(Art.class))).willReturn(artFixture);
-        given(artImageRepository.save(any(ArtImage.class))).willReturn(artImageFixture);
-        given(artImageService.saveImage(any(), any(Art.class))).willReturn(artImageFixture);
 
         //when
-        ArtGetDto savedArt = artSaveService.saveArt(cookie, "json", file);
+        ArtGetDto savedArt = artSaveService.saveArt(cookie, artSaveDtoFixture);
 
         //then
         assertThat(savedArt.getArtName()).isEqualTo(artFixture.getArtName());
