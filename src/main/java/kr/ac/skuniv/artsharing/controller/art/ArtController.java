@@ -45,7 +45,6 @@ public class ArtController {
         return ResponseEntity.ok(artUpdateService.updateArt(cookie, artUpdateDto));
     }
 
-
     @ApiOperation(value = "작품 삭제")
     @DeleteMapping("/{art_id}")
     public ResponseEntity deleteArt(@CookieValue(value = "user", required = false) Cookie cookie,
@@ -91,15 +90,5 @@ public class ArtController {
     public ResponseEntity getArtByRent(@RequestParam("pageNo") int pageNo){
         return ResponseEntity.ok().body(artGetService.getArtByRent(pageNo));
     }
-
-
-    @ApiOperation(value = "사진 상세보기")
-    @GetMapping(value = "/image/{art_id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getImage(@PathVariable Long art_id) {
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
-                .body(artGetService.getImageResource(art_id));
-    }
-
-
 
 }

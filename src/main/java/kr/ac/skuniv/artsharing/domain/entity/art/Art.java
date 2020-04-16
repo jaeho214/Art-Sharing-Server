@@ -1,7 +1,6 @@
 package kr.ac.skuniv.artsharing.domain.entity.art;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtUpdateDto;
-import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.domain.entity.reply.Reply;
 import kr.ac.skuniv.artsharing.util.JpaBasePersistable;

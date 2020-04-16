@@ -2,7 +2,6 @@ package kr.ac.skuniv.artsharing.controller.art;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kr.ac.skuniv.artsharing.controller.art.ArtController;
 import kr.ac.skuniv.artsharing.domain.dto.art.*;
 import kr.ac.skuniv.artsharing.service.art.ArtDeleteService;
 import kr.ac.skuniv.artsharing.service.art.ArtGetService;
@@ -175,16 +174,6 @@ class ArtControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void getImage() throws Exception {
-        given(artGetService.getImageResource(anyLong())).willReturn(bytes);
-
-        mockMvc.perform(
-                get("/artSharing/art/image/{art_id}", 1L)
-                .contentType(MediaType.IMAGE_JPEG_VALUE)
-        )
-                .andExpect(status().isOk());
-    }
 
     @Test
     void getArtByRent() throws Exception{

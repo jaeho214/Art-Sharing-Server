@@ -1,6 +1,7 @@
 package kr.ac.skuniv.artsharing.security;
 
 import kr.ac.skuniv.artsharing.service.member.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,23 +15,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private AuthenticationTokenFilter authenticationTokenFilter;
-    private AccessDeniedHandlerCustom accessDeniedHandler;
-    private AuthenticationEntryPointCustom authenticationEntryPoint;
+    private final AuthenticationTokenFilter authenticationTokenFilter;
+    private final AccessDeniedHandlerCustom accessDeniedHandler;
+    private final AuthenticationEntryPointCustom authenticationEntryPoint;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder,
-                          AuthenticationTokenFilter authenticationTokenFilter, AccessDeniedHandlerCustom accessDeniedHandler,
-                          AuthenticationEntryPointCustom authenticationEntryPoint) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationTokenFilter = authenticationTokenFilter;
-        this.accessDeniedHandler = accessDeniedHandler;
-        this.authenticationEntryPoint = authenticationEntryPoint;
-    }
 
     private static final String[] AUTH_ARR = {
             "/v2/api-docs",
@@ -46,13 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers(AUTH_ARR)
-                .antMatchers("/artSharing/sign/client")
-                .antMatchers("/artSharing/sign/artist")
-                .antMatchers("/artSharing/sign/admin")
                 .antMatchers(HttpMethod.POST,"/artSharing/sign")
                 .antMatchers("/artSharing/art/**")
                 .antMatchers("/artSharing/sign/**")
                 .antMatchers("/artSharing/rent/**")
+                .antMatchers("/artSharing/files")
         ;
     }
 

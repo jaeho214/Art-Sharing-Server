@@ -36,28 +36,20 @@ public class RentRepositoryImpl extends QuerydslRepositorySupport implements Ren
     @Override
     public RentGetDto findRentByArt_IdAndUserId(Long art_id, String userId) {
         JPAQuery<Rent> jpaQuery = new JPAQuery<>(entityManager);
-        List<Rent> rentList = jpaQuery.select(rent)
-                            .from(rent)
-                            .where(rent.art.id.eq(art_id))
-                            .where(rent.member.userId.eq(userId))
-                            .orderBy(rent.id.desc())
-                            .fetch();
+        Rent rent = jpaQuery.select(this.rent)
+                            .from(this.rent)
+                            .where(this.rent.art.id.eq(art_id))
+                            .where(this.rent.member.userId.eq(userId))
+                            .orderBy(this.rent.id.desc())
+                            .fetch().get(0);
 
-        Rent rent = rentList.get(0);
 
-        return RentGetDto.builder()
-                .art_id(rent.getArt().getId())
-                .price(rent.getPrice())
-                .member(rent.getMember().getUserId())
-                .returnDate(rent.getReturnDate())
-                .rent_id(rent.getId())
-                .build();
+        return RentGetDto.of(rent);
     }
 
     @Override
     public Page<RentGetDto> findRentByArt(Long art_id, int pageNo) {
-        JPAQuery<Rent> jpaQuery = setQuery();
-        List<Rent> rentList = jpaQuery
+        List<Rent> rentList = setQuery()
                 .where(art.id.eq(art_id))
                 .offset(--pageNo * DEFAULT_LIMIT_SIZE)
                 .limit(DEFAULT_LIMIT_SIZE)
@@ -66,14 +58,13 @@ public class RentRepositoryImpl extends QuerydslRepositorySupport implements Ren
 
         return new PageImpl<>(toDtoList(rentList),
                         PageRequest.of(pageNo, DEFAULT_LIMIT_SIZE,
-                        new Sort(Sort.Direction.DESC, "rent_id")),
+                        new Sort(Sort.Direction.DESC, "createdAt")),
                         rentList.size());
     }
 
     @Override
     public Page<RentGetDto> findRentByMember(String userId, int pageNo) {
-        JPAQuery<Rent> jpaQuery = setQuery();
-        List<Rent> rentList = jpaQuery
+        List<Rent> rentList = setQuery()
                 .where(rent.member.userId.eq(userId))
                 .offset(--pageNo * DEFAULT_LIMIT_SIZE)
                 .limit(DEFAULT_LIMIT_SIZE)
@@ -82,7 +73,7 @@ public class RentRepositoryImpl extends QuerydslRepositorySupport implements Ren
 
         return new PageImpl<>(toDtoList(rentList),
                         PageRequest.of(pageNo, DEFAULT_LIMIT_SIZE,
-                        new Sort(Sort.Direction.DESC, "rent_id")),
+                        new Sort(Sort.Direction.DESC, "createdAt")),
                         rentList.size());
     }
 

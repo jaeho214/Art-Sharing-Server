@@ -5,13 +5,14 @@ import com.querydsl.jpa.impl.JPAQuery;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDto;
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
-
 import kr.ac.skuniv.artsharing.domain.entity.art.QArt;
-import kr.ac.skuniv.artsharing.domain.entity.artImage.QArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.QMember;
 import kr.ac.skuniv.artsharing.domain.entity.reply.QReply;
 import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,6 @@ public class ArtRepositoryImpl extends QuerydslRepositorySupport implements ArtR
 
     private QArt art = QArt.art;
     private QReply reply = QReply.reply;
-    private QArtImage artImage = QArtImage.artImage;
     private QMember member = QMember.member;
 
     public ArtRepositoryImpl() {

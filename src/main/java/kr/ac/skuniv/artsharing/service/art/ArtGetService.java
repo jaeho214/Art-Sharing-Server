@@ -2,24 +2,15 @@ package kr.ac.skuniv.artsharing.service.art;
 
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetDetailDto;
 import kr.ac.skuniv.artsharing.domain.dto.art.ArtGetPagingDto;
-import kr.ac.skuniv.artsharing.domain.entity.art.Art;
-import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
 import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
-import kr.ac.skuniv.artsharing.exception.artImage.ArtImageNotFoundException;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
-import kr.ac.skuniv.artsharing.repository.artImage.ArtImageRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,29 +18,6 @@ public class ArtGetService {
 
     private final CommonService commonService;
     private final ArtRepository artRepository;
-    private final ArtImageRepository artImageRepository;
-
-    /**
-     * 이미지를 가져오는 메소드
-     * @param art_id : 작품 번호
-     * @return : 작품의 바이트
-     */
-    public byte[] getImageResource(Long art_id) {
-        Art art = artRepository.findById(art_id)
-                .orElseThrow(ArtNotFoundException::new);
-        ArtImage artImage = artImageRepository.findByArt(art)
-                .orElseThrow(ArtImageNotFoundException::new);
-
-        try{
-            File file = new File(artImage.getImagePath());
-
-            InputStream in = new FileInputStream(file);
-            return IOUtils.toByteArray(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * 모든 작품 리스트 조회

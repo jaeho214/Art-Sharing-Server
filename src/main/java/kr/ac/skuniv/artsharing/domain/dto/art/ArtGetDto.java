@@ -1,10 +1,7 @@
 package kr.ac.skuniv.artsharing.domain.dto.art;
 
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
-import kr.ac.skuniv.artsharing.domain.entity.artImage.ArtImage;
 import lombok.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

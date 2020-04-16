@@ -12,24 +12,24 @@ import java.util.List;
 public class RentGetPagingDto {
     private List<RentGetDto> rentGetDtoList = new ArrayList<>();
     private boolean isLast;
-    private boolean isEmpty;
+    private boolean hasContent;
     private boolean isFirst;
 
     @Builder
     public RentGetPagingDto(List<RentGetDto> rentGetDtoList,
                              boolean isLast,
-                             boolean isEmpty,
+                             boolean hasContent,
                              boolean isFirst) {
         this.rentGetDtoList = rentGetDtoList;
         this.isLast = isLast;
-        this.isEmpty = isEmpty;
+        this.hasContent = hasContent;
         this.isFirst = isFirst;
     }
 
     public static RentGetPagingDto of(Page<RentGetDto> rentPages){
         return RentGetPagingDto.builder()
                 .rentGetDtoList(rentPages.getContent())
-                .isEmpty(rentPages.isEmpty())
+                .hasContent(rentPages.hasContent())
                 .isFirst(rentPages.isFirst())
                 .isLast(rentPages.isLast())
                 .build();
