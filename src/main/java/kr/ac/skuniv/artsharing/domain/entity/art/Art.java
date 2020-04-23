@@ -9,11 +9,12 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "art")
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "art_id"))
 @Where(clause = "deleted=0")
@@ -35,7 +36,7 @@ public class Art extends JpaBasePersistable {
 	private Member member;
 
 	@OneToMany(mappedBy = "art", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Reply> replies;
+    private List<Reply> replies = new ArrayList<>();
 
 	@Column(name = "imageUrl", nullable = false)
 	private String imageUrl;

@@ -15,7 +15,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "reply_id"))
 @Where(clause = "deleted=0")

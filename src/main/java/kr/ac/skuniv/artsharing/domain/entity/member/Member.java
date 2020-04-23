@@ -13,7 +13,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "member_id"))
 @Where(clause = "deleted=0")
