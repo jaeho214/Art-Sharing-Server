@@ -8,6 +8,7 @@ public enum  ErrorCodeType {
     //Common
     UNKNOWN(400, "COMMON_001", "UNKNOWN"),
     USER_UNAUTHORIZED(400, "COMMON_002", "이 기능을 사용할 수 없는 사용자입니다."),
+    INPUT_VALUE_INVALID(400, "COMMON_003", "입력값이 올바르지 않습니다."),
 
     //art
     ART_NOT_FOUND(400, "ART_001", "해당 작품을 찾을 수 없습니다."),

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -30,7 +31,7 @@ public class MemberController {
             @ApiImplicitParam(name = "signUpDto", value="가입할 고객의 정보", required = true, dataType = "SignUpDto")
     })
     @PostMapping("/signUp")
-    public ResponseEntity signUp(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity signUp(@RequestBody @Valid final SignUpDto signUpDto) {
         MemberGetDto savedMember = signUpService.signUp(signUpDto);
         return ResponseEntity.created(URI.create("/artSharing/member/" + savedMember.getId())).body(savedMember);
     }
@@ -40,7 +41,8 @@ public class MemberController {
             @ApiImplicitParam(name = "signInDto", value="로그인할 회원의 정보", required = true, dataType = "SignInDto")
     })
     @PostMapping
-    public ResponseEntity signIn(@RequestBody SignInDto signInDto, HttpServletResponse response) {
+    public ResponseEntity signIn(@RequestBody @Valid final SignInDto signInDto,
+                                 HttpServletResponse response) {
         return ResponseEntity.ok().body(signInService.signIn(signInDto,response));
     }
 
@@ -63,7 +65,7 @@ public class MemberController {
     })
     @PutMapping
     public ResponseEntity updateMember(@CookieValue(value = "user", required = false) Cookie cookie,
-                                       @RequestBody MemberUpdateDto memberUpdateDto) {
+                                       @RequestBody @Valid final MemberUpdateDto memberUpdateDto) {
         return ResponseEntity.ok().body(memberUpdateService.updateMember(cookie, memberUpdateDto));
     }
 
@@ -86,7 +88,7 @@ public class MemberController {
 
     @ApiOperation(value = "비밀번호 찾기")
     @GetMapping("/password")
-    public ResponseEntity findPassword(@RequestBody MemberPasswordDto memberPasswordDto){
+    public ResponseEntity findPassword(@RequestBody @Valid final MemberPasswordDto memberPasswordDto){
         return ResponseEntity.ok().body(memberGetService.findPassword(memberPasswordDto));
     }
 

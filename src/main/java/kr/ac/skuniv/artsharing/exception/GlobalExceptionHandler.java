@@ -4,12 +4,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -63,5 +69,35 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(errorDto, HttpStatus.valueOf(errorType.getStatus()));
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage());
+        final BindingResult bindingResult = e.getBindingResult();
+        final List<FieldError> errors = bindingResult.getFieldErrors();
+
+        return new ResponseEntity(
+                buildFieldErrors(ErrorCodeType.INPUT_VALUE_INVALID, toFieldError(errors)),
+                HttpStatus.valueOf(String.valueOf(ErrorCodeType.INPUT_VALUE_INVALID)));
+    }
+
+    private ErrorDto buildFieldErrors(ErrorCodeType type, List<ErrorDto.FieldError> fieldErrors){
+        return ErrorDto.builder()
+                .code(type.getCode())
+                .message(type.getMessage())
+                .status(type.getStatus())
+                .errors(fieldErrors)
+                .build();
+    }
+
+    private List<ErrorDto.FieldError> toFieldError(List<FieldError> errors){
+        return errors.parallelStream()
+                .map(error -> ErrorDto.FieldError.builder()
+                        .reason(error.getDefaultMessage())
+                        .field(error.getField())
+                        .value((String) error.getRejectedValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
 }
