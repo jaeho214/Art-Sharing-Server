@@ -1,18 +1,13 @@
 package kr.ac.skuniv.artsharing.service.rent;
 
-import kr.ac.skuniv.artsharing.domain.dto.rent.RentGetDto;
 import kr.ac.skuniv.artsharing.domain.dto.rent.RentGetPagingDto;
 import kr.ac.skuniv.artsharing.domain.entity.art.Art;
 import kr.ac.skuniv.artsharing.domain.entity.member.Member;
-import kr.ac.skuniv.artsharing.domain.roles.MemberRole;
-import kr.ac.skuniv.artsharing.exception.UserDefineException;
 import kr.ac.skuniv.artsharing.exception.art.ArtNotFoundException;
-import kr.ac.skuniv.artsharing.exception.rent.RentNotFoundException;
 import kr.ac.skuniv.artsharing.repository.art.ArtRepository;
 import kr.ac.skuniv.artsharing.repository.rent.RentRepository;
 import kr.ac.skuniv.artsharing.service.CommonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +30,9 @@ public class RentGetService {
      */
     @Transactional(readOnly = true)
     public RentGetPagingDto getRentByArt(Cookie cookie, Long art_id, int pageNo) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Art art = artRepository.findById(art_id).orElseThrow(ArtNotFoundException::new);
+        final Art art = artRepository.findById(art_id).orElseThrow(ArtNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 
@@ -52,7 +47,7 @@ public class RentGetService {
      */
     @Transactional(readOnly = true)
     public RentGetPagingDto getRent(Cookie cookie, int pageNo) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
         return RentGetPagingDto.of(rentRepository.findRentByMember(member.getUserId(), pageNo));
     }

@@ -18,7 +18,7 @@ public class ArtSaveService {
     private final ArtRepository artRepository;
 
     public ArtGetDto saveArt(Cookie cookie, ArtSaveDto artSaveDto){
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
         return ArtGetDto.of(artRepository.save(artSaveDto.of(member)));
     }

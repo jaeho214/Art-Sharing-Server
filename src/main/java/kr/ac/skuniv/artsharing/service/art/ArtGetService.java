@@ -39,7 +39,7 @@ public class ArtGetService {
     @Transactional(readOnly = true)
     public ArtGetPagingDto getArtsByUserId(Cookie cookie, int pageNum) {
         //작가의 작품 리스트 가져오기
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
         commonService.checkRole(member.getRole());
 

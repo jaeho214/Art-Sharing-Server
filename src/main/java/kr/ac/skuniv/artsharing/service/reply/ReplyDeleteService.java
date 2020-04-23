@@ -27,9 +27,9 @@ public class ReplyDeleteService {
      * @param replyNo : 삭제할 댓글의 번호s
      */
     public ResponseEntity deleteReply(Cookie cookie, Long replyNo) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Reply reply = replyRepository.findById(replyNo)
+        final Reply reply = replyRepository.findById(replyNo)
                 .orElseThrow(ReplyNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), reply.getMember().getUserId());

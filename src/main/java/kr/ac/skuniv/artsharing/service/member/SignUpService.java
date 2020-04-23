@@ -21,7 +21,7 @@ public class SignUpService {
      * @param signUpDto : 회원가입을 진행할 데이터
      */
     public MemberGetDto signUp(SignUpDto signUpDto) {
-        Member member = signUpDto.of(passwordEncoder.encode(signUpDto.getPassword()),
+        final Member member = signUpDto.of(passwordEncoder.encode(signUpDto.getPassword()),
                                         MemberRole.fromString(signUpDto.getRole()));
 
         return MemberGetDto.of(memberRepository.save(member));

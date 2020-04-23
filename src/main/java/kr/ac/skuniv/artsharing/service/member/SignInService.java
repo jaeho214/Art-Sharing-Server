@@ -31,7 +31,7 @@ public class SignInService {
      */
     public String signIn(SignInDto signInDto, HttpServletResponse response) {
 
-        Member member = memberRepository.findByUserId(signInDto.getUserId())
+        final Member member = memberRepository.findByUserId(signInDto.getUserId())
                 .orElseThrow(MemberNotFoundException::new);
 
         if(!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())) {

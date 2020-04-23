@@ -22,9 +22,9 @@ public class ArtUpdateService {
     private final ArtRepository artRepository;
 
     public ArtGetDto updateArt(Cookie cookie, ArtUpdateDto artUpdateDto){
-        Member member = commonService.getMemberByCookie(cookie);
-
-        Art art = artRepository.findById(artUpdateDto.getId())
+        final Member member = commonService.getMemberByCookie(cookie);
+        
+        final Art art = artRepository.findById(artUpdateDto.getId())
                 .orElseThrow(ArtNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());

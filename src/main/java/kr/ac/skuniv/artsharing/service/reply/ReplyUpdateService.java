@@ -29,9 +29,9 @@ public class ReplyUpdateService {
      * @param replyUpdateDto : 댓글을 수정할 데이터
      */
     public ReplyGetDto updateReply(Cookie cookie, ReplyUpdateDto replyUpdateDto) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Reply reply = replyRepository.findById(replyUpdateDto.getReplyNo())
+        final Reply reply = replyRepository.findById(replyUpdateDto.getReplyNo())
                 .orElseThrow(ReplyNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), reply.getMember().getUserId());

@@ -60,7 +60,7 @@ public class MemberGetService {
 
 
     public String findPassword(MemberPasswordDto memberPasswordDto) {
-        Member member = memberRepository.findByUserId(memberPasswordDto.getUserId())
+        final Member member = memberRepository.findByUserId(memberPasswordDto.getUserId())
                 .orElseThrow(MemberNotFoundException::new);
 
         if(!member.getPhone().equals(memberPasswordDto.getPhone())){

@@ -29,9 +29,9 @@ public class ReplySaveService {
      * @param replySaveDto : 저장할 댓글의 데이터
      */
     public ReplyGetDto saveReply(Cookie cookie, ReplySaveDto replySaveDto) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Art art = artRepository.findById(replySaveDto.getArtNo())
+        final Art art = artRepository.findById(replySaveDto.getArtNo())
                 .orElseThrow(ArtNotFoundException::new);
 
         return ReplyGetDto.of(replyRepository.save(replySaveDto.of(member, art)));

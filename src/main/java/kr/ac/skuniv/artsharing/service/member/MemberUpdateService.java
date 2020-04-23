@@ -25,7 +25,7 @@ public class MemberUpdateService {
      * @param memberUpdateDto : 수정할 데이터
      */
     public MemberGetDto updateMember(Cookie cookie, MemberUpdateDto memberUpdateDto) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
         memberUpdateDto.setPassword(passwordEncoder.encode(memberUpdateDto.getPassword()));
 

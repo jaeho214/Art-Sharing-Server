@@ -34,9 +34,9 @@ public class RentSaveService {
      * @return : Rent 객체
      */
     public RentGetDto saveRent(Cookie cookie, RentSaveDto rentSaveDto, Long art_id) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Art art = artRepository.findById(art_id)
+        final Art art = artRepository.findById(art_id)
                 .orElseThrow(ArtNotFoundException::new);
 
         art.changeRentStatus(true);
@@ -51,9 +51,9 @@ public class RentSaveService {
      * @return : Rent 객체
      */
     public RentGetDto returnArt(Cookie cookie, Long rent_id) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Rent rent = rentRepository.findById(rent_id).orElseThrow(RentNotFoundException::new);
+        final Rent rent = rentRepository.findById(rent_id).orElseThrow(RentNotFoundException::new);
 
         commonService.checkAuthority(member.getUserId(), rent.getMember().getUserId());
 

@@ -21,7 +21,7 @@ public class MemberDeleteService {
      * @param cookie : userId를 조회하기 위한 Cookie 객체
      */
     public ResponseEntity deleteMember(Cookie cookie) {
-        Member member= commonService.getMemberByCookie(cookie);
+        final Member member= commonService.getMemberByCookie(cookie);
 
         //memberRepository.delete(member);
         member.delete();

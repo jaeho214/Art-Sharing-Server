@@ -27,10 +27,10 @@ public class ArtDeleteService {
      * @param id : 수정할 작품의 번호
      */
     public ResponseEntity deleteArt(Cookie cookie, Long id) {
-        Member member = commonService.getMemberByCookie(cookie);
+        final Member member = commonService.getMemberByCookie(cookie);
 
-        Art art = artRepository.findById(id).orElseThrow(ArtNotFoundException::new);
-
+        final Art art = artRepository.findById(id).orElseThrow(ArtNotFoundException::new);
+        
         commonService.checkAuthority(member.getUserId(), art.getMember().getUserId());
 
         //artRepository.delete(art);
